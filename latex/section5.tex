@@ -1,0 +1,16 @@
+\section{Prediction}
+The variogram is a useful tool in order to quantify the spatial dependence in the data/process. Therefore, use of it in the inferential process has been investigated. We focus on the \emph{kriging} {\color{red} \citep{matheron1962traite}}, which is a minimum mean squared error method of spatial prediction that takes full advantage of the variogram. In fact, the kriging estimator incorporates the covariance structure of the $\Signal$ into the weights. In particular, the weights are based on the covariance among sample points and the covariance between sample points and predicted points. Note that this does not happen in distance-based method, where the weights depend only on the location of the points.
+
+{\color{red} In the follow just some notes about ordinary kriging, it needs to be completed/reviewed}
+\emph{Ordinary kriging} assumes following model
+\begin{equation}
+\Signal\left(\position\right)=\mu+\delta\left(\position\right)
+\end{equation}
+where $\position\in\mathbb{R}^{d}$, $\mu\in\mathbb{R}$, and $\mu$ unknown, and following predictor
+\begin{equation}
+P\left(\Signal,\Position\right)=\sum_{i=1}^{n}{\lambda_{i}\Signal\left(\position\right)}
+\end{equation}
+The weights $\lambda_{i}$s are computed such that the estimator is unbiased and the variance is minimized. {\color{red} Needs more here}
+
+
+\subsection{Accounting for informative selection}

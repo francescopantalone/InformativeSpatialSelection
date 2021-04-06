@@ -1,0 +1,155 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{xcolor}
+%\usepackage{mdframed}% for framed figures
+%\colorlet{framecolor}{gray}
+
+\usepackage{natbib} 
+\usepackage{ulem}%for strike through, can be deleted when submitting the paper
+%\usepackage[backend=bibtex, style=authoryear]{biblatex} %compile on this order --> LaTeX BiBTeX LaTeX
+%\addbibresource{refs.bib}
+\usepackage{amsmath,amsthm,amsfonts,dsfont}
+\usepackage{mathrsfs}  
+\usepackage{tikz}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage{tabularx}
+\usepackage[hidelinks]{hyperref}
+\usepackage{float}
+\usepackage{subfigure}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{property}[theorem]{Property}
+\newtheorem{corollary}[theorem]{Corollary}
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+
+\usepackage[inline]{enumitem}
+
+\newcommand{\restrict}{\mid}
+\newcommand{\range}[1]{\mathscr{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Greek
+\newcommand{\zdistparama}{\alpha}
+\newcommand{\zdistparamb}{\beta}
+\newcommand{\zdistparamc}{\gamma}
+\newcommand{\freeGamma}{\Gamma}
+\newcommand{\order}{\delta}
+\newcommand{\freeDelta}{\Delta}
+
+\newcommand{\dominantU}{\nu}
+\newcommand{\dominantUbar}{\bar{\nu}}
+\newcommand{\sampledensity}{\mathbf{\pi}}
+\newcommand{\intensity}{\lambda}
+\newcommand{\Intensity}{\Lambda}
+\newcommand{\dominantY}{\eta}
+\newcommand{\dominantYbar}{\bar{\eta}}
+\newcommand{\intensityratio}{\rho}
+\newcommand{\densityratio}{\rho}
+\newcommand{\parampop}{\theta}
+\newcommand{\permutation}{\tau}
+\newcommand{\paramnuisance}{\xi}
+\newcommand{\provar}{\Sigma}
+\newcommand{\Residual}{\varepsilon}
+%\newcommand{\Covf}{\Gamma}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Latin
+
+\newcommand{\acos}{acos}
+\newcommand{\subsetA}{A}
+\newcommand{\Covariogram}{C}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\derive}{\mathrm{d}}
+\newcommand{\Design}{D}
+\newcommand{\design}{\mathbf{d}}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\density}{\mathrm{f}}
+\newcommand{\Semivariogram}{G}
+\newcommand{\indicator}{I}
+\newcommand{\Sampleindex}{K}
+\newcommand{\sampleindex}{\mathbf{k}}
+\newcommand{\likelihood}{\mathscr{L}}
+%\newcommand{\popsize}{N}
+\newcommand{\Samplesize}{N}
+\newcommand{\samplesize}{\mathbf{n}}
+%\newcommand{\P}{P}
+\newcommand{\Sample}{S}
+\newcommand{\sample}{\mathbf{s}}
+\newcommand{\size}{\mathrm{size}}
+\newcommand{\Pop}{\mathrm{U}}
+\newcommand{\toPop}{\bar{\mathrm{U}}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Position}{X}
+\newcommand{\position}{\mathbf{x}}
+\newcommand{\SignalSpace}{\mathscr{Y}}
+\newcommand{\toSignalSpace}{\bar{\SignalSpace}}
+\newcommand{\Signal}{Y}
+\newcommand{\signal}{\mathbf{y}}
+\newcommand{\Desvar}{Z}
+\newcommand{\DesvarSpace}{\mathscr{Z}}
+\newcommand{\desvar}{\mathbf{z}}
+
+\newcommand{\xxx}{.5}
+\newcommand{\yyy}{.5}
+\newcommand{\hhh}{.5}
+\newcommand{\xx}[1]{\renewcommand{\xxx}{#1}}
+\newcommand{\hh}[1]{\renewcommand{\hhh}{#1}}
+\newcommand{\yy}[1]{\renewcommand{\yyy}{#1}}
+
+\newcommand\smallplot{
+\begin{tikzpicture}
+    \draw (0, 0) rectangle (1, 1);
+    \draw[blue] (\xxx,\yyy+\hhh) arc(90:-90:\hhh);
+  \end{tikzpicture}}
+
+\title{Informative Selection and Spatial Process}
+\date{}
+\author{Bonn\'ery,  Pantalone, Ranalli}
+\begin{document}
+\normalem %delete this line when ulem packages is removed
+
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+This paper extends the concept of informative selection, population distribution and sample distribution in a spatial process context.
+Those notions were defined by 
+\cite{pfefferman_1992} in a context where the output of the random process of interest consists of independent and identically distributed realisations for each individuals of a population. \cite{BonneryBreidtCoquet} showed that informative selection was inducing a stochastic dependence among realisations on the selected units. In the context of spatial process, the "population" is a continuous space and realisations for two different elements of the population are not independent. We show how informative selection may induce a different dependence among selected units, how the sample distribution differs from the "population" distribution, and how one can  account for this effect in an simulated study when doing statistical inference, including Semi-variogram parametric and semi parametric estimation, as well as prediction on the part of the space for which the random process was not observed.
+\end{abstract}
+
+{\color{red} The references in abstracts should be either written in full or not given}.
+
+
+\input{section1}
+\input{section2}
+\input{section3}
+\input{section4}
+\input{section5}
+
+
+\appendix
+\input{sectionA.tex}
+\section{R code}
+
+
+We generate a spatial Gaussian random process by means of the package \texttt{RandomFields}.
+
+
+\bibliographystyle{apalike}
+\bibliography{refs}
+
+\url{https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/nichols/research/spatbayes/johnson_spatialpointproc.pdf}
+
+Kaar
+Matheron.
+Pfeffermann
+
+\input{sectionB.tex}
+
+
+
+\end{document}
+

@@ -1,0 +1,335 @@
+
+\section{May be needed later}
+
+\subsection{Algebra for $\Semivariogram^\star(h)$}
+How to approximate 
+\begin{eqnarray}
+\lefteqn{
+\bar\Semivariogram^\star(h)}\\
+&=&\int_{\Pop^2} g^\star(\position_1,\position_2) \derive(\dominantU^{\otimes 2})^{(X_1,X_2)\mid X_2-X_1=h}(\position_1,\position_2)\\
+&=&\int_{\Pop^2} \left(\int_{\range{\Signal}^2} \frac{(\signal_2-\signal_1)^2}{2}~ \density_{\Signal[\position]}(\signal_1,\signal_2)~
+\rho_{\{1,2\}}(\position,\signal)~
+\derive\dominantY^{\otimes 2}(\signal) \right) \derive(\dominantU^{\otimes 2})^{(X_1,X_2)\mid X_2-X_1=h}(\position_1,\position_2)\\
+&=&
+\int_{\Pop^2} \left(
+\int_{\range{\Signal}^2} \frac{(\signal_2-\signal_1)^2}{2}~
+\frac{
+\exp\left(\frac{-(\signal-\mu\mathds{1})^{\mathrm{T}}A(h)^{-2}(\signal-\mu\mathds{1})}2\right)}{2\pi
+\det(A(h))}~
+\rho_{\{1,2\}}(\position,\signal)~
+\derive\dominantY^{\otimes 2}(\signal) \right) \derive(\dominantU^{\otimes 2})^{X\mid X_2-X_1=h}(\position)\\
+&=&
+%\Semivariogram(h)
+%\int_{\range{\Signal}^2} 
+%\int_{\Pop}
+%\int_{-\pi/2}^{\pi/2} 
+%(\signal'_2-\signal'_1)^2~ %\frac{\mathrm{e}^{-\frac{(\signal'_1)^2+(\signal'_2)^2}{2}}}{2\pi}~
+%\rho_{\{1,2\}}((\position',\position'+h e_\alpha),\signal)~
+%\mathds{1}_{U}(\position'+h e_\alpha) 
+%\derive(\alpha)
+%\derive\dominantU(\position')
+%\derive\dominantY^{\otimes 2}(\signal') 
+%\\&=&
+\Semivariogram(h)
+\int_{\range{\Signal}^2} 
+(\signal'_2-\signal'_1)^2~ \frac{\mathrm{e}^{-\frac{(\signal')_1^2+(\signal')_2^2}{2}}}{2\pi}~
+\left(\int_{\Pop}
+\rho_{\{1,2\}}((\position',\position'+h e_\alpha),\mu+A(h)\signal)~
+\gamma(\position',h)
+\derive\dominantU(\position')\right)
+\derive\dominantY^{\otimes 2}(\signal') 
+\end{eqnarray}
+
+Variable change : $(\signal'_1,\signal'_2)=
+(A_h^{-1}(\signal_1-\mu),
+ A_h^{-1}(\signal_2-\mu))$;
+ 
+ $\signal=A(h)\signal'+\mu$
+$\derive\dominantY(\signal)=\det(A(h))\derive\dominantY(\signal')$;
+$\frac12(\signal_1-\signal_2)^2=\Semivariogram(h)(\signal'_1-\signal'_2)^2$
+
+Variable change : $(\position'_1,\alpha)=
+(\position_1,\cos(\mathrm{angle}((0,1),\position_2-\position_1)))$
+
+
+Setup a grid $\tilde\Pop\subset\Pop$
+(triangular tiling with $h$).
+
+Draw $R=1000$, $\signal$ from a $\mathrm{Normal}((0,0),Id_2)$.
+and transform to get a 
+$\mathrm{Normal}((0,0),\Sigma_{\position,\position})$
+by multiplying the vector by the matrix $\Sigma_{\position,\position}^{1/2}$ which is defined as 
+$\Sigma_{\position,\position}$ is symetric positive
+
+
+
+$A(h)=\begin{bmatrix}\Covariogram(0)&\Covariogram(h)\\\Covariogram(h)&\Covariogram(0)\end{bmatrix}^{1/2}$
+
+$A(h)=\frac12\begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}C(0)+C(h)&0\\0&C(0)-C(h)\end{bmatrix}^{\frac12}\begin{bmatrix}1&1\\1&-1\end{bmatrix}$
+
+\begin{eqnarray*}
+A(h)&=&\frac12\begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}(C(0)+C(h))^{\frac12}&0\\0&(C(0)-C(h))^{\frac12}\end{bmatrix}\begin{bmatrix}1&1\\1&-1\end{bmatrix}\\
+&=&\frac12\begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}(C(0)+C(h))^{\frac12}&(C(0)+C(h))^{\frac12}\\(C(0)-C(h))^{\frac12}&-(C(0)-C(h))^{\frac12}\end{bmatrix}\\
+&=&\frac12\begin{bmatrix}(C(0)+C(h))^{\frac12}+
+                         (C(0)+C(h))^{\frac12}
+                        &(C(0)+C(h))^{\frac12}-
+                         (C(0)-C(h))^{\frac12}\\
+                         (C(0)+C(h))^{\frac12}-
+                         (C(0)+C(h))^{\frac12}
+                        &(C(0)+C(h))^{\frac12}+
+                         (C(0)-C(h))^{\frac12}\end{bmatrix}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+A(h)\signal&=&\frac12\begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}(C(0)+C(h))^{\frac12}&0\\0&(C(0)-C(h))^{\frac12}\end{bmatrix}\begin{bmatrix}1&1\\1&-1\end{bmatrix}\signal\\
+&=&\frac12\begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}(C(0)+C(h))^{\frac12}&0\\0&(C(0)-C(h))^{\frac12}\end{bmatrix}\begin{bmatrix}\signal_1+\signal_2\\\signal_1-\signal_2\end{bmatrix}\\
+&=&\frac12\begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}(C(0)+C(h))^{\frac12}(\signal_1+\signal_2)\\(C(0)-C(h))^{\frac12}(\signal_1-\signal_2)\end{bmatrix}\\
+&=&\frac12\begin{bmatrix}(C(0)+C(h))^{\frac12}(\signal_1+\signal_2)+(C(0)-C(h))^{\frac12}(\signal_1-\signal_2)\\(C(0)+C(h))^{\frac12}(\signal_1+\signal_2)-(C(0)-C(h))^{\frac12}(\signal_1-\signal_2)\end{bmatrix}\end{eqnarray*}
+
+\begin{eqnarray*}
+(A(h)\signal)_1\times (A(h)\signal)_2&=&
+\frac14 \left(\left((C(0)+C(h))(\signal_1+\signal_2)^2\right)\right.\\
+&&\quad-\left.
+\left((C(0)-C(h))(\signal_1-\signal_2)^2\right)\right)\\
+&=&
+\frac14 \left(\left((C(0)+C(h))(\signal_1^2+\signal_1\signal_2+\signal_2^2)\right)\right.\\
+&&\quad-\left.
+\left((C(0)-C(h))(\signal_1^2-\signal_1\signal_2+\signal_2^2)\right)\right)\\
+&=&
+\frac12 \left(C(h)(\signal_1^2+\signal_2^2)+2C(0)\signal_1\signal_2)\right)
+\end{eqnarray*}
+
+\begin{eqnarray*}
+(\mu+A(h)\signal)_1\times (\mu+A(h)\signal)_2&=&
+\mu^2+
+2\mu((A(h)\signal)_1+(A(h)\signal)_2)+\frac12 \left(C(h)(\signal_1^2+\signal_2^2)+2C(0)\signal_1\signal_2)\right)\\&=&
+\mu^2+
+2\mu((C(0)+C(h))^{\frac12}(\signal_1+\signal_2))+\frac12 \left(C(h)(\signal_1^2+\signal_2^2)+2C(0)\signal_1\signal_2)\right)
+\end{eqnarray*}
+
+
+
+$(A(h)\times\signal)+\mu\sim\mathrm{Normal}((\mu,\mu),\Sigma_{\position,\position})$
+
+\begin{eqnarray*}
+    B(h)&=&A(h)\begin{bmatrix}1&-1\\-1&1\end{bmatrix}A(h)\\
+        &=&(C(0)-C(h))\begin{bmatrix}1&-1\\-1&1\end{bmatrix}
+\end{eqnarray*}
+
+
+$$\signal^{\mathrm{T}} B(h)\signal=(C(0)-C(h))(\signal_1-\signal_2)^2$$
+
+
+\subsection{Likelihood}
+Let $\samplesize\in\mathbb{N}$, $\position\in \Pop^{\samplesize}$, $\signal\in\SignalSpace^{\samplesize}$ then the likelihood is defined as:
+
+$$\likelihood_{\Sample,\Signal[\Sample]}(\theta,\xi;\position,\signal)=
+\density_{\Signal[\position]}(\signal;\theta)\times \density_{\Sample\mid\Signal[\position]\mid\Samplesize}(\position\mid\signal;\theta,\xi) $$
+\subsection{Intensity ratios}
+In the litterature, $\rho$ can be interpretated as the density ratio, in this section we show that $\rho$ can also be interpretated as an intensity ratio.
+Let $W$ be a random variable, define the intensity ratio of the point process $\Sample$ conditionally on $W=w$ as :
+
+\begin{eqnarray}
+\densityratio_{\Sample\mid W}(.\mid w):\Pop\to, \position\mapsto \intensityratio_{\Sample\mid W}(\position\mid w)&=&\frac{\intensity_{\Sample\mid W}(\position\mid w)}{\intensity_{\Sample}(\position)}\end{eqnarray}
+
+
+
+
+
+\begin{property}[Intensity ratios]\label{prop:owhlxjfeocl}
+Let $\position\in\Pop$, let  $\signal\in\SignalSpace$, then 
+\begin{equation}
+\intensity_{(\Sample,\Signal[\Sample])}(\position,\signal)
+=
+\density_{\Signal[\position]}(\signal)\times \intensityratio_{\Sample\mid\Signal[\position]}(\position\mid\signal)\times \intensity_{\Sample}(\position)
+\end{equation}
+\end{property}
+%See appendix \ref{sec:proofofprop3.1}.
+
+
+The interest of this formulation is to distinguish between a non informative and an informative selection.
+In the statistical frameworks used in this paper, selection is informative when $\rho_{S\mid Y[S]}\neq 1$. Ignoring the selection mechanism consists in ignoring the term in $\rho_{S\mid Y[S]}$ in the expression of the intensity. When the selection mechanism $\Design$ is independent of $\Signal$, then necessarily $\rho_{S\mid Y[S]}=1$.
+Independence of $\Design$ and $\Signal$ is a sufficient condition for non informativeness.
+
+%
+
+For $\order\subset\mathbb{N}$, and a point process $\Sample$ on $\Pop$, define $\Sample^\order$ as the 
+point process of $\Sampleindex$-uples of $\Sample$ as the sample process in $\Pop^\order$:
+$$S^\order=\left\{\Sample_\{\ell_1,\ldots,\ell_\order\}:\{\ell_1,\ldots,\ell_\order\}\subset\{1,\ldots,\Samplesize\}\text{ and }\ell_1<\cdots<\ell_\order\right\}.$$
+Note that $S^\order$ is the empty set when $\order>\Samplesize$.
+
+\begin{corollary}\label{prop:owhlsdfxjfeocl}
+Let $\delta\in\mathbb{N}$, let $\position=(\position_1,\ldots,\position_\order)\in\Pop^\order$, let  $\signal=(\signal(1),\ldots,\signal_\order)\in\SignalSpace^\order$, then 
+\begin{equation}
+\intensity_{(\Sample,\Signal[\Sample])^\order}(\position,\signal)
+=
+\density_{\Signal[\position]}(\signal)\times \intensityratio_{\Sample^\order\mid\Signal[\position]}(\position\mid\signal)\times \intensity_{\Sample^\order}(\position)
+\end{equation}
+\end{corollary}
+\begin{proof}
+We apply Property \ref{prop:owhlxjfeocl} to the point process $(\Sample,\Signal[\Sample])^\order$.
+\end{proof}
+
+
+
+
+
+
+To characterize informative selection, \cite{pfeffermann} does not use an intensity ratio but a density ratio. The use of density ratios is only suitable for the case of fixed size sampling under the exchangeable condition. In this subsection, we show that the intensity ratio equals the density ratio in the case of fixed size sampling under the exchangeable condition. The use of intensity ratio is another way to characterize informative selection that coincides with the use of density ratio when suitable.
+
+
+\begin{property}[Relationship between density and intensity ratios for fixed size sampling]\label{prop:oijsosdsdidfj}
+Let $\Sample$ be a fixed size exchangeable sample. Let $\order \in\{1,\ldots,n\}$, and let $\Sampleindex\subset\{1,\ldots,n\}$ such that $\mathrm{cardinality}(\Sampleindex)=\order$.
+Then for $\position\in\Pop^\order$, $\signal\in\SignalSpace^\order$,
+\begin{equation}\intensityratio_{\Sample^\order\mid\Signal[\position]}(\position\mid\signal)=\frac{\density_{\Sample_\Sampleindex \mid\Signal[\position]}(\position\mid\signal)}{\density_{\Sample_\Sampleindex }(\position)}\end{equation}
+and 
+\begin{equation}
+\density_{\Signal[\position]\mid\Sample_\Sampleindex }(\signal\mid\position)=
+\intensityratio_{\Sample^\order\mid\Signal[\position]}(\position\mid\signal)~\times~\density_{\Signal[\position]}(\signal)
+\end{equation}
+
+\end{property}
+\begin{proof}
+See Appendix \ref{sec:proofofprop3.2}.
+\end{proof}
+
+\begin{property}[Intensity and density of fixed size exchangeable samples]
+For fixed size sampling of size $n$, under the exchangeability of the sample index assumption, the following relationship holds:
+
+$\forall \order\in\{1,\ldots,n\}$, 
+$\forall \position\in\Pop^\order$, 
+$\forall \signal\in\Signal^\order$, 
+$\forall L\subset \{1,\ldots,n\}$ such that 
+$\mathrm{cardinality}(L)=\order$, 
+$$\intensity_{\Sample^\order\mid \Signal[\position]}(\position\mid \signal)=
+B_{n,\order}~\times~\density_{\Sample_\Sampleindex \mid \Signal[\position]}(\position\mid \signal).$$
+\end{property}
+
+Where $B_{n,\order}=\order!~\mathrm{cardinality}\{\Sampleindex\mid \Sampleindex\subset\{1,\ldots,n\}, \mathrm{cardinality}(\Sampleindex)=\order\}$
+
+\subsubsection*{Examples (continued)}
+
+For $\order\in\mathbb{N}$, $\position\in \Pop^\order$, $\signal\in\SignalSpace^\order$ then 
+when $\Design=\mathrm{Ppp}[\Desvar]$,  
+\begin{equation}
+\intensityratio_{\Sample^\order\mid\Signal[\position]}=.
+\end{equation}
+\begin{proof}
+See Appendix \ref{sec:afpoakfpokk}
+\end{proof}
+And 
+when $\Design=\mathrm{bpp}[\Desvar,n]$ 
+\begin{equation}
+\intensityratio_{\Sample^\order\mid\Signal[\position]}=.
+\end{equation}
+
+\begin{proof}
+See Appendix
+\end{proof}
+{\color{red}
+Add plots}
+
+\subsection{Sample distribution}
+Let $\samplesize\in\mathbb{N}$, $\position\in \Pop^{\samplesize}$, $\signal\in\SignalSpace^{\samplesize}$ 
+
+
+
+$$\density_{\Sample,\Signal[\Sample]}(\position,\signal)=
+\density_{\Signal[\position]}(\signal;\theta)\times \density_{\Sample\mid\Signal[\Sample]}(\position\mid\signal) $$
+
+As mentioned, the codomain of the sample $\Sample$ is $\toPop$.
+For $\samplesize\in\mathbb{N}$,
+ $\position\in\Pop^{\{1,\ldots,\samplesize\}}$, 
+$$\density_{\Sample}(\position)=
+P(n=\samplesize)\times \frac{\derive P^{\Sample\mid \Samplesize=\samplesize}}{\derive\dominantU^{\otimes \samplesize}}(\position)$$ 
+and for $\signal\in\SignalSpace^{\samplesize}$, 
+
+$$\density_{\Sample,\Signal[\Sample]}(\position,\signal)=
+P(n=\samplesize)\times \frac{\derive P^{\Sample,\Signal[\Sample]\mid n=\samplesize}}{\derive\left(\dominantU^{\otimes n}\otimes \dominantY^{\otimes n}\right)}(\position,\signal)$$ 
+
+$$\density_{\Sample\mid\Signal[\Sample]}(\position\mid\signal)=
+P(n=\samplesize\mid \Signal[\position]=\signal)\times \frac{\derive P^{\Sample\mid \Signal[\position]=\position, n=\samplesize}}{\derive\dominantU^{\otimes n}}(\position\mid\signal)$$ 
+
+so 
+
+
+$$\density_{\Sample\mid\Signal[\Sample]}(\position\mid\signal)=
+P(n=\samplesize\mid \Signal[\position]=\position)\times \frac{\derive P^{\Sample\mid \Signal[\position]=\position, n=\samplesize}}{\derive\dominantU^{\otimes n}}(\position\mid\signal)$$ 
+
+
+\begin{eqnarray*}
+\density_{\Sample}(\position)=
+\int_{}\frac{\derive\Design}
+{\derive\dominantU}(\position)\derive P^\Design
+\end{eqnarray*}
+
+
+\subsubsection*{Examples (continued)}
+
+For $\order\in\mathbb{N}$, $\position\in \Pop^\order$, $\signal\in\SignalSpace^\order$ then 
+when $\Design=\mathrm{Ppp}[\Desvar]$,  
+
+\begin{eqnarray*}
+\density_{\Sample}(\position)&=&
+\int\frac{\derive\Design}
+{\derive\dominantU}(\position)\derive P^\Design\\
+&=&
+\int \exp\left(-\left(\Desvar.\dominantU\right)(\Pop)\right)
+\frac{\left(\left(\Desvar.\dominantU\right)(\Pop)\right)^{\samplesize}}{\samplesize!}
+\frac{\prod_{\ell=1}^{\samplesize}
+\Desvar[\ell]}{\left(\left(\Desvar.\dominantU\right)(\Pop)\right)^{\samplesize}}
+~\derive P^\Desvar\\
+&=&
+\int \exp\left(-\left(\Desvar.\dominantU\right)(\Pop)\right)
+\frac{\prod_{\ell=1}^{\samplesize}
+\Desvar[\ell]}%
+{\samplesize!}
+~\derive P^\Desvar\\
+&=&
+\int \exp\left(-\left(\Desvar.\dominantU\right)(\Pop)\right)
+\frac{\prod_{\ell=1}^{\samplesize}
+\Desvar[\ell]}%
+{\samplesize!}
+~\derive P^\Desvar
+\end{eqnarray*}
+\begin{proof}
+See Appendix \ref{sec:afpoakfpokk}
+\end{proof}
+And 
+when $\Design=\mathrm{bpp}[\Desvar,n]$ 
+\begin{equation}
+\intensityratio_{\Sample^\order\mid\Signal[\position]}=.
+\end{equation}
+\subsection{Proof of Property \ref{prop:owhlxjfeocl}}
+\begin{proof}
+%See appendix \ref{sec:proofofprop3.1}.
+
+Let $\subsetA_1$, $\subsetA_2$  measurable subsets of $\Pop$ and $\SignalSpace$. For $\position\in \Pop$, define the random variable $\samplesize_\position:\Omega\to\mathbb{N}, \omega\mapsto\mathrm{cardinality}(\{\ell\in\mathrm{domain}(\Sample(\omega))\mid ((\Sample(\omega))(\ell))=\position\})$.
+When $\Pop$ and $\SignalSpace$ are discrete, and $\dominantY$ and $\dominantU$ are the counting measures, then
+$$
+\Intensity_{(\Sample,\Signal[\Sample])}(\subsetA_1\times \subsetA_2)=\sum_{(\position,\signal)\in \subsetA_1\times \subsetA_2}
+   ~~\sum_{\samplesize^\star\in\mathbb{N}}
+    \samplesize^\star
+P\left(\{\samplesize_\position=\samplesize^\star\}\cap\{\Signal[\position]=\signal\}\right)
+$$
+
+So,
+\begin{eqnarray*}
+\intensity_{\Sample,\Signal[\Sample]}(\position,\signal)&=&\sum_{\samplesize^\star\in\mathbb{N}}
+    \samplesize^\star
+P\left(\{\samplesize_\position=\samplesize^\star\}\cap\{\Signal[\position]=\signal\}\right)\\
+&=&
+   ~~\sum_{\samplesize^\star\in\mathbb{N}}
+    \samplesize^\star
+P\left(\{\samplesize_\position=\samplesize^\star\}\mid\{\Signal[\position]=\signal\}\right)P\left(\{\Signal[\position]=\signal\}\right)\\
+&=&\intensity_{\Sample,\Signal[\Sample]\mid\Signal[\position]}(\position,\signal)\times P(\{\Signal[\position]=\signal\})
+\end{eqnarray*}
+
+When transposing the same reasoning to the general case, we obtain that:
+$$
+\Intensity_{(\Sample,\Signal[\Sample])}(\subsetA_1\times \subsetA_2)=
+\int_{\subsetA_1\times \subsetA_2}
+   \left[\intensity_{\Sample\mid\Signal[\position]}(\position\mid\signal)\times\density_{\Signal[\position]}(\signal)\right]\derive(\dominantU\otimes\dominantY)(\position,\signal)
+$$
+\end{proof}
+

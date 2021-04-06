@@ -1,0 +1,142 @@
+
+
+\newpage
+\section{Algebra for the example}
+
+\subsection{Distribution of  $\Desvar$ conditionally on  $\Signal[\position]=\signal$}\label{sec:A.owifjoeij}
+Under the condition of the paper example, conditionally on $\Signal[\position]=\signal$, the process $(\alpha+\beta\Signal+\gamma\varepsilon)$ is a Gaussian Process characterised by
+$\mathrm{E}\left[(\alpha+\beta\Signal+\gamma\varepsilon)[\position']\right]=\alpha+\beta(\mu+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu))$ and  $\mathrm{Var}\left[(\alpha+\beta\Signal+\gamma\varepsilon)[\position']\right]=\gamma^2\provar^\varepsilon_{\position',\position'}+\beta^2(\provar_{\position',\position'}-\provar_{\position',\position}\provar_{\position,\position}^{-1}\provar_{\position,\position'})$, and consequently, conditionally on $\Signal[\position]=\signal$, $\Desvar=\exp(\alpha+\beta\Signal+\gamma\varepsilon)$ is a lognormal spatial process.
+
+%
+%
+%\begin{eqnarray*}
+%\lefteqn{W[\position'_{1},\ldots,\position'_{m}]\mid\Signal[\position_{1},\dots,\position_{n}]=
+%    \signal}\\&\sim&
+%   P^{\alpha+\gamma\varepsilon[\position']}
+%   \ast 
+%    P^{\beta\Signal[\position']\mid\Signal[\position]=
+%    \signal}\\&&=\ 
+%   \mathrm{Normal}(\alpha+\beta(\mu+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu)),
+%\gamma^2\provar^\varepsilon_{\position',\position'}+\beta^2(\provar_{\position',\position'}-\provar_{\position',\position}\provar_{\position,\position}^{-1}\provar_{\position,\position'}))
+%    \end{eqnarray*}
+
+\begin{proof}
+
+\begin{eqnarray}\lefteqn{\begin{bmatrix}
+\Signal[\position']\\
+\Signal[\position]
+\end{bmatrix}\sim\mathrm{Normal}\left(\mu,\begin{bmatrix}\provar_{\position',\position'}&\provar_{\position',\position}\\
+\provar_{\position,\position'}&
+\provar_{\position,\position}
+\end{bmatrix}\right)}\\
+&\Rightarrow&
+\left[
+\left.\Signal[\position']
+\right|
+\Signal[\position]=\signal
+\right]
+\sim\mathrm{Normal}\left(\mu+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu),\Sigma_{\position',\position'}-\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1}\Sigma_{\position,\position'}\right)\label{eq:hfqopio}\end{eqnarray}
+
+The independence of $\varepsilon$ and $\Signal$ implies that:
+\begin{equation}\label{eq:iushfisduhsd}\left[\left.
+\varepsilon[\position']
+\right|
+\Signal[\position]=\signal
+\right]\sim\mathrm{Normal}\left(\mu_\varepsilon,\provar_{\position',\position';\varepsilon}\right),\end{equation} and that the vector obtained by stacking $\Signal[\position]$, $
+\Signal[\position']$, and $\varepsilon[\position']$ is normal. 
+By combining \eqref{eq:iushfisduhsd} and \eqref{eq:hfqopio} we obtain that:
+
+$$\left[\left.\begin{bmatrix}
+\Signal[\position']\\
+\varepsilon[\position']
+\end{bmatrix}\right|
+\Signal[\position]=\signal
+\right]\sim\mathrm{Normal}\left(\begin{bmatrix}\mu+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu)\\0\end{bmatrix},
+\begin{bmatrix}\Sigma_{\position',\position'}-\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1}\Sigma_{\position,\position'}&0\\0&\provar_{\position',\position';\varepsilon}\end{bmatrix}\right).$$
+
+We obtain the moments of $Z[\position']=\gamma
+\varepsilon[\position']+\alpha+\beta
+\Signal[\position']$ conditionally on $\Signal[\position]=\signal$:
+$$\mathrm{E}\left[\alpha+\beta
+\Signal[\position']+\gamma
+\varepsilon[\position']|
+\Signal[\position]=\signal\right]
+=\alpha+\beta(\mu+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu)),$$
+and 
+$$\mathrm{Var}\left[\alpha+\beta
+\Signal[\position']+\gamma
+\varepsilon\left[\position'\right]|
+\Signal[\position]=\signal\right]
+=\gamma^2\provar_{\position',\position';\varepsilon}+\beta^2\left(\provar_{\position',\position'}-\provar_{\position',\position}\provar_{\position,\position}^{-1}\provar_{\position,\position'})\right).$$
+\end{proof}
+
+
+
+\subsection{Proof of Equation \eqref{eq:kjeojmcxzmxz}}
+\label{sec:ijojeorijgo}
+
+The first moment of a lognormal distribution of parameters $m$ and $s^2$ is $exp(m+s^2/2)$, so 
+\begin{eqnarray*}
+\lefteqn{
+\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex'}\beta \Signal[\position'(\ell)]+\gamma \varepsilon[\position'(\ell)]\right)\mid \Signal[\position]=\signal\right]}
+\\&=&
+\exp\left(\mathds{1}^T\beta(\mu\mathds{1}+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu\mathds{1}))+
+\frac12\mathds{1}^T\left(
+\gamma^2\provar_{x'}+\beta^2\left(\provar_{\position',\position'}-\provar_{\position',\position}\provar_{\position,\position}^{-1}\provar_{\position,\position'})\right)
+\right)\mathds{1}\right)
+\end{eqnarray*}
+which simplifies when $\position'=\position$ to 
+
+\begin{eqnarray*}
+\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex}\beta \Signal[\position(\ell)]+\gamma \varepsilon[\position(\ell)]\right)\mid \Signal[\position]=\signal\right]&=&
+\exp\left(\mathds{1}^T\beta\signal+
+\frac12\mathds{1}^T\left(
+\gamma^2\provar_{\position,\position;\varepsilon}
+\right)\mathds{1}\right)
+\end{eqnarray*}
+
+and when $\position=\mathbf{0}$:
+\begin{eqnarray*}
+\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex'}\beta \Signal[\position'(\ell)]+\gamma \varepsilon[\position'(\ell)]\right)\right]
+&=&
+\exp\left(\mathds{1}^T\beta\mu\mathds{1}+
+\frac12\mathds{1}^T\left(
+\gamma^2\provar_{\position',\position',\varepsilon}+\beta^2\left(\provar_{\position',\position'})\right)
+\right)\mathds{1}\right)
+\end{eqnarray*}
+
+So:
+
+\begin{equation}
+\tilde{\tilde{\intensityratio}}_{\{1,\ldots,N\}}(\position\mid\signal)=
+\exp\left(\mathds{1}^T\beta(\signal-\mu\mathds{1})+
+\frac12\mathds{1}^T\left(
+-\beta^2\left(\provar_{\position,\position})\right)
+\right)\mathds{1}\right)\label{eq:kjeojmcxzmxz}
+\end{equation}
+
+
+
+\subsection{Algebra for the denominator of $\rho$}
+
+The denominator of $\rho$ requires the computation of $\int_{U}\Sigma_{\position',\position}~d\dominantU$, which is itself a function of
+$\int_{U}\Covariogram(\position'-\position_j)d\dominantU\left(\position'\right)$
+
+
+For $\position=(\position_1,\position_2)$, such that $\|\position_1-\position_2\|=h$, we have the following:
+
+\begin{eqnarray*}
+\Sigma_{\position,\position}&=&
+    \begin{bmatrix}\Covariogram(0)&\Covariogram(h)\\\Covariogram(h)&\Covariogram(0)\end{bmatrix}\\
+\Sigma_{\position,\position}^{-1}&=&
+    (\Covariogram(0)^2-\Covariogram(h)^2)^{-1}\begin{bmatrix}\Covariogram(0)&-\Covariogram(h)\\-\Covariogram(h)&\Covariogram(0)\end{bmatrix}\\
+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1}
+    &=&(\Covariogram(0)^2-\Covariogram(h)^2)^{-1}
+        \begin{bmatrix}\Covariogram(\position'-\position_1)&\Covariogram(\position'-\position_2)\end{bmatrix}\begin{bmatrix}\Covariogram(0)&-\Covariogram(h)\\-\Covariogram(h)&\Covariogram(0)\end{bmatrix}\\
+    &=&\frac{\begin{bmatrix}
+        \Covariogram(0)\Covariogram(\position'-\position_1)-\Covariogram(h)\Covariogram(\position'-\position_2)&              \Covariogram(0)\Covariogram(\position'-\position_2)-\Covariogram(h)\Covariogram(\position'-\position_1)\end{bmatrix}}{\Covariogram(0)^2-\Covariogram(h)^2}\\
+\Sigma_{\position',\position}&=&\begin{bmatrix}\Covariogram(\position'-\position_1)&\Covariogram(\position'-\position_2)\end{bmatrix}
+\end{eqnarray*}
+
+
+

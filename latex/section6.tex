@@ -1,0 +1,1333 @@
+\documentclass[12pt]{article}
+\usepackage[utf8]{inputenc}
+
+\usepackage{natbib} 
+\usepackage{ulem}%for strike through, can be deleted when submitting the paper
+%\usepackage[backend=bibtex, style=authoryear]{biblatex} %compile on this order --> LaTeX BiBTeX LaTeX
+%\addbibresource{refs.bib}
+\usepackage{amsmath,amsthm,amsfonts,dsfont}
+\usepackage{mathrsfs}  
+\usepackage{tikz}
+\usepackage{xcolor}
+\usepackage{amssymb}
+\usepackage{fullpage}
+\usepackage[hidelinks]{hyperref}
+\usepackage{float}
+\usepackage{subfigure}
+\newtheorem{theorem}{Theorem}[section]
+\newtheorem{property}{Property}[section]
+\newtheorem{corollary}{Corollary}[theorem]
+\newtheorem{lemma}[theorem]{Lemma}
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\theoremstyle{remark}
+\newtheorem*{remark}{Remark}
+
+
+
+\newcommand{\restrict}{\mid}
+\newcommand{\range}[1]{\mathscr{#1}}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Greek
+\newcommand{\dominantU}{\nu}
+\newcommand{\dominantY}{\lambda}
+\newcommand{\sampledensity}{\mathbf{\pi}}
+\newcommand{\parampop}{\theta}
+\newcommand{\paramnuisance}{\xi}
+\newcommand{\provar}{\Sigma}
+\newcommand{\Residual}{\varepsilon}
+%\newcommand{\Covf}{\Gamma}
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%% Latin
+
+\newcommand{\acos}{acos}
+
+\newcommand{\Covariogram}{C}
+\newcommand{\Cov}{\mathrm{Cov}}
+\newcommand{\derive}{\mathrm{d}}
+\newcommand{\Design}{D}
+\newcommand{\design}{d}
+\newcommand{\E}{\mathrm{E}}
+\newcommand{\density}{\mathrm{f}}
+\newcommand{\Semivariogram}{G}
+\newcommand{\Sample}{S}
+\newcommand{\sample}{\mathbf{s}}
+\newcommand{\Pop}{\mathrm{U}}
+\newcommand{\Var}{\mathrm{Var}}
+\newcommand{\Position}{X}
+\newcommand{\position}{\mathbf{x}}
+\newcommand{\Sampleindex}{L}
+\newcommand{\SignalSpace}{\mathscr{Y}}
+\newcommand{\Signal}{Y}
+\newcommand{\signal}{\mathbf{y}}
+\newcommand{\indicator}{I}
+\newcommand{\Desvar}{Z}
+\newcommand{\DesvarSpace}{\mathscr{Z}}
+\newcommand{\desvar}{\mathbf{z}}
+
+\newcommand{\xxx}{.5}
+\newcommand{\yyy}{.5}
+\newcommand{\hhh}{.5}
+\newcommand{\xx}[1]{\renewcommand{\xxx}{#1}}
+\newcommand{\hh}[1]{\renewcommand{\hhh}{#1}}
+\newcommand{\yy}[1]{\renewcommand{\yyy}{#1}}
+
+\newcommand\smallplot{
+\begin{tikzpicture}
+    \draw (0, 0) rectangle (1, 1);
+    \draw[blue] (\xxx,\yyy+\hhh) arc(90:-90:\hhh);
+  \end{tikzpicture}}
+
+\title{Informative Selection and Spatial Process}
+\date{}
+\author{Bonnery,  Pantalone, Ranalli}
+\begin{document}
+\normalem %delete this line when ulem packages is removed
+
+\maketitle
+
+\tableofcontents
+
+\begin{abstract}
+This paper extends the concept of informative selection, population distribution and sample distribution in a spatial process context.
+Those notions were defined by 
+\cite{pfefferman_1992} in a context where the output of the random process of interest consists of independent and identically distributed realisations for each individuals of a population. \cite{BonneryBreidtCoquet} showed that informative selection was inducing a stochastic dependence among realisations on the selected units. In the context of spatial process, the "population" is a continuous space and realisations for two different elements of the population are not independent. We show how informative selection may induce a different dependence among selected units, how the sample distribution differs from the "population" distribution, and how one can  account for this effect in an simulated study when doing statistical inference, including Semi-variogram parametric and semi parametric estimation, as well as prediction on the part of the space for which the random process was not observed.
+\end{abstract}
+
+{\color{red} The references in abstracts should be either written in full or not given}.
+
+\section{Intro}
+
+
+\section{Statistical Framework} \label{sec:stat_fra}
+\subsection{Spatial process}
+In this paper, all random variables are defined on a probability space $(\Omega,\mathscr{A},P)$. The expected value and variance/covariance operators are defined with respect to the probability measure $P$. 
+We consider a space $\Pop$, that is a subset of a finite dimensional real vector space $\mathbb{R}^d$, and a random process $\Signal$ defined on $\Pop$ with value in another finite dimension real vector space $\SignalSpace$, e.g. $Y:\Omega\to(\Pop\to\SignalSpace)$.
+The notation "$g:E\to F$" means: let $g$ be a mapping from set $E$ to set $F$. For $f:E\to (F\to G)$, $g:E\to F$,  the notation $f[g]$ designates the function :  $f[g]:E\to G$, such that $f[g](x)=(f(x))(g(x))$. For example for a random variable $X:\Omega\to\Pop$, $\Signal[X]$ is the random variable: $\Omega\to\SignalSpace$, $\omega\mapsto(\Signal(\omega))(X(\omega))$.
+%Given data $(\position_{1},\signal_{1}),...,(\position_{n},\signal_{n})$, in order to perform inference for some target, we postulate a model, which we assume holds for the entire population. In particular, we are interested in model parameters, in other words we focus on \emph{analytic inference}. The choice of the model is not an easy task. It should reflect the structure of the population and should capture the important features useful for inference purpose. An entire branch of literature is dedicated to this task, i.e. \emph{model selection}, but the focus of this paper does not lie in that. 
+%For our work we assume that the model describing the variable of interest is given by
+%\begin{equation} \label{eq:model}
+%\Signal\left[\position\right]=S\left[\position\right]+\epsilon\left[\position\right]
+%\end{equation}
+%{\color{red} S is for $\Sample$ (sample)}
+%where $S\left(\position\right)$ is a zero mean stationary stochastic process in $\mathbb{R}^d$ and is independent from the $\epsilon\left(\position\right)$, which has normal distribution with mean 0 and variance $\sigma_{\epsilon}$. The model in \eqref{eq:model} is quite general and embraces many variations under its umbrella. It is wide known in the field of geostatistics, where the term \emph{kriging} is in vogue. In fact, according to different assumptions about $S(\position)$, we end up with different models, which are usually referred with terms as ordinary kriging, simple kriging, universal kriging and so on. In order to perform inference about the model parameters, we need to introduce some assumptions.
+Let $\dominantY$ (resp. $\dominantU$) denote a sigma-finite measure on the set $\SignalSpace$ (resp. $\Pop$).
+The notation $\density_{V\mid W}$ denotes the density of $V$ conditional on $W$ with respect to a to be specified dominating measure on the codomain of $V$.
+The average theoretical semivariogram is defined as the function $$\Semivariogram:\mathbb{R}^d\to[0,+\infty),h\mapsto\frac12\int_{\Pop^2} \Var\left[\Signal[\position_2]-\Signal[\position_1]\right] \derive(\dominantU^{\otimes 2})^{(X_1,X_2)\mid X_2-X_1=h}(\position_1,\position_2),$$
+{\color{red} We need to put a reference on this formula. We jsut replace $E[^2]$ by $V$ and need to make the assumption that E[Y[x]] is constant clear in examples.}
+where $(X_1,X_2)$ is the identity of $\Pop^{2}$, and the average theoretical covariogram is the function  $\nu^{X_2-X_1}-a.s(h)$-defined:
+$$\Covariogram:\mathbb{R}^d\to\mathbb{R}, h\mapsto\int_{\Pop^2} \Cov\left[\Signal[\position_1],\Signal[\position_2]\right] \derive(\dominantU^{\otimes 2})^{(X_1,X_2)\mid X_2-X_1=h}(\position_1,\position_2).$$ The covariogram and semivariogram satisfy the relationship: $\forall h\in\mathbb{R}^d, \Semivariogram(h)=\Covariogram(0)-\Covariogram(h)$.
+
+{\color{red}We will remove it later but it is handy to write it there for the moment. $$\Covariogram(h)=\Covariogram(0)-\Semivariogram(h)$$.}
+
+\begin{definition}[Intrinsic stationarity]
+A process is intrinsic stationary when the following conditions are satisfied:  $\forall \position_1,\position_2\in\Pop$,
+\begin{eqnarray}
+    \mathrm{E}\left[\Signal\left[\position_2\right]-\Signal\left[\position_1\right]\right]&=&0\\
+    \frac12~\Var\left[\Signal\left[\position_2\right]-\Signal\left[\position_1\right]\right]&=&\Semivariogram(\position_2-\position_1)\label{eq:semivariogram}
+\end{eqnarray}
+
+
+%The function $\Semivariogram$ in equation \eqref{eq:semivariogram} is referred as the (theoretical) semi-variogram of the random process $\Signal$.
+\end{definition}
+
+
+\begin{definition}[Second order stationarity]
+A process is second order stationary when the following are satisfied:
+\begin{equation}
+    E\left[\Signal\left[\position\right]\right]=\mu,\forall\position\in \Pop
+\end{equation}
+\begin{equation} \label{eq:covariogram}
+    \Cov\left[\Signal\left[\position_{1}\right],\Signal\left[\position_{2}\right]\right]=C\left(\position_{1}-\position_{2}\right),\forall\position_{1},\position_{2}\in \Pop
+\end{equation}
+\end{definition}
+%The function $\Covariogram\left(\cdot\right)$ in \eqref{eq:covariogram} is called \emph{covariogram}, or \emph{stationary covariance function}. 
+The random process is isotropic if in addition on being stationary, the covaiogram function $h\mapsto \Covariogram(h)$ only depends on $h$ via $h\mapsto\|h\|$.
+
+%{\color{red} Let us call $\gamma$ the parameters for the Semivariogram or $c$ the parameters for the Covariance.
+%A plot of the 4 variograms would be neat there. Throughout the paper, $c_0$ should be replaced by $\sigma$}
+
+Common model assumptions on the process $\Signal$ consist in assuming second order stationarity and isotropy. Covariance structure of the signal is then fully characterized by $\Covariogram(0)$ $\Semivariogram(h), h\neq 0$. We give the semi-variogram formal expression for a list of semivariogram models (See \cite{chiles1999geostatistics} for more models). For $h\in\mathbb{R}^d$, $\|h\|>0$:
+
+\begin{table}[H]
+\setlength{\tabcolsep}{28pt}
+\renewcommand{\arraystretch}{1.8}
+\begin{tabular}{lll}
+\hline
+($\Semivariogram\left(h\right)$)&Parameters&Type\\
+\hline
+\hline
+$c_{0}+c_1\|h\|$& $c_0,~c_1\in[0,+\infty)$&Linear\\
+%\hline$\begin{array}{ll}c_{0}+c_{s}\lbrace\left(3/2\right)\left(h/a_{s}\right)-\left(1/2\right)\left(h/a_{s}\right)^{3}& \text{ if } 0<h\leq a_{s},\\
+%    c_{0}+c_{s}&\text{ if } h\geq a_{s}\end{array}$&&
+% Spherical\\
+\hline    $c_0+c_1\left( 1-\exp\left(-\|h\|/c_2\right)\right)$&$c_0,~c_1,~ c_2\in[0,+\infty)$&Exponential\\
+\hline
+$c_0+c_1\left(1-\exp\left(-\frac{\|h\|^2}{2c_2^2}\right)\right)$&$c_0,~c_1,~ c_2\in[0,+\infty)$&Gaussian\\
+\hline
+\end{tabular}
+\caption{Covariograms}
+\end{table}
+
+%If $\gamma$ is continuous in $0$, $\gamma(0)=0$
+\subsubsection*{Example: Gaussian processes}
+In the case where $\Signal:\Omega\to(\Pop\to\SignalSpace)$ is a   Gaussian random process, its distribution  can be derived from the distributions of $\Signal[\position]$, where $\position$, of the form $\position=(\position_\ell)_{\ell\in \Sampleindex}\in\Pop^\Sampleindex$, is a vector of elements of $\Pop$ indexed by a finite set $\Sampleindex$, and where $Y[\position]$ denotes the vector of random variables $(Y[\position_\ell])_{\ell\in \Sampleindex}$. 
+For $n,m\in\mathbb{N}$, $\position\in\Pop^n$, $\position'\in\Pop^m$, define the expected value of the signal as $\mu:\Pop\to\SignalSpace,\position\mapsto\mathrm{E}\left[\Signal[\position]\right]$, and the covariance matrix of the signal between points $\position_1,\ldots,\position_n$ and $\position'_1,\ldots,\position'_m$: $\provar_{\position,\position';\parampop}=\Cov \left[\Signal[\position],\Signal[\position']\right]$.
+The distribution of $\Signal$ is then fully characterized by $\mu$ and $\provar$: for $n\in\mathbb{N}$,   $\position\in\Pop^n$, $\Signal[\position]$ has the following density with respect to $\dominantY^{\otimes n}$: 
+%As first example, we present a spatial Gaussian process. A \emph{Gaussian process} is a stochastic process, such that every finite collection of those random variables has a multivariate normal distribution. Hence, given the model \eqref{eq:model}, we assume 
+%$\Signal\sim\mathcal{N}\left(0,\provar\right)$. In this scenario the probability density function is given by: for $n\in\mathbb{N}$, $\position\in\Pop^n$,  
+\begin{equation} \label{eq:pdf_norm_process}
+    \density_{\Signal[\position]}\left(\signal\right)=\left(2\pi^{n/2}|\provar_{\position,\position}|^{\frac12}\right)^{-1}\exp\left(-\frac12(\signal-\mu(\position))\provar_{\position,\position}^{-1}(\signal-\mu(\position))^{\!\mathrm{T}}\right).
+\end{equation}
+%and the respective likelihood for a sample of dimension $n$ is
+%\begin{equation} \label{lik_norm_process}
+%   \mathcal{L}_{\Signal[\position]}\left(\parampop;\signal\right)=\density_{\left(\Signal\left[\position\right];\theta\right)}\left(\signal;\theta\right)
+%\end{equation}
+%\input{prc_y.tex}
+
+Figure \ref{fig:oaijsfdoij} represents three realizations of the random Gaussian process $\Signal:\Omega\to(\Pop=[0,1]^2\to\mathbb{R})$, where %oijoij
+$\mathrm{E}[\Signal[\position]]=10$ and 
+$\mathrm{Cov}[\Signal[\position]]=$
+(isotropic second order stationary gaussian process with 
+gaussian semivariogram).
+\begin{figure}[H]
+\hspace{-.8cm}
+    %\input{fig/figure1}
+    \includegraphics{fig/figure1standalone.pdf}
+    \vspace{-1cm}
+    \caption{Plot of three realisations of the random process $\Signal:\Omega\to(\Pop=[0,1]^2\to\mathbb{R})$}
+    \label{fig:oaijsfdoij}
+\end{figure}
+
+We generate a spatial gaussian random process by means of the package \texttt{RandomFields}.
+
+
+
+
+\subsection{Design and design variable} \label{sec:design}
+For simplicity, and without loss of generality, we only consider designs with fixed (e.g. non random) size $n$.
+The design is then by definition a random variable with codomain the set of probability distributions on  $\Pop^n$.
+ The sample is a random variable $\Sample$ with codomain $\Pop^n$ which distribution conditionnaly to the design \emph{is} the design, e.g:
+$$P^\Design-a.s.(\design),~P^{\Sample\mid \Design=\design}=\design.$$
+We also assume that the design follows the following exchangeability condition: for all $n\in\mathbb{N}$, for any permutation $\sigma$ of $\{1,\ldots,n\}$, for all measurable subset A of $(\{1,\ldots,n\}\to \Pop)$, for all $\omega\in\Omega$,
+$D(\omega)(A)=D(\omega)(\sigma.A)$, where $\sigma.A(k)=A(\sigma(k))$. It is common in practice to choose or model the design as a function of a random observed process $\Desvar:\Omega\to(\Pop\to \DesvarSpace)$.
+In the following, we assume that $P^\Desvar$ is such that $P^\Sample$ is the  uniform distribution on $\Pop^n$: unconditionally on $Z$, the selection is uniform.
+
+\subsubsection{Designs on continuous populations}
+We consider the following designs on the space $U=[0,1]^2$:
+
+\begin{table}[H]
+
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.8}
+
+\begin{tabular}{lll}
+\hline
+Name                 &$\DesvarSpace$ & $\mathrm{d} P^{\Sample[\{1,\ldots,n\}]}/\mathrm{d}\dominantU^{\otimes n}(\position)$\\
+\hline
+\hline
+PPSWR &$\mathbb{R}^+$ & $\left(\int_U \Desvar[\position']\mathrm{d}\dominantU (\position')\right)^{-n}
+\left(\prod_{\ell=1}^n\Desvar[\position_\ell]\right)$\\
+\hline
+Spatially balanced   &$ $\\
+\hline
+SRS      &$ $\\
+\hline 
+Sytematic sampling, $n=(n')^2$   &$\{1\}$& 
+$\left\{\begin{array}{ll}(n!)^{-1} n &\text{ if }\position\in\left\{\sigma.(\position_0+(n')^{-1}\alpha)_{\alpha\in \{1,\ldots,n'\}^2}\mid\position_0\in U, \sigma\in\Sigma_n\right\}\\0& \text{ otherwise.}\end{array}\right.$\\
+\hline 
+\end{tabular}
+\caption{Characterisation of common sampling designs}
+\end{table}
+
+\subsubsection{Designs on discrete populations}
+
+
+\begin{table}[H]
+
+\setlength{\tabcolsep}{8pt}
+\renewcommand{\arraystretch}{1.8}
+
+\begin{tabular}{lll}
+\hline
+Name                 &$\DesvarSpace$ & $\mathrm{d} P^{\Sample[\{1,\ldots,n\}]}/\mathrm{d}\dominantU^{\otimes n}(\position)$\\
+\hline
+\hline
+PPSWR &$\mathbb{R}^+$ & $\left(\int_U \Desvar[\position']\mathrm{d}\dominantU (\position')\right)^{-n}
+\left(\prod_{\ell=1}^n\Desvar[\position_\ell]\right)$\\
+\hline
+Spatially balanced   &$ $\\
+\hline
+Poisson process      &$ $\\
+\hline 
+Sytematic sampling, $n=(n')^2$   &$\{1\}$& 
+$\left\{\begin{array}{ll}(n!)^{-1} n &\text{ if }\position\in\left\{\sigma.(\position_0+(n')^{-1}\alpha)_{\alpha\in \{1,\ldots,n'\}^2}\mid\position_0\in U, \sigma\in\Sigma_n\right\}\\0& \text{ otherwise.}\end{array}\right.$\\
+\hline 
+\end{tabular}
+\caption{Characterisation of common sampling designs}
+\end{table}
+
+
+\subsubsection*{Example (continued): probability proportional to size (pps) design}
+\sout{The sampling design could be very different according to the application, and could or not reflects some structure of the population. Every variable used in the selection is called \emph{design variable}. The \emph{probability proportional to size (pps)} sampling uses a variable $z$, or proxy variable, in order to select units  such that per each draw $k=1,...,n$, $P_{i}=P\left(I_{\position_{i}=1}\right)=z_{i}/\sum_{j=1}^{N}{z_{j}}$. The proxy variable has to be known for the entire population and usually it is correlated with the variable of interest. In this case the variable $z$ would be the design variable. For example, if interested in the level of specific pollutant, we could sample points with probability proportional to another variable correlated to it. In predicting areal rainfall, \cite{Kaar} considers that the points at which $Y$ is observed are the points $\position_{i}$ of a homogeneous two-dimensional Poisson process independent of $\Signal$. \emph{Spatially balanced sampling designs} select sample well spread over the area of interest, assigning low probabilities to be in the same sample to units close between them.}
+
+{\color{red}
+We need to add selected dots to the graph}
+
+
+\begin{figure}[H]
+\hspace{-.6cm}
+    %\input{fig/figure1}
+    \includegraphics{fig/figure2standalone.pdf}
+    \vspace{-1cm}
+    
+Figure 1    
+    \caption{Plot of realisations of the random processes $\Signal,~\Desvar_1,~\Desvar_2:\Omega\to(\Pop=[0,1]^2\to\mathbb{R})$}
+    \label{fig:oaijsfdwefweoij}
+    
+    First design:
+    $Z=1$, uniform(10)
+    $Z=...$, Stratified sample with allocation 2,3,3,4 and uniform sampling within strate
+    $Z\sim$, Poisson with density equal to $z$ and sample size 10
+\end{figure}
+
+\subsection{???}
+
+{\bf Example (continued): linear model}
+
+{\color{red} plot $Y$, $Z_1$, $Z_2$ }  
+
+\begin{figure}[H]
+\hspace{-.6cm}
+    %\input{fig/figure1}
+    \includegraphics{fig/figure2standalone.pdf}
+    \vspace{-1cm}
+    \caption{Plot of realisations of the random processes $\Signal,~\Desvar_1,~\Desvar_2:\Omega\to(\Pop=[0,1]^2\to\mathbb{R})$}
+    \label{fig:oaijsfdwefweoij}
+\end{figure}
+
+
+\subsection{Relationship between the design and study variables}
+
+In practice, it may not be reasonable to assume independence of the the design and study variables $\Desvar$ and $\Signal$. 
+In such case, the selection is called informative ({\color{red} give reference to my paper on the definition ofinformative selection}).
+
+\textbf{Example (continued)}
+We generate two random processes independently 
+$\Signal,\varepsilon\to\left(\Pop\right)\to\mathbb{R}$, with $\Pop=\{\position\in\mathbb{R}^2\mid \|\position\|\leq 1\}$ where $\|.\|$ is the Euclidean norm on $\mathbb{R}^2$.
+For all $n\in\mathbb{N}$, for all $\position_1,\ldots\position_n\in\Pop$, 
+$\left(\Signal(\position_1),\ldots,\Signal(\position_n)\right)$ (resp. $\left(\varepsilon(\position_1),\ldots,\varepsilon(\position_n)\right)$)  is a Gaussian vector with mean:
+$\mu=10$ and variogram $\Semivariogram\left(h\right)=(1-\sigma^2.\exp(-h/s))$
+with $\sigma^2=5$, $s=0.1$
+
+$\Covariogram(h)=\Covariogram(0)-\Semivariogram(h)=\sigma^2\exp(-h/s)$
+We compute $\Desvar_i=\alpha+\beta_i\Signal+\sigma_\varepsilon \varepsilon$, for $i\in\{1,2\}$, with $\beta_1=10$, $\beta_2=.75$.
+
+
+{\color{red}
+Plot Y and Z
+}
+
+\subsection{Observations}
+For $\ell\in\{1,\ldots,n\}$, $\Sample[\ell]$  represents the $\ell$th element selected in the sample. For a subset $\Sampleindex$ of $\{1,\ldots, n\}$, in our notations $\Signal[\Sample[\Sampleindex]]$ is the vector $(\Signal[\Sample[\ell])_{\ell \in \Sampleindex}$, and $\Signal[\Sample]$ is the vector $(\Signal[\Sample[\ell])_{\ell \in \{1,\ldots,n\}}$. The observation consists of the values $\Sample[\ell]$ and $\Signal[\Sample[\ell]]$ for all $\ell\in\{1,\ldots,n\}$. 
+
+
+{\color{red} $<<<<$ begin move this somewhere else}
+
+For a subset $A$ of $\Pop$, $I[A]=1 $ if... 0 else.
+Given a sample $\Sample$, i.e. a subset selected from the space $\Pop$ through the use of a sampling design, we define the indicator variable of the unit $i$ as $I_{\position_{i}}=1$ if the unit $i$ is in the sample, 0 otherwise. In the same way, we define  $I_{\position_{i},\position{j}}=1$ if the units $i$ and $j$ are jointly in the sample, 0 otherwise. 
+
+{\color{red} end move this somewhere else $>>>>$}
+
+
+
+\section{Conditional probability density functions}
+
+\subsection{Distribution of the sample $S$}
+
+%{\color{red} Do we need the notation g ? the idea is that $g$ is the density for the sample. I am in favour of creating a command and call it $\pi$ instead.} 
+For a subset $\Sampleindex$ of of $\{1,\ldots,n\}$, and a random variable $W$ define:
+
+\begin{eqnarray}
+\sampledensity_{\Sampleindex\mid W}(.\mid w):\Pop^{\Sampleindex}\to, \position\mapsto \sampledensity_{\Sampleindex\mid W}(\position\mid w)&=&
+\density_{\Sample[\Sampleindex]\mid W=w}(\position\mid w)\\&=&
+(\mathrm{d}P^{\Sample[\Sampleindex]\mid W=w})/(d\dominantU^{\otimes \#\Sampleindex})(\position)
+\end{eqnarray}
+
+
+For example:
+\begin{eqnarray}\label{eq:iurheiuhgiuh}
+\sampledensity_{\{1,\ldots,n\}}\left(\position \mid \Signal[\position]=
+    \signal\right)=
+(\mathrm{d}P^{\Sample\mid \Signal[\position]= \signal})/(d\dominantU^{\otimes n})(\position)
+\end{eqnarray}
+The function $\position\mapsto\sampledensity_{\{1,\ldots,n\}\mid\Design}\left(\position \mid \Design\right)$ represents the mechanism selection. It gives the probability to select the sample when $\Pop$ is countable and $\dominantU$ is the counting measure.
+From $\sampledensity_{\{1,\ldots,n\}\mid\Design}\left(\position \mid \Design\right)$, since $n$ is not random, one can derive  $\density_{\Sample[\ell]\mid \Design}(\position_\ell\mid \Design)=
+\density_{\Sample[\ell]\mid \Desvar}(\position_\ell\mid \Desvar)$:
+
+$$\density_{\Sample[\ell]\mid \Desvar}(\position\mid \Desvar)=
+\int_{\Pop^n}
+{\density_{\Sample[1,\ldots,n]\mid \Desvar}(\position'\mid \Desvar)}
+\derive \dominantU^{X\mid X_\ell=\position}(\position')$$
+
+Under the exchangeability condition, 
+$\density_{\Sample[\ell]\mid \Desvar}(\position\mid \Desvar)$ does not depend on $\ell$. In the case where $\Pop$ is countable and $\dominantU$ is the counting measure, the inclusion probability of $\position\in\Pop$ is $1-\prod_{\ell=1}^n(1-\density_{\Sample[\ell]\mid \Desvar}(\position\mid \Desvar))$.
+
+
+\begin{property}\label{prop:oijsoidfj}
+%From \eqref{eq:oiujoij}, we can deduce an expression for \eqref{eq:iurheiuhgiuh}:
+\begin{equation}
+    \sampledensity_{\Sampleindex\mid W}\left(\position|w\right)=
+    \int_{\Pop^n}\left(
+    \int \sampledensity_{\{1,\ldots,n\}\mid \Desvar}\left(\position'|\desvar\right) \derive P^{\Desvar\mid W=w}(\desvar)\right)
+    \derive\left(\nu^{\otimes n}\right)^{X\mid X[\Sampleindex]=\position}(\position')
+\end{equation}
+\end{property}
+\begin{proof}
+See appendix ...
+\end{proof}
+
+
+
+\subsubsection*{Example (continued): Generation of $\Desvar$ conditionnaly on $\Signal$}
+
+
+For $i\in\{1,2\}$ the  sample $\Sample_i$ is drawn proportionally to $\Desvar_i$.
+
+
+
+
+\begin{equation}\label{eq:oiujoij}
+   \sampledensity_{\Sampleindex\mid \Desvar}\left(\position|\desvar\right)=\left(\int_{U}{\desvar\left(\position'\right)d\dominantU\left(\position'\right)}\right)^{-\#\Sampleindex}~\prod_{\ell\in \Sampleindex}{\desvar\left(\position_{\ell}\right)}
+\end{equation}
+
+
+We have:
+$ \sampledensity_\Sampleindex\left(\position|\Signal=\signal,\Desvar=\desvar\right)= \sampledensity_\Sampleindex\left(\position_{i},\dots,\position_{n}|\Desvar=\desvar\right)$
+
+
+\begin{equation}
+    \sampledensity_{\{1,\ldots,n\}\mid\Signal[\Sample[1,\ldots,n]]}\left(\position\mid
+    \signal\right)=\int\left({\left(\int_{U}{\desvar\left(\position'\right)d\dominantU\left(\position'\right)}\right)^{-n}}\prod_{i=1}^{n}\left({\desvar\left(\position_{i}\right)}\right)\right)  \derive P^{\Desvar\mid\Signal[\position]=
+    \signal}(\desvar)
+\end{equation}
+
+
+One way to approximate that is just to do a two stage draw. First stage selects a cell proportional to the left upper corner value of Z, with replacement. Second stage is to draw uniformly in the cell.
+So the sample is 
+$(x_1,\ldots x_n)+(\eta_1,\ldots\eta_n)$ where $\eta$ is uniform on a square, $(x_1,\ldots x_n)$ is on the grid, drawn proportionally to $Z_1$.
+We need to look at the literature to simulate Poisson process with density.
+We then need to compute the values of $\Signal$ on the selected points, which we can do by interpolating.
+
+{\color{red}All the graphs should be in grayscale.}
+Figure \ref{fig:1a} is the representation of a spatial process :$\Signal\to([0,1]^2\to\mathbb{R}$.
+Figure \ref{fig:1b} is the selection density of a Poisson point process together with one sample of size (black dots) The selection density itself is a spatial process $\Desvar$ dependent on $\Signal$...
+
+Figure \ref{fig1:c} Figure \ref{fig:1c} is a  the selection density of a Poisson point process together with one sample of size (black dots) The selection density itself is a spatial process $\Desvar$ independent on $\Signal$...
+
+
+
+{\color{red} There should not be any reference to the variogram yet. In this section, we consider the distribution of $\pi$ conditional to $Y$ and $Z$. the distribution of $Y$ given $I$ will be givne in the next section}
+
+
+
+\subsection{Sample Distribution}
+
+Figure \ref{fig:1d} is the theoretical variogram for $\Signal$.
+
+Figure \ref{fig:1e} are the theoretical sample variogram for $\Signal$ (blue), the theoretical population variogram (red) as well as the empirical variograms for 1000 samples drawn independently (grey) and their mean (.
+
+variogram 
+
+
+\begin{figure}[H]
+\centering
+\subfigure[Population.]{
+\input{prc_y.tex}
+}\label{fig:1a}
+\subfigure[Non-Informative selection.]{
+\input{prc_z_ni.tex}
+}
+\label{fig:1b}
+\subfigure[Informative selection.]{
+\input{prc_z_i.tex}
+}\label{fig:1c}
+\\
+
+
+\subfigure[Theoretical variogram]{
+\input{t_var.tex}
+}
+\subfigure[1000 Variograms $C$.] {
+\input{srs_var.tex}
+}\label{fig:1d}
+\subfigure[Variogram $C$.]{
+\input{pps_var.tex}
+}\label{fig:1e}
+
+\caption{General caption.} \label{fig:1}
+
+
+\end{figure}
+
+Conditionally on y, draw 1000 samples.
+do non parametric logistic regression,
+kernel: $E[I\mid Y]$ gives you an estimate of $\rho$.
+Compute non parametric kernel regression estimator of $E[Z\mid Y=y]$.
+
+\subsection{Population and sample distributions: Distribution of $\Signal[X]$ and $\Signal[\Sample]$} 
+In order to understand the concept of informativeness, we need to distinguish between the population distribution and the sample distribution. In fact, as first definition, we say that a sample is informative if the distribution of the $y$ in the sample is different from the distribution of the $y$ in the population. In more detail, following \cite{pfefferman_1992}, the model holding on the sample can be different from the model holding in the population, due to selection mechanism.
+
+\subsubsection{Selection conditional to the study variables observed.}
+
+Considering the model introduced in section \ref{sec:spa_pro} , we write down the process that take into account that particular model and a generic mechanism selection.
+
+the "whole sample" density, which is defined by
+
+
+$$(\derive P^{\Signal[S]})/(\derive \dominantY^{\otimes n}),$$ which is given by \eqref{eq:owijoj}:
+
+$$P^{\Signal[\Sample]}=\int_{\Pop^n} P^{\Signal\mid \Sample=\position}\derive P^\Sample(\position) ,$$
+
+
+\begin{definition}
+For a subset $\Sampleindex$ of $\{1,\ldots,n\}$,
+define
+$\rho_{\Sampleindex}(.\mid.)$ as any function that satisfies:
+
+\begin{equation}
+\density_{\Signal[\position]\mid\Sample[\Sampleindex]=\position ;\parampop,\paramnuisance}\left(\signal\right)=
+    \density_{\Signal[\position];\parampop}\left(\signal\right)
+    \rho_{\Sampleindex}\left(\position\mid  \signal\right)\label{eq:owijoj}
+\end{equation}
+
+\end{definition}
+
+
+\begin{property}
+
+\begin{equation}
+\rho_{\Sampleindex}\left(\position \mid \signal\right)=
+    \frac{\sampledensity_{\Sampleindex\mid \Signal[\Sample[\Sampleindex]]}\left(\position|\signal\right)}{\int
+         \sampledensity_{\Sampleindex\mid \Signal[\Sample[\Sampleindex]]}\left(\position|\signal\right)
+         \density_{\Signal[\position];\parampop}\left(\signal\right)
+         \derive\dominantY^{\otimes\#\Sampleindex}\left(\signal\right)}
+\end{equation}
+
+
+\end{property}
+
+\begin{proof}
+From the Bayes formula:
+\begin{eqnarray}
+\density_{\Signal[\position]\mid\Sample[\Sampleindex]=\position ;\parampop,\paramnuisance}\left(\signal\right)
+&=&(\density_{\Sample[\Sampleindex]}(\position))^{-1}~\density_{\Signal[\position],\Sample[\Sampleindex]}(\signal,\position)\\
+&=&(\density_{\Sample[\Sampleindex]}(\position))^{-1}~
+\density_{\Sample[\Sampleindex]\mid\Signal[\position]}(\position\mid \signal)~
+\density_{\Signal[\position]}(\signal)\label{eq:oijoijsf}
+\end{eqnarray}
+
+
+So, combining Equations \eqref{eq:oijoijsf} and  \eqref{eq:owijoj}:
+\begin{equation}
+{\rho_{\Sampleindex}\left(\position \mid \signal\right)}
+=(\density_{\Sample[\Sampleindex]}(\position))^{-1}
+~\density_{\Sample[\Sampleindex]\mid\Signal[\position]}(\position\mid \signal)
+\end{equation}
+Besides,
+\begin{equation}\label{eq:iurhiehgieurhg}
+\density_{\Sample[\Sampleindex]}(\position)=
+\int \density_{\Sample[\Sampleindex]\mid \Signal[\position]}(\position\mid \signal)~ \density_{\Signal[\position]}(\signal)~
+\derive \dominantY^{\otimes \#\Sampleindex}(\signal)
+\end{equation}
+\end{proof}
+
+\cite{pfefferman_1992}, {\color{red} put reference BBC 1
+}
+Definition: The selection is informative when $\rho\neq1$
+
+
+\begin{property}\label{Prop:1}
+If 
+[exchangeability condition on $\sampledensity_{\Sampleindex\mid \Desvar}(\position\mid \desvar)$] and 
+[exchangeability condition on $P^Z$] 
+then $\density_{\Sample[\Sampleindex]}(\position)=\dominantU(\Pop)^{-\#\Sampleindex}$.
+\end{property}
+\begin{proof}
+Exchangeability with respect to $\dominantU$ of $....$ and $....$  implies the uniformity of the distribution of $\Sample$.
+\end{proof}
+When the conditions of Property \ref{Prop:1} hold, we have
+
+
+\begin{equation}
+\rho_{\Sampleindex}\left(\position \mid \signal\right)=
+    \frac{\sampledensity_{\Sampleindex\mid \Signal[\Sample[\Sampleindex]]}\left(\position|\signal\right)}
+    {\dominantU(\Pop)^{\#\Sampleindex}}.
+\end{equation}
+
+\subsubsection{Examples}
+
+
+
+For our example:
+
+Here, we need to discuss what we discussed with Giovanna the other day:
+
+For most of our examples, we think that getting a formal expression for $\rho$ will be difficult.
+What we said is that we would write down the integrals and then comment on then, if there is no formal value for the integral, we will say so.
+
+We will be able though to compute those integrals as functions of $\xi$ and $\theta$ by numerical integration.
+
+To the different values we get, we may try to fit a family of functions of $(\position_1,\ldots,\position_n, \signal_1,\ldots \signal_n;\theta,\xi)$.
+
+When applied to real data, we may want to specify a value for $\rho$ that does not necessarily comes from a model. For example:
+$\rho(\position_1,\ldots,\position_n\signal_1,\ldots\signal_n;\theta,\xi)$ could be taken as one of the phis obtained above.
+
+One way to select $\rho$ would be to try to stay in the same family (for example, sample and population processes would be Gaussian). 
+
+{\color{red} Composite likelihood there.}
+
+\subsubsection{Sample Variogram}
+
+$$\Semivariogram(h)^\star=\frac12\int_{\Pop^2} \E\left[\left(\Signal[\position_2]-\Signal[\position_1]\right)^2\mid \Sample[1]=\position_1,\Sample[2]=\position_2\right] \derive(\dominantU^{\otimes 2})^{(X_1,X_2)\mid X_2-X_1=h}(\position_1,\position_2)$$
+where $(X_1,X_2)$ is the identity of $\Pop^2$.
+
+\begin{eqnarray*}
+\lefteqn{\E\left[\left(\Signal[\position_2]-\Signal[\position_1]\right)^2\mid \Sample[1]=\position_1,\Sample[2]=\position_2\right]}\\
+&=&\int_{\range{\Signal}^2} (\signal_2-\signal_1)^2~
+\density_{\Signal[\position_1,\position_2]\mid S[1,2]=(\position_1,\position_2)}(\signal_1,\signal_2)~
+\derive\dominantY^{\otimes 2}(\signal_1,\signal_2) \\
+&=&\int_{\range{\Signal}^2} (\signal_2-\signal_1)^2~ \density_{\Signal[\position_1,\position_2]}(\signal_1,\signal_2)~
+\rho_{\{1,2\}}(\position,\signal)~
+\derive\dominantY^{\otimes 2}(\signal_1,\signal_2) \\
+\end{eqnarray*}
+
+\subsubsection{Examples}
+
+For example 1,
+
+$$\rho_{1,2}(\position\mid\signal)=\dominantU(\Pop)^{-2}\prod_{\ell=1}^2 \frac{\alpha+\beta_i~\signal_\ell}{
+\left(\alpha+\beta_i~(\mu+\left(\int_{U}\Sigma_{\position',\position}~d\dominantU\left(\position'\right)\right)\Sigma_{\position,\position}^{-1} (\signal-\mu))\right)
+}$$
+
+\begin{proof}
+See Appendix \ref{labelnotdoneyet}
+\end{proof}
+
+and
+$$\Semivariogram(h)^\star=
+\Semivariogram(h)
+\int_{\range{\Signal}^2} 
+(\signal'_2-\signal'_1)^2~ \frac{\mathrm{e}^{-\frac{(\signal')_1^2+(\signal')_2^2}{2}}}{2\pi}~
+\left(\int_{\Pop}
+\rho_{\{1,2\}}((\position',\position'+h e_\alpha),\mu+A(h)\signal)~
+\gamma(\position',h)
+\derive\dominantU(\position')\right)
+\derive\dominantY^{\otimes 2}(\signal'). 
+$$
+
+\begin{proof}
+See Appendix \ref{labelnotdoneyet}
+\end{proof}
+
+
+
+\label{sec:pop_samp_distr}
+The sample theoretical distribution is
+def:The selection is informative when different (pfeffermann style)
+
+The rho function is
+
+The sample theoretical variogram is
+
+Properties of the sample distributions.
+express the sample theoretical variogram with rho
+
+
+important result kaar. When non informative: sample distribution is this
+
+
+ 
+ theoretical grahps pop cov vs sample cov 
+\section{Estimation and prediction} \label{sec:estimation}
+
+\subsection{Naive estimators and their properties in the non informative selection case}
+
+Under the assumption of costant-mean, an estimator based on the method of moments is 
+\begin{equation} \label{eq:variogram_hat}
+2\hat{\gamma}\left(h\right)=\frac{1}{|N\left(h\right)|}\sum_{N\left(h\right)}{\left(\Signal\left(\position_{i}\right)-\Signal\left(\position_{j}\right)\right)^{2}},\forall h\in\mathbb{R}^{d}
+\end{equation}
+where $N\left(h\right)=\lbrace\left(\position_{i},\position_{j}\right):\position_{i}-\position_{j}=h;i,j=1,...,n\rbrace$ and $|N\left(h\right)|$ is the number of distinct pairs in $N\left(h\right)$. This estimator cannot be used directly for prediction, because it is not necessarily conditionally negative-definitive. To overcome this, a variogram model is fitted to the estimated one. 
+
+List all the estimation methods, REML, Kernel, Binned
+The \emph{naive estimated variogram} is 
+\begin{equation} \label{eq:g_hat}
+    \hat{G}(h)=\sum_{ij\in\Sample}{\beta_{ij}(h)(\Signal(\position_{i})-\Signal(\position_{j}))(\Signal(\position_{i})-Y(\position_{j}))^{T}}
+\end{equation}
+In equation \eqref{eq:g_hat}, the term $\beta_{i,j}$ is a mapping that may depend on the sample selected.
+Below we give possible definitions of $\beta_{i,j}$:
+\begin{equation}
+    \beta(\position_1,\position_2,h)=
+    \left|\begin{array}{l}
+    1 \text{ if } |\position_1-\position_2|=h, 0 \text{ otherwise}\\
+    \paramnuisance(\frac{|\position_{i}-\position_{j}|-h}{\alpha})
+    \end{array}\right.
+\end{equation},
+
+For binned estimation, a finite partition $(B_1,\ldots,B_n)$ of $\mathbb{R}^+$ is given as well as an element $h_k$ of each element $B_k$ of the partition. 
+Then the covariogram is first estimated for each $h_k$, as 
+...
+Then a covariogram is fitted 
+...
+
+In the following, we will not consider binned estimation.
+
+
+where {\color{red} $\paramnuisance$ is ..., and the bins $\mathrm{bin}_h=\left\{(i,j)\in\Sample^2\mid \left|\position_i-\position_j\right|\in [a_h,b_h)\right\}$}
+
+\subsection{Properties of the sample in the general case (including informative)}
+\begin{equation}
+    E[\hat{G}(h)]=\sum_{i,j\in\Sampleindex}E\left[ \beta(\position_{(i)},\position_{(j)},h)(\Signal(\position_{(i)})-\Signal(\position_{(j)}))(\Signal(\position_{(i)})-\Signal(\position_{(j)}))^{\mathrm{T}}\right]
+\end{equation}
+
+
+In the case where $\beta_{\position_i,\position_j,h}$ is not random,
+
+\begin{equation}
+    E[\hat{G}(h)]=\sum_{\position_1,\position_2\in \Pop}{\beta()E\left[E\left[(\Signal(\position_{i})-\Signal(\position_{j}))^{2}|I\right]I(\position_1)I(\position_2)\right]}
+\end{equation}
+
+it is also equal to 
+
+\begin{equation}
+    E[\hat{G}(h)]=\sum_{\position_1,\position_2\in \Pop}{\beta()E\left[E\left[(\Signal(\position_{i})-\Signal(\position_{j}))^{2}|I(\position_1),I(\position_2)\right]I(\position_1)I(\position_2)\right]}
+\end{equation}
+
+Under certain conditions on the sample, for $i:\Pop\to\{0,1\}$, do we have 
+
+\begin{eqnarray*}
+\lefteqn{E\left[(\Signal(\position_{1})-\Signal(\position_{2}))(\Signal(\position_{1})-\Signal(\position_{2}))^T|I=i\right]}\\
+&=&
+E\left[(\Signal(\position_{1})-\Signal(\position_{2}))(\Signal(\position_{1})-\Signal(\position_{2}))^T|(I(\position_1),I(\position_2))=(i(\position_1),i(\position_2))\right]?\end{eqnarray*}
+
+Let figure it out another day.
+
+\begin{equation}
+    E[\hat{G}(h)]=\sum{\beta()E\left[E\left[(\Signal(\position_{i})-\Signal(\position_{j}))^{2}|I\right]I\right]}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+    \density_{(\Signal(\position_{1}),\Signal(\position_{2})|I(\position_1)I(\position_2)=1)}\left(\signal_1,\signal_2\right)&=\frac{\density_{Y(\position_{i}),\Signal(\position_{j})I(\position_1)I(\position_2)}(\signal_1,\signal_2,1,1)}{\int{f_{Y(\position_{i}),Y(\position_{j})I_{ij}}(\signal_{1},\signal_{2},1)}d \signal_{1}d \signal_{2}}\\
+    &=\frac{\density_{\Signal(\position_{i}),\Signal(\position_{j})(\cdot,\cdot)}\cdot \density_{I(\position_1),I(\position_1)|(\Signal(\position_{1}),\Signal(\position_{2}))=(\signal_1,\signal(2))}(1,1)}{\int{f_{\Signal(\position_{i}),\Signal(\position_{j})I_{ij}(\signal_{1},\signal_{2},1)}d \signal_{1}d \signal_{2}}}\\
+    &=\frac{\density_{\Signal(\position_{i}),\Signal(\position_{j})(\cdot,\cdot)}\cdot P(I(\position_1)I(\position_2)=1|(\Signal(\position_{1}),\Signal(\position_{2}))=(\signal_1,\signal_2)}{P(I(\position_1)I(\position_2)=1)}\\
+    &=\rho(\signal_1,\signal_2)~\density_{\Signal(\position_{i}),\Signal(\position_{j})}(\signal_1,\signal_2) 
+\end{split}
+\end{equation}
+\begin{equation}
+    E[(\Signal(\position_{i})-\Signal(\position_{j}))^2|I_{ij}=1]
+\end{equation}
+Sample variogram: Property, under assumption (g assumption ...)
+\begin{equation}
+    \begin{split}
+        \int{(\Signal(\position_{i})-\Signal(\position_{j}))^2dP^{\Signal(\position_{1}),\Signal(\position_{j})|I_{ij}=1}}=\int{\left(\signal_2-\signal_1\right)\left(\signal_2-\signal_1\right)^{\mathrm{T}}g(h,y_{1},\signal_{2})\rho(h,\signal_{1},\signal_{2})d \signal_{1} d \signal_{2}}
+    \end{split}
+\end{equation}
+
+Sample distribution, for a given i
+
+$$P^{(\Signal(\position))_{i(\position)=1}\mid I=i}$$
+
+
+
+\section{Estimation}
+\subsection{Naive estimation and prediction}
+ Naive estimation of the population covariogram:
+ $E[naive~Covariogram]\neq$ pop cov,
+ $E[naive~Covariogram]=$ sample theoretical cov, 
+ with illustrative figures.
+\subsection{Accounting for informative selection}
+
+\section{Simulation, case study}
+We carried out a simulation based on real data.
+\textbf{data}: \texttt{meuse} dataset from package \texttt{sp};
+\textbf{variable of interest}: \texttt{zinc};
+\textbf{sampling design}:
+    \begin{itemize}
+        \item case 1: SRS;
+        \item case 2: PPS \% \texttt{copper};
+        \item case 3: PWD (spread sample);
+    \end{itemize}
+ \textbf{estimation method}:
+    \begin{itemize}
+        \item WLS;
+        \item REML;
+    \end{itemize}
+\section{Biblio}
+
+Kaar
+Matheron.
+Pfeffermann
+
+
+\section{Simulations}
+
+package blablabla....
+Figure 1 was generated by Meuse::...
+
+\appendix
+\section{A kind of roadmap!}
+
+    \paragraph{First step - simulation (done!)}
+Illustrate through simulations the notion of sample variogram.\\
+Setup:
+\begin{itemize}    
+
+    \item \textbf{simulation}: we use the dataset \texttt{meuse} as it were the population, compute the "real" variogram using all data, then sample by the selected sampling design and estimate the sample variogram;
+    \item \textbf{code}: \url{https://github.com/DanielBonnery/Meuse}
+    \item \textbf{results}: \url{https://github.com/DanielBonnery/Meuse/blob/master/demo/var_est.md}
+\end{itemize}
+\paragraph{Second step - theoretical development (to be done!)}
+We need to model the spatial process $Y$ and $Z|Y$, with $Z$ spatial process of a design variable. From these, derive the distribution of 
+\begin{itemize}
+    \item $(I|Y,Z)$
+    \item $(I|Z)$
+\end{itemize}
+then derive
+\begin{itemize}
+    \item $((Y(\textbf{x}_{1},Y\textbf{x}_{2})|I(\textbf{x}_{1})=I(\textbf{x}_{2})=1)$
+\end{itemize}
+
+The plan is:
+\begin{enumerate}
+    \item choose the covariance matrix for the spatial process $\Sigma(\theta,h)$, where $h$ is the distance;
+    \item choose the design;
+    \item express $\Sigma$ of sample;
+    \item check that the estimated of the variogram bounces around theoretical sample variogram;
+    \item derive results on the converge to sample variogram if possible.
+\end{enumerate}
+
+
+
+\section{Sketch}
+The space $\Pop$ from which we sample from and a spatial process $Y:\Omega:\to \left(\Pop\to\range{Y}\right)$ with $\position\in\range{U}$, $\Cov\left(\Signal(\position_{1}), \Signal(\position_{2})\right)=\Semivariogram\left(\left|\position_{1}-\position_{2}\right|\right)$ and stationarity and isotropy assumption {\color{red}more on spatial model: dominated, fully parametric. Write density (likelihood of $Y$) with examples. Define f and g}
+
+ $f(\position_1,\position_2,\signal_1,\signal_2)=\left(\mathrm{d}P^{\Signal(\position_1),\Signal(\position_2)}/\mathrm{d}\dominantY\right)(\signal_1,\signal_2)$
+    
+    we may limit ourselves to models such that exists $g$ such that 
+    $\forall \position_1,\position_2,\signal_1,\signal_2$    $f(\position_1,\position_2,\signal_1,\signal_2)=g(\left|\position_2-\position_1\right|,\signal_1,\signal_2)$
+    
+Variogram:
+\begin{equation}
+    G(h)=E[(\Signal(\position+h)-\Signal(\position))((\Signal(\position+h)-\Signal(\position)))^{T}]
+\end{equation}
+
+
+Variogram:
+\begin{equation}
+    G(h)=E[(Y(\mathbf{x}+h)-Y(\mathbf{x}))((Y(\mathbf{x}+h)-Y(\mathbf{x})))^{T}]
+\end{equation}
+
+{\color{red}Define the sample here, define $I_{\position_1,\position_2}$}
+
+Sample variogram:
+\begin{equation} \label{somelabel}
+    \hat{G}(h)=\sum_{ij\in\Sample}{\beta_{ij}(h)(Y(\mathbf{x}_{i})-Y(\mathbf{x}_{j}))(Y(\mathbf{x}_{i})-Y(\mathbf{x}_{j}))^{T}}
+\end{equation}
+In equation , the term $\beta_{i,j}$ is a mapping that may depend on the sample selected.
+Below we give possible definitions of $\beta_{i,j}$:
+\begin{equation}
+    \beta(\position_1,\position_2,h)=
+    \left|\begin{array}{l}
+    1 \text{ if } |\mathbf{x}_1-\mathbf{x}_2|=h, 0 \text{ otherwise}\\
+    \paramnuisance(\frac{|\mathbf{x}_{i}-\mathbf{x}_{j}|-h}{\alpha})
+    \end{array}\right.
+\end{equation},
+
+For binned estimation, a finite partition $(B_1,\ldots,B_n)$ of $\mathbb{R}^+$ is given as well as an element $h_k$ of each element $B_k$ of the partition. 
+Then the covariogram is first estimated for each $h_k$, as 
+...
+Then a covariofram is fitted 
+...
+
+In the following, we will not consider binned estimation.
+
+
+where {\color{red} $\paramnuisance$ is ..., and the bins $\mathrm{bin}_h=\left\{(i,j)\in\Sample^2\mid \left|\position_i-\position_j\right|\in [a_h,b_h)\right\}$}
+
+\begin{equation}
+    E[\hat{G}(h)]=\sum_{i,j\in\Sampleindex}E\left[ \beta(\position_{(i)},\position_{(j)},h)(Y(\mathbf{x}_{(i)})-Y(\mathbf{x}_{(j)}))(Y(\mathbf{x}_{(i)})-Y(\mathbf{x}_{(j)}))^{\mathrm{T}}\right]
+\end{equation}
+
+
+In the case where $\beta_{\position_i,\position_j,h}$ is not random,
+
+\begin{equation}
+    E[\hat{G}(h)]=\sum_{\position_1,\position_2\in \Pop}{\beta()E\left[E\left[(Y(\mathbf{x}_{i})-Y(\mathbf{x}_{j}))^{2}|I\right]I(\position_1)I(\position_2)\right]}
+\end{equation}
+
+it is also equal to 
+
+
+\begin{equation}
+    E[\hat{G}(h)]=\sum_{\position_1,\position_2\in \Pop}{\beta()E\left[E\left[(Y(\mathbf{x}_{i})-Y(\mathbf{x}_{j}))^{2}|I(\position_1),I(\position_2)\right]I(\position_1)I(\position_2)\right]}
+\end{equation}
+
+
+Under certain conditions on the sample, for $i:\Pop\to\{0,1\}$, do we have 
+
+\begin{eqnarray*}
+\lefteqn{E\left[(Y(\mathbf{x}_{1})-Y(\mathbf{x}_{2}))(Y(\mathbf{x}_{1})-Y(\mathbf{x}_{2}))^T|I=i\right]}\\
+&=&
+E\left[(Y(\mathbf{x}_{1})-Y(\mathbf{x}_{2}))(Y(\mathbf{x}_{1})-Y(\mathbf{x}_{2}))^T|(I(\position_1),I(\position_2))=(i(\position_1),i(\position_2))\right]?\end{eqnarray*}
+
+Let figure it out another day.
+
+
+\begin{equation}
+    E[\hat{G}(h)]=\sum{\beta()E\left[E\left[(Y(\mathbf{x}_{i})-Y(\mathbf{x}_{j}))^{2}|I\right]I\right]}
+\end{equation}
+
+\begin{equation}
+\begin{split}
+    \density_{(Y(\mathbf{x}_{1}),Y(\mathbf{x}_{2})|I(\position_1)I(\position_2)=1)}\left(\signal_1,\signal_2\right)&=\frac{\density_{Y(\mathbf{x}_{i}),Y(\mathbf{x}_{j})I(\position_1)I(\position_2)}(\signal_1,\signal_2,1,1)}{\int{f_{Y(\mathbf{x}_{i}),Y(\mathbf{x}_{j})I_{ij}}(y_{1},y_{2},1)}d y_{1}d y_{2}}\\
+    &=\frac{\density_{Y(\mathbf{x}_{i}),Y(\mathbf{x}_{j})(\cdot,\cdot)}\cdot \density_{I(\position_1),I(\position_1)|(Y(\mathbf{x}_{1}),Y(\mathbf{x}_{2}))=(\signal_1,\signal(2))}(1,1)}{\int{f_{Y(\mathbf{x}_{i}),Y(\mathbf{x}_{j})I_{ij}(y_{1},y_{2},1)}d y_{1}d y_{2}}}\\
+    &=\frac{\density_{Y(\mathbf{x}_{i}),Y(\mathbf{x}_{j})(\cdot,\cdot)}\cdot P(I(\position_1)I(\position_2)=1|(Y(\mathbf{x}_{1}),Y(\mathbf{x}_{2}))=(\signal_1,\signal_2)}{P(I(\position_1)I(\position_2)=1)}\\
+    &=\rho(\signal_1,\signal_2)~\density_{Y(\mathbf{x}_{i}),Y(\mathbf{x}_{j})}(\signal_1,\signal_2) 
+\end{split}
+\end{equation}
+\begin{equation}
+    E[(Y(\mathbf{x}_{i})-Y(\mathbf{x}_{j}))^2|I_{ij}=1]
+\end{equation}
+Sample variogram: Property, under assumption (g assumption ...)
+\begin{equation}
+    \begin{split}
+        \int{(Y(\mathbf{x}_{i})-Y(\mathbf{x}_{j}))^2dP^{Y(\mathbf{x}_{1}),Y(\mathbf{x}_{j})|I_{ij}=1}}=\int{\left(\signal_2-\signal_1\right)\left(\signal_2-\signal_1\right)^{\mathrm{T}}g(h,y_{1},y_{2})\rho(h,y_{1},y_{2})d y_{1} d y_{2}}
+    \end{split}
+\end{equation}
+
+Sample distribution, for a given i
+
+$$P^{(\Signal(\position))_{i(\position)=1}\mid I=i}$$
+
+
+In order to understand the concept of informativeness, we need to distinguish between the population distribution and the sample distribution. In fact, as first definition, we say that a sample is informative if the distribution of the $y$ in the sample is different from the distribution of the $y$ in the population. In more detail, following \cite{pfefferman_1992}, the model holding on the sample can be different from the model holding in the population, due to selection mechanism. In particular, the joint pdf of all the available data is given by
+
+\begin{equation} \label{eq:all_joint}
+    f\left(\Signal_{s},\indicator,\Desvar;\theta,\paramnuisance,\rho\right)=\int{f\left(\Signal_{s},\Signal_{\bar{s}}|\Desvar;\theta_{1}\right)P\left(\indicator|\Signal,\Desvar;\rho_{1}\right)g\left(\Desvar;\paramnuisance\right)d\Signal_{\bar{s}}}
+\end{equation}
+while the pdf that does not take into account the selection mechanism is given by
+\begin{equation} \label{eq:joint}
+    f\left(\Signal_{s},\Desvar;\theta,\paramnuisance\right)=\int{f\left(\Signal_{s},\Signal_{\bar{s}}|\Desvar;\theta_{1}\right)g\left(\Desvar;\paramnuisance\right)d\Signal_{\bar{s}}}
+\end{equation}
+If the inference performed by \eqref{eq:all_joint} is equivalent to the inference performed by \eqref{eq:joint}, then the mechanism selection is said to be ignorable. A the contrary, we have an informative sample and we should take into consideration the selection mechanism in order to avoid the introduction of eventual bias in the final estimates.
+
+
+
+
+\appendix
+\section{Algebra for example 1.}
+
+\subsection{Conditional distribution of the design variable given $\Signal$}
+For our example:
+\begin{eqnarray*}
+\lefteqn{\Desvar_i[\position'_{1},\ldots,\position'_{m}]\mid\Signal[\position_{1},\dots,\position_{n}]=
+    \signal}\\&\sim&
+   P^{\sigma_\varepsilon\varepsilon[\position']}
+   \ast 
+    P^{\beta_i\Signal[\position']\mid\Signal[\position]=
+    \signal}\\&&=\ 
+   \mathrm{Normal}(\alpha+\beta_i(\mu+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu)),
+\sigma_\varepsilon^2\provar_{x'}+\beta_i^2(\provar_{\position',\position'}-\provar_{\position',\position}\provar_{\position,\position}^{-1}\provar_{\position,\position'}))
+    \end{eqnarray*}
+
+\begin{proof}
+$\begin{bmatrix}
+\Signal[\position']\\\hline
+\Signal[\position]
+\end{bmatrix}\sim\mathrm{Normal}\left(\mu,\begin{bmatrix}\provar_{\position',\position'}&\provar_{\position',\position}\\
+\provar_{\position,\position'}&
+\provar_{\position,\position}
+\end{bmatrix}\right)$
+
+$\Rightarrow$
+
+$\left[
+\left.\Signal[\position']
+\right|
+\Signal[\position]=\signal
+\right]\sim\mathrm{Normal}(\mu+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu),\Sigma_{\position',\position'}-\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1}\Sigma_{\position,\position'})$
+
+
+$\left[\left.
+\varepsilon[\position']
+\right|
+\Signal[\position]=\signal
+\right]\sim\mathrm{Normal}(\mu_\varepsilon,\provar^\varepsilon_{\position',\position'})$
+
+
+
+$\left[\left.\begin{bmatrix}
+\Signal[\position']\\
+\varepsilon[\position']
+\end{bmatrix}\right|
+\Signal[\position]=\signal
+\right]\sim\mathrm{Normal}\left(\begin{bmatrix}\mu+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu)\\\hline0\end{bmatrix},
+\begin{bmatrix}\Sigma_{\position',\position'}-\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1}\Sigma_{\position,\position'}&0\\0&\provar_{\varepsilon,\position',\position'}\end{bmatrix}\right)$
+
+
+
+
+
+$\left[\sigma_\varepsilon
+\varepsilon[\position']+\alpha+\beta_i
+\Signal[\position']|
+\Signal[\position]=\signal\right]
+\sim\mathrm{Normal}(\alpha+\beta_i(\mu+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu)),
+\sigma_\varepsilon^2\provar_{x'}+\beta_i^2\left(\provar_{\position',\position'}-\provar_{\position',\position}\provar_{\position,\position}^{-1}\provar_{\position,\position'})\right)$
+\subsection{Computation of $\rho_{\{1,2\}}(\position\mid\signal)$}
+
+\begin{eqnarray*}
+\lefteqn{\Cov\left[\Desvar(\position'_1),\Desvar(\position'_2)\mid \left.\Signal\right|_{\{\position_{1},\dots,\position_{m}\}}=\signal
+\right]}\\&=&2\provar^2_\varepsilon \left(\Semivariogram_\varepsilon(0)+\Semivariogram_\varepsilon(\position_2'-\position_1')\right)+\beta_i^2(
+\provar_{\position'_1,\position'_2}-\provar_{\position'_1,\position}\provar_{\position,\position}^{-1}\provar_{\position,\position'_2})\\
+&=& 2\sigma^2_\varepsilon \left(1+\Semivariogram_\varepsilon(\position_2'-\position_1')\right)+\beta_i^2(
+(2(1+\Semivariogram_\Signal(\position'_2-\position'_1)-\provar_{\position'_1,\position}\provar_{\position,\position}^{-1}\provar_{\position,\position'_2})\\
+&=& 2\left(\sigma^2_\varepsilon \left(1+\Semivariogram_\varepsilon(\position_2'-\position_1')\right)+\beta_i^2
+\sigma^2_Y\left(\left(1-\Semivariogram_\Signal(\position'_2-\position'_1)\right)-\sum_{i,j=1}^n \left(1-\Semivariogram(\position'_1-\position_i\right)\left(1-\Semivariogram(\position'_2-\position_j)\right)B_{i,j}\right)\right)
+\end{eqnarray*},
+
+
+
+
+$A=\provar_{\position,\position}$ is a symetric positive matrix:
+$A=2\sigma^2_Y (\mathrm{I}-[\Semivariogram(|\position_j-\position_i|)]_{i,j})$
+There exists $P$ orthogonal, $\Delta$ diagonal such that $A=^tP\Delta P$
+
+Let $B$ be the inverse of $A$
+\end{proof}
+
+
+For $\ell\in \Sampleindex$
+\begin{eqnarray}\label{eq:ojdoifj1}
+\lefteqn{\sampledensity_{\{\ell\}\mid \Sample[\Sampleindex], \Signal[\Sample[\Sampleindex]]}\left(\position_\ell|\position,\signal\right)}\\&=&
+\int\left({\desvar\left(\position_{\ell}\right)} {\left(\int_{U}{\desvar\left(\position'\right)d\dominantU\left(\position'\right)}\right)^{-1}}\right) \derive P^{\Desvar\mid\Signal[\position]=
+    \signal}(\desvar)\\&\approx&
+    \left(\int_{U}{\alpha+\beta_i\left(\mu+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu)\right)d\dominantU\left(\position'\right)}\right)^{-1}\int\desvar\left(\position_{i}\right)  \derive P^{\Desvar\mid\Signal[\position]=
+    \signal}(\desvar)\label{eq:ojdoifj2}\\
+    &=&
+    \frac{
+    \alpha+\beta_i\left(\mu+\Sigma_{\position_\ell,\position}\Sigma_{\position,\position}^{-1} (\signal-\mu)\right)}{\alpha+\beta_i\left(\mu+\left(\int_{U}\Sigma_{\position',\position}~d\dominantU\left(\position'\right)\right)\Sigma_{\position,\position}^{-1} (\signal-\mu)\right)}
+    \end{eqnarray}
+    
+{\color{red}How to go from 
+\eqref{eq:ojdoifj1}
+to \eqref{eq:ojdoifj2} ? needs more development here.}
+
+Our design and population model match the conditions of 
+Property \ref{Prop:1}, so
+
+    $$\rho_{1,2}(\position\mid\signal)=
+     (\dominantU(\Pop))^{-2}\prod_{\ell=1}^2 \sampledensity_{\{\ell\}\mid\Signal[\Sample[1,2]]}(\position_\ell\mid \signal)
+         $$
+         
+         From Proposition \ref{prop:oijsoidfj} with $\Sampleindex=1,2$, $\ell= 1$
+         for $\ell\in\{1,2\}$,  
+         $\sampledensity_{\{\ell\}\mid\Sample[1,2],\Signal[\Sample[1,2]]}(\position_\ell\mid \signal)=
+         \left(\mu+\left(\int_{U}\Sigma_{\position',\position}~d\dominantU\left(\position'\right)\right)\Sigma_{\position,\position}^{-1} (\signal-\mu)\right)^{-1}~
+    (\alpha+\beta_i\signal_\ell)$
+
+So 
+
+$$\rho_{1,2}(\position\mid\signal)=(\dominantU(\Pop))^{-2}\frac{\prod_{\ell=1}^2(\alpha+\beta_i~\signal_\ell)}{
+\left(\alpha+\beta_i(\mu+\left(\int_{U}\Sigma_{\position',\position}~d\dominantU\left(\position'\right)\right)\Sigma_{\position,\position}^{-1} (\signal-\mu))\right)^{2}
+}$$
+%so $g\left(\position_{1},\dots,\position_{n}|\Signal|_{\{\position_{1},\dots,\position_{n}\}}=
+%    \signal}\right)=\int{g\left(\position_{1},\position_{2}|\Signal_{\lbrace \position_{1},\position_{2}}\rbrace\right)}$
+
+
+\subsubsection{Algebra for the denominator of $\rho$}
+
+The denominator of $\rho$ requires the computation of $\int_{U}\Sigma_{\position',\position}~d\dominantU$, which is itself a function of
+$\int_{U}\Covariogram(\position'-\position_j)d\dominantU\left(\position'\right)$
+
+
+For $\position=(\position_1,\position_2)$, such that $\|\position_1-\position_2\|=h$, we have the following:
+
+\begin{eqnarray*}
+\Sigma_{\position,\position}&=&
+    \begin{bmatrix}\Covariogram(0)&\Covariogram(h)\\\Covariogram(h)&\Covariogram(0)\end{bmatrix}\\
+\Sigma_{\position,\position}^{-1}&=&
+    (\Covariogram(0)^2-\Covariogram(h)^2)^{-1}\begin{bmatrix}\Covariogram(0)&-\Covariogram(h)\\-\Covariogram(h)&\Covariogram(0)\end{bmatrix}\\
+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1}
+    &=&(\Covariogram(0)^2-\Covariogram(h)^2)^{-1}
+        \begin{bmatrix}\Covariogram(\position'-\position_1)&\Covariogram(\position'-\position_2)\end{bmatrix}\begin{bmatrix}\Covariogram(0)&-\Covariogram(h)\\-\Covariogram(h)&\Covariogram(0)\end{bmatrix}\\
+    &=&\frac{\begin{bmatrix}
+        \Covariogram(0)\Covariogram(\position'-\position_1)-\Covariogram(h)\Covariogram(\position'-\position_2)&              \Covariogram(0)\Covariogram(\position'-\position_2)-\Covariogram(h)\Covariogram(\position'-\position_1)\end{bmatrix}}{\Covariogram(0)^2-\Covariogram(h)^2}\\
+\Sigma_{\position',\position}&=&\begin{bmatrix}\Covariogram(\position'-\position_1)&\Covariogram(\position'-\position_2)\end{bmatrix}\\
+K\left(\position_\ell=(x,y)\right)
+&=&
+\int_{U}\Covariogram(\position'-\position_\ell)\derive\dominantU\left(\position'\right)\\
+&=&\int_{[0,1]^2}\Covariogram(\sqrt{(x'-x_1)^2+(y'-y_1)^2})~\derive x'~\derive y'\\&=&
+\int_{[0,1]}\Covariogram(h)~\gamma(\position_i,h)~h~\derive h\\
+\lefteqn{\int_{[0,1]^2}\Covariogram_{\text{Spher}}(\sqrt{(x'-x_1)^2+(y'-y_1)^2})\derive x'\derive y'}\\&=&...\\
+\lefteqn{\int_{[0,1]^2}\Covariogram_{\text{Gauss}}(\sqrt{(x'-x_1)^2+(y'-y_1)^2})\derive x'\derive y'}\\&=&...\\
+\lefteqn{\int_{[0,1]^2}\Covariogram_{\text{Lin}}(\sqrt{(x'-x_1)^2+(y'-y_1)^2})\derive x'\derive y'}\\&=&...\\
+K_{\text{Gauss}}(\position_\ell=(x,y))&=&
+\int_{[0,1]^2}\Covariogram_{\text{Gaus}}(\sqrt{(x'-x_1)^2+(y'-y_1)^2})\derive x'\derive y'\\&=&
+\sigma^2\int_0^1\int_0^1 \exp\left(-\frac{(x'-x)^2+(y'-y)^2}{2c_2^2}\right)\derive x'\derive y'\\&=&
+\sigma^2\left(1-\int_0^1 \exp\left(-\frac{(x'-x)^2}{c_2^2}\right)\derive x'\int_0^1\exp\left(-\frac{(y'-y)^2}{c_2^2}\right)\derive y'\right)\\&=&
+\sigma^2\left(1-(F(x/c_2)+F((1-x)/c_2))(F(y/c_2)+F((1-y)/c_2))\right)\\
+F(x)
+&=&\sqrt{2\pi}\int_{0}^x \exp(-y^2) \derive y\\
+&=&sqrt(2pi)*(pnorm(x)-1/2)\\
+\left(\int_{U}\Sigma_{\position',\position}~d\dominantU\left(\position'\right)\right)&=&
+\begin{bmatrix}K(\position_1)&K(\position_2)\end{bmatrix}
+\\
+\int_0^a\exp(-\sqrt{x^2+b})~\derive x&\stackrel{x\mapsto b\sinh(z)}{=}&\int_0^{\sinh^{-1}(a/b)}b\cosh(z)\exp(-b\cosh(z))\derive z\\
+&=&\int_0^ab\cosh(z)\exp(-b\cosh(z))\derive z\\
+\gamma(\position,h)&=&\int_{-\pi/2}^{\pi/2}\mathds{1}_\Pop(\position+h~e_\alpha) d\alpha\\
+\Gamma(\position,h)&=&\gamma(\position,h)/\int_{U}\gamma(\position',h)\derive\position'
+\end{eqnarray*}
+
+Computation of $\gamma(\position,h)$: 13 cases possible:
+
+\setlength{\tabcolsep}{3pt}
+\begin{tabular}{ccccccl}
+     $1-x$&$y$&$1-y$&$\|(1-x,y)\|$&$\|(1-x,1-y)\|$&plot&intersection length $\gamma((x,y),h)$\\\hline\\
+     $ > h$&$ > h$&$ > h$&$ > h$&$ > h$&\xx{.50}\yy{.50}\hh{.25}\smallplot&$\pi$\\ 
+     $ > h$&$ > h$&$ < h$&$ > h$&$ > h$&\xx{.50}\yy{.75}\hh{.35}\smallplot&$\pi-\acos\left(\frac{1-y}h\right)$\\
+     $ > h$&$ < h$&$ > h$&$ > h$&$ > h$&\xx{.50}\yy{.25}\hh{.35}\smallplot&$\pi-\acos\left(\frac{y}h\right)$\\
+     $ > h$&$ < h$&$ < h$&$ > h$&$ > h$&\xx{.20}\yy{.50}\hh{.60}\smallplot&$\mathrm{asin}\left(\frac{y}h\right)+\mathrm{asin}\left(\frac{1-y}h\right)$\\ 
+     $ < h$&$ > h$&$ > h$&$ > h$&$ > h$&\xx{.80}\yy{.50}\hh{.30}\smallplot&$2~\mathrm{asin}\left(\frac{1-x}h\right)$\\ 
+     $ < h$&$ > h$&$ < h$&$ > h$&$ > h$&\xx{.70}\yy{.65}\hh{.40}\smallplot&$2~\mathrm{asin}\left(\frac{1-x}h\right)-\acos\left(\frac{y}h\right))$\\ 
+     $ < h$&$ > h$&$ < h$&$ > h$&$ < h$&\xx{.75}\yy{.20}\hh{.40}\smallplot&$\mathrm{asin}\left(\frac{1-x}h\right)$\\ 
+     $ < h$&$ < h$&$ > h$&$ > h$&$ > h$&\xx{.70}\yy{.35}\hh{.40}\smallplot&$2~\mathrm{asin}\left(\frac{1-x}h\right)-\mathrm{acos}(\frac{1-y}h))$\\
+     $ < h$&$ < h$&$ > h$&$ < h$&$ < h$&\xx{.75}\yy{.80}\hh{.40}\smallplot&$\mathrm{asin}\left(\frac{1-x}h\right)$\\
+     $ < h$&$ > h$&$ > h$&$ > h$&$ > h$&\xx{.53}\yy{.50}\hh{.60}\smallplot&$2~\mathrm{asin}\left(\frac{1-x}h\right)-\mathrm{acos}((y)/h))-\mathrm{acos}\left(\frac{1-y}h\right))$\\
+     $ < h$&$ > h$&$ > h$&$ > h$&$ < h$&\xx{.53}\yy{.65}\hh{.70}\smallplot&$\mathrm{asin}\left(\frac{1-x}h\right)-\mathrm{acos}\left(\frac{y}h\right)$\\
+     $ < h$&$ > h$&$ > h$&$ < h$&$ > h$&\xx{.53}\yy{.35}\hh{.70}\smallplot&$\mathrm{asin}\left(\frac{1-x}h\right)-\mathrm{acos}\left(\frac{1-y}h\right)$\\
+     $ < h$&$ > h$&$ > h$&$ > h$&$ > h$&\xx{.80}\yy{.50}\hh{.70}\smallplot&$0$\\ 
+\end{tabular}
+
+
+\begin{eqnarray*}
+\int_{U}\gamma(\position',h)\derive\position'&=&(h<\frac12)(1-h)(1-2h) ~ \pi\\
+&&\quad+2(h<1)\int_h^1\int_0^{\min(h,1-h)} \left(\pi-\mathrm{acos}\left(\frac{y}h\right)\right)\derive x~\derive y\\
+&&\quad+(h>1/2)(h<1)\int_h^1\int_{\max(h,1-h)}^1 \left(\pi-\mathrm{acos}\left(\frac{y}h\right)-\mathrm{acos}\left(\frac{1-y}h\right)\right)\derive x~\derive y\\
+&&\quad+(h<1/2)\int_{1-h}^1\int_h^{1-h} 2\mathrm{asin}\left(\frac{1-x}h\right)\derive x~\derive y\\
+&&\quad+2(h<1)\int_{1-h}^1\int_{1-h}^{1} \left(2\mathrm{asin}\left(\frac{1-x}h\right)-\mathrm{acos}\left(\frac{y}h\right)\right)\derive x~\derive y\\
+&&\quad+2\int_{1-h}^1\int_{1-h}^{?} \mathrm{asin}\left(\frac{1-x}h\right)\derive x~\derive y\\
+&&\quad+...
+\end{eqnarray*}
+
+
+\subsubsection{Change of variable}
+Variable change : $(\signal'_1,\signal'_2)=
+(A_h^{-1}(\signal_1-\mu),
+ A_h^{-1}(\signal_2-\mu))$;
+ 
+ $\signal=A(h)\signal'+\mu$
+
+\begin{equation}
+\rho_{1,2}(\position\mid\signal)=\frac{\prod_{j=1}^2(\alpha+\beta_i\signal_j)}{
+\left(\alpha+\beta_i(\mu+\left(\int_{U}\Sigma_{\position',\position}~d\dominantU\left(\position'\right)\right)\Sigma_{\position,\position}^{-1} (\signal-\mu))\right)^{2}
+}
+\end{equation}
+Numerator:
+\begin{eqnarray}
+\prod_{j=1}^2(\alpha+\beta_i\signal_j) &=&\\
+&=& \prod_{j=1}^2(\alpha+\beta_i\left(A_h\left(\signal+\mu\right)\right)_j)\\
+&=& \alpha^2+\alpha\beta_i\left(\left(A_h\signal+\mu\right)_1+\left(A_h\signal+\mu\right)_2\right)+\beta_i^2\left(A_h\signal+\mu\right)_1\left(A_h\signal+\mu\right)_2\\
+&=& \alpha^2+\alpha\beta_i\left(\left(A_h\signal+\mu\right)_1+\left(A_h\signal+\mu\right)_2\right)\\
+&+&\beta_i^2\left(\mu^2+
+2\mu((C(0)+C(h))^{\frac12}(\signal_1+\signal_2))+\frac12 \left(C(h)(\signal_1^2+\signal_2^2)+2C(0)\signal_1\signal_2)\right)\right)
+\end{eqnarray}
+
+
+$$\rho_{1,2}(\position\mid A(h)\signal'+\mu)=$$
+
+
+How to approximate 
+\begin{eqnarray}
+\lefteqn{
+\bar\Semivariogram^\star(h)}\\
+&=&\int_{\Pop^2} g^\star(\position_1,\position_2) \derive(\dominantU^{\otimes 2})^{(X_1,X_2)\mid X_2-X_1=h}(\position_1,\position_2)\\
+&=&\int_{\Pop^2} \left(\int_{\range{\Signal}^2} \frac{(\signal_2-\signal_1)^2}{2}~ \density_{\Signal[\position]}(\signal_1,\signal_2)~
+\rho_{\{1,2\}}(\position,\signal)~
+\derive\dominantY^{\otimes 2}(\signal) \right) \derive(\dominantU^{\otimes 2})^{(X_1,X_2)\mid X_2-X_1=h}(\position_1,\position_2)\\
+&=&
+\int_{\Pop^2} \left(
+\int_{\range{\Signal}^2} \frac{(\signal_2-\signal_1)^2}{2}~
+\frac{
+\exp\left(\frac{-(\signal-\mu\mathds{1})^{\mathrm{T}}A(h)^{-2}(\signal-\mu\mathds{1})}2\right)}{2\pi
+\det(A(h))}~
+\rho_{\{1,2\}}(\position,\signal)~
+\derive\dominantY^{\otimes 2}(\signal) \right) \derive(\dominantU^{\otimes 2})^{X\mid X_2-X_1=h}(\position)\\
+&=&
+%\Semivariogram(h)
+%\int_{\range{\Signal}^2} 
+%\int_{\Pop}
+%\int_{-\pi/2}^{\pi/2} 
+%(\signal'_2-\signal'_1)^2~ %\frac{\mathrm{e}^{-\frac{(\signal'_1)^2+(\signal'_2)^2}{2}}}{2\pi}~
+%\rho_{\{1,2\}}((\position',\position'+h e_\alpha),\signal)~
+%\mathds{1}_{U}(\position'+h e_\alpha) 
+%\derive(\alpha)
+%\derive\dominantU(\position')
+%\derive\dominantY^{\otimes 2}(\signal') 
+%\\&=&
+\Semivariogram(h)
+\int_{\range{\Signal}^2} 
+(\signal'_2-\signal'_1)^2~ \frac{\mathrm{e}^{-\frac{(\signal')_1^2+(\signal')_2^2}{2}}}{2\pi}~
+\left(\int_{\Pop}
+\rho_{\{1,2\}}((\position',\position'+h e_\alpha),\mu+A(h)\signal)~
+\gamma(\position',h)
+\derive\dominantU(\position')\right)
+\derive\dominantY^{\otimes 2}(\signal') 
+\end{eqnarray}
+
+Variable change : $(\signal'_1,\signal'_2)=
+(A_h^{-1}(\signal_1-\mu),
+ A_h^{-1}(\signal_2-\mu))$;
+ 
+ $\signal=A(h)\signal'+\mu$
+$\derive\dominantY(\signal)=\det(A(h))\derive\dominantY(\signal')$;
+$\frac12(\signal_1-\signal_2)^2=\Semivariogram(h)(\signal'_1-\signal'_2)^2$
+
+Variable change : $(\position'_1,\alpha)=
+(\position_1,\cos(\mathrm{angle}((0,1),\position_2-\position_1)))$
+
+
+Setup a grid $\tilde\Pop\subset\Pop$
+(triangular tiling with $h$).
+
+Draw $R=1000$, $\signal$ from a $\mathrm{Normal}((0,0),Id_2)$.
+and transform to get a 
+$\mathrm{Normal}((0,0),\Sigma_{\position,\position})$
+by multiplying the vector by the matrix $\Sigma_{\position,\position}^{1/2}$ which is defined as 
+$\Sigma_{\position,\position}$ is symetric positive
+
+
+
+$A(h)=\begin{bmatrix}\Covariogram(0)&\Covariogram(h)\\\Covariogram(h)&\Covariogram(0)\end{bmatrix}^{1/2}$
+
+$A(h)=\frac12\begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}C(0)+C(h)&0\\0&C(0)-C(h)\end{bmatrix}^{\frac12}\begin{bmatrix}1&1\\1&-1\end{bmatrix}$
+
+\begin{eqnarray*}
+A(h)&=&\frac12\begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}(C(0)+C(h))^{\frac12}&0\\0&(C(0)-C(h))^{\frac12}\end{bmatrix}\begin{bmatrix}1&1\\1&-1\end{bmatrix}\\
+&=&\frac12\begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}(C(0)+C(h))^{\frac12}&(C(0)+C(h))^{\frac12}\\(C(0)-C(h))^{\frac12}&-(C(0)-C(h))^{\frac12}\end{bmatrix}\\
+&=&\frac12\begin{bmatrix}(C(0)+C(h))^{\frac12}+
+                         (C(0)+C(h))^{\frac12}
+                        &(C(0)+C(h))^{\frac12}-
+                         (C(0)-C(h))^{\frac12}\\
+                         (C(0)+C(h))^{\frac12}-
+                         (C(0)+C(h))^{\frac12}
+                        &(C(0)+C(h))^{\frac12}+
+                         (C(0)-C(h))^{\frac12}\end{bmatrix}
+\end{eqnarray*}
+
+\begin{eqnarray*}
+A(h)\signal&=&\frac12\begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}(C(0)+C(h))^{\frac12}&0\\0&(C(0)-C(h))^{\frac12}\end{bmatrix}\begin{bmatrix}1&1\\1&-1\end{bmatrix}\signal\\
+&=&\frac12\begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}(C(0)+C(h))^{\frac12}&0\\0&(C(0)-C(h))^{\frac12}\end{bmatrix}\begin{bmatrix}\signal_1+\signal_2\\\signal_1-\signal_2\end{bmatrix}\\
+&=&\frac12\begin{bmatrix}1&1\\1&-1\end{bmatrix}\begin{bmatrix}(C(0)+C(h))^{\frac12}(\signal_1+\signal_2)\\(C(0)-C(h))^{\frac12}(\signal_1-\signal_2)\end{bmatrix}\\
+&=&\frac12\begin{bmatrix}(C(0)+C(h))^{\frac12}(\signal_1+\signal_2)+(C(0)-C(h))^{\frac12}(\signal_1-\signal_2)\\(C(0)+C(h))^{\frac12}(\signal_1+\signal_2)-(C(0)-C(h))^{\frac12}(\signal_1-\signal_2)\end{bmatrix}\end{eqnarray*}
+
+\begin{eqnarray*}
+(A(h)\signal)_1\times (A(h)\signal)_2&=&
+\frac14 \left(\left((C(0)+C(h))(\signal_1+\signal_2)^2\right)\right.\\
+&&\quad-\left.
+\left((C(0)-C(h))(\signal_1-\signal_2)^2\right)\right)\\
+&=&
+\frac14 \left(\left((C(0)+C(h))(\signal_1^2+\signal_1\signal_2+\signal_2^2)\right)\right.\\
+&&\quad-\left.
+\left((C(0)-C(h))(\signal_1^2-\signal_1\signal_2+\signal_2^2)\right)\right)\\
+&=&
+\frac12 \left(C(h)(\signal_1^2+\signal_2^2)+2C(0)\signal_1\signal_2)\right)
+\end{eqnarray*}
+
+\begin{eqnarray*}
+(\mu+A(h)\signal)_1\times (\mu+A(h)\signal)_2&=&
+\mu^2+
+2\mu((A(h)\signal)_1+(A(h)\signal)_2)+\frac12 \left(C(h)(\signal_1^2+\signal_2^2)+2C(0)\signal_1\signal_2)\right)\\&=&
+\mu^2+
+2\mu((C(0)+C(h))^{\frac12}(\signal_1+\signal_2))+\frac12 \left(C(h)(\signal_1^2+\signal_2^2)+2C(0)\signal_1\signal_2)\right)
+\end{eqnarray*}
+
+
+
+$(A(h)\times\signal)+\mu\sim\mathrm{Normal}((\mu,\mu),\Sigma_{\position,\position})$
+
+\begin{eqnarray*}
+    B(h)&=&A(h)\begin{bmatrix}1&-1\\-1&1\end{bmatrix}A(h)\\
+        &=&(C(0)-C(h))\begin{bmatrix}1&-1\\-1&1\end{bmatrix}
+\end{eqnarray*}
+
+
+$$\signal^{\mathrm{T}} B(h)\signal=(C(0)-C(h))(\signal_1-\signal_2)^2$$
+Call that $\tilde{\mathscr{Y}}$
+
+we approximate roughly by 
+\begin{eqnarray*}
+\lefteqn{\tilde\Semivariogram(h)}\\&=&
+\Semivariogram(h)\left(1+ \frac1{R} \left(\left(\sum_{\signal\in\tilde{\range{\Signal}}} ~(\signal_1^2-\signal_2^2)~ 
+((C(0)+C(h))^{\frac12}(\signal_1+\signal_2))\frac1\mu
+\right)\right)\right.\\&&\quad\quad\quad\quad\quad\quad\quad\quad\left.
++\left(\sum_{\signal\in\tilde{\range{\Signal}}} ~(\signal_1^2-\signal_2^2)~ \left(C(h)(\signal_1^2+\signal_2^2)+2C(0)\signal_1\signal_2)\right)\frac1{2\mu^2}
+\right)\right)\end{eqnarray*}
+
+where $N=$
+
+where $$V(\mu,h,\signal)=
+((C(0)+C(h))^{\frac12}(\signal_1+\signal_2))\frac1\mu+ \left(C(h)(\signal_1^2+\signal_2^2)+2C(0)\signal_1\signal_2)\right)\frac1{2\mu^2}
+ $$
+
+we approximate by 
+$$\tilde\Semivariogram(h)^\star=\frac12\sum_{\position_1,\position_2\in\tilde{\Pop}(h)} \left(\sum_{\signal\in\tilde{\range{\Signal}}} ~\signal^{\mathrm{T}} B(h)\signal~ 
+  \frac{
+  ((A(h)\signal)[1])
+  ((A(h)\signal)[2])
+  }{\left(
+           \mu+\left(\int_{U}\Sigma_{\position',\position}~d\dominantU\left(\position'\right)\right)\Sigma_{\position,\position}^{-1}(\signal-\mu)\derive\position'\right)^{2} }
+\right) $$
+
+
+\begin{enumerate}
+    \item create the function:
+\begin{equation}
+\begin{split}
+f_{0}:\position^{'}\left(\position_{1},\position_{2}\right),\signal_{1},\signal_{2}\to\mu+\left[2\Semivariogram\left(0\right)-2\Semivariogram\left(\position^{'}-\position_{1}\right),2\Semivariogram\left(0\right)-2\Semivariogram\left(\position^{'}-\position_{2}\right)\right]\\ \times &
+\left[2\Semivariogram\left(0\right)-2\Semivariogram\left(\position^{i}-\position_{j}\right)\right]_{ij}^{-1}\\ 
+\times &\begin{bmatrix}\signal_{1}-\mu \\ \signal_{2}-\mu\end{bmatrix}
+\end{split}
+\end{equation}
+    \item for each $(x_1, x_2)\in \Pop^\star$ such that $\|\position_1-\position_2\|=h$, compute
+\end{enumerate}
+
+
+
+\begin{equation}
+    f_{1}:\position_{1},\position_{2},\signal_{1},\signal_{2}\to\int{f_{0}\left(\position^{'},\position_{1},\position_{2},\signal_{1},\signal_{2}\right)d\dominantU\left(\position^{'}\right)}
+\end{equation}
+approximated by
+\begin{equation}
+    \frac{1}{N}\sum_{\position^{'}\in U}{f_{0}\left(\position^{'},\position_{1}\position_{2},\signal_{1},\signal_{2}\right)}
+\end{equation}
+
+\begin{equation}
+    g:\left(\position_{1},\position_{2},\signal_{1},\signal_{2}\right)=
+    \frac{f_{0}\left(\position_{1},\position_{1},\position_{2},\signal_{1},\signal_{2}\right)
+    f_{0}\left(\position_{2},\position_{1},\position_{2},\signal_{1},\signal_{2}\right)}{f_{1}\left(\position_{1},\position_{2},\signal_{1},\signal_{2}\right)^{2}}
+\end{equation}
+
+\begin{equation}
+    \rho\left(\position_{1},\position_{2},\signal_{1},\signal_{2}\right)=\frac{g\left(\position_{1},\position_{2},\signal_{1},\signal_{2}\right)}{(1/N)^2}
+\end{equation}
+
+\begin{equation}
+    e_{1}:\left(\position_{1},\position_{2}\right)\to\int{\left(\signal_{1}-\signal_{2}\right)^{2}\rho\left(\position_{1},\position_{2},\signal_{1},\signal_{2}\right)dP_{\left(\signal_{1},\signal_{2}\right)}^{\Signal\left(\position_{1},\position_{2}\right)\Signal\left(\position_{2}\right)}}
+\end{equation}
+
+\bibliographystyle{apalike}
+\bibliography{refs}
+
+
+\end{document}

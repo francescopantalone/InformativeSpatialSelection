@@ -1,0 +1,206 @@
+\section{Sample distribution}\label{sec:sampledistribution}
+
+\subsection{Density ratio and weighted density.}
+In this section, we derive the distribution of the observed values of the signal on the sample, (e.g. the distribution of $\Signal[\Sample]$) from  the distribution of the design variable conditionally $\Desvar$ to the signal $\Signal$ and the function that links the design to the design variable, or equivalently the distribution of the sample $\Sample$ conditionally to the Design variable $\Desvar$. To this end, we proceed step by step and resort to the Bayes formula. 
+
+
+
+%{\color{red} Do we need the notation g ? the idea is that $g$ is the density for the sample. I am in favour of creating a command and call it $\pi$ instead.} 
+
+
+\begin{definition}
+For a random set $\Sampleindex$, 
+define
+$\rho_{\Sampleindex}(.\mid.)$ as any function that satisfies:
+
+\begin{equation}
+P^{(\Sample_\Sampleindex,\Signal[\Sample_\Sampleindex])}-\text{a.s}(\position,\signal),~\density_{\Signal[\position]\mid\Sample_\Sampleindex=\position}\left(\signal\right)=
+    \density_{\Signal[\position]}\left(\signal\right)
+    \rho_{\Sampleindex}\left(\position\mid  \signal\right)\label{eq:owijoj}
+\end{equation}
+
+\end{definition}
+
+
+\begin{property}
+%Let $\Sampleindex$ be a non random finite subset of $\mathbb{N}$, then
+\begin{equation}
+P^{(\Sample_\Sampleindex,\Signal[\Sample_\Sampleindex])}-\text{a.s}(\position,\signal),~~~
+\rho_{\Sampleindex}\left(\position \mid \signal\right)=
+    \frac{\density_{\Sample_\Sampleindex\mid \Signal[\position]}\left(\position|\signal\right)}{
+         \density_{\Sample_\Sampleindex}\left(\position\right)}
+\end{equation}
+
+
+\end{property}
+
+\begin{proof}
+From the Bayes formula:
+\begin{eqnarray}
+\density_{\Signal[\position]\mid\Sample_\Sampleindex =\position }\left(\signal\right)
+&=&(\density_{\Sample_\Sampleindex }(\position))^{-1}~\density_{\Signal[\position],\Sample_\Sampleindex }(\signal,\position)\\
+&=&(\density_{\Sample_\Sampleindex }(\position))^{-1}~
+\density_{\Sample_\Sampleindex \mid\Signal[\position]}(\position\mid \signal)~
+\density_{\Signal[\position]}(\signal)\label{eq:oijoijsf}
+\end{eqnarray}
+
+
+So, combining Equations \eqref{eq:oijoijsf} and  \eqref{eq:owijoj}:
+\begin{equation}
+{\rho_{\Sampleindex}\left(\position \mid \signal\right)}
+=(\density_{\Sample_\Sampleindex }(\position))^{-1}
+~\density_{\Sample_\Sampleindex \mid\Signal[\position]}(\position\mid \signal)
+\end{equation}
+\end{proof}%
+
+%Besides,
+%\begin{equation}\label{eq:iurhiehgieurhg}
+%\density_{\Sample_\Sampleindex }(\position)=
+%\int \density_{\Sample_\Sampleindex \mid \Signal[\position]}(\position\mid \signal)~ \density_{\Signal[\position]}(\signal)~
+%\derive \dominantY^{\otimes \Sampleindex}(\signal)
+%\end{equation}
+
+The density ratio $\densityratio$ can be derived from the distribution of $\Desvar$:
+
+\begin{eqnarray}
+\rho_{\Sampleindex}(\position\mid\signal)&=&\left({\int
+         \density_{\Sample_\Sampleindex\mid \Desvar}\left(\position|\desvar\right)\derive P^{\Desvar}}\right)^{-1}{\int\density_{\Sample_\Sampleindex\mid \Desvar}(\position\mid\desvar)\derive P^{\Desvar\mid\Signal[\position]=\signal}(\desvar)}
+\label{eq:oigjeogjio}\end{eqnarray}
+
+However, there is not necessarily a close form for the integration of $\density_{\Sample_\Sampleindex\mid \Desvar}$ over $\desvar$, as shown in the two examples below.
+
+\subsubsection*{Example (continued): Sample density ratios for $\Sample\sim \mathrm{Ppp}(\Desvar)$ and $\Sample\sim \mathrm{bpp}(\Desvar,n)$}
+Conditionally on $\Signal[\position]=\signal$, $\Desvar$ is a log normal random process with distribution characterized by 
+$E[\log(\Desvar[\position'])\mid \Signal[\position]=\signal]=\alpha+\beta(\mu+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu))$ and 
+$\mathrm{Var}[\log(\Desvar[\position'])\mid \Signal[\position]=\signal]=\gamma^2\provar_{x'}+\beta^2\left(\provar_{\position',\position'}-\provar_{\position',\position}\provar_{\position,\position}^{-1}\provar_{\position,\position'})\right)$.
+
+
+\begin{proof}
+See Appendix \ref{sec:A.owifjoeij}
+\end{proof}
+
+
+
+For $\position\in\Pop^{\{1,\ldots,\samplesize\}}$, when $\Sample\sim \mathrm{Ppp}(\Desvar)$,
+\begin{equation}\density_{\Sample\mid W}(\position|\mathbf{w})=
+\int\exp\left(-(\desvar.\dominantU)(\Pop)\right)(\samplesize!)^{-1}\left(\prod_{\ell=1}^\samplesize \desvar[\position(\ell)]\right)\derive
+P^{\Desvar\mid W}(\desvar\mid \mathbf{w}),\label{eq:oijoijejods}
+\end{equation}
+and when $\Sample\sim \mathrm{bpp}(\Desvar,\samplesize)$,
+\begin{equation}
+\density_{\Sample\mid W}(\position|\mathbf{w})=
+\int\left(-(\desvar.\dominantU)(\Pop)\right)^{-\samplesize}\left(\prod_{\ell=1}^\samplesize \desvar[\position(\ell)]\right)\derive
+P^{\Desvar\mid W}(\desvar\mid \mathbf{w}).\label{eq:oijerogiql}
+\end{equation}
+
+A close form for \eqref{eq:oijerogiql} or \eqref{eq:oijoijejods} cannot be achieved when $W=\mathbf{w}$ is replaced by $\Signal[\position]=\signal$ (for the numerator of $\densityratio$) or $1=1$ (for the denominator).
+And numerical approximation is numerically intensive.
+However, we propose to use a very crude approximation:
+$\intensityratio_{\Sampleindex}(\position\mid\signal)\approx\tilde{\intensityratio}_{\Sampleindex}(\position\mid\signal)$,
+with 
+$\tilde{\intensityratio}$  that is $P-a.s(\Sample_\Sampleindex,\Signal[\Sample_\Sampleindex])(\position,\signal)$- a.s. defined:
+
+\begin{equation}\tilde{\intensityratio}_{\Sampleindex}(\position\mid\signal)=
+\frac{
+\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex}\beta \Signal[\position(\ell)]+\gamma \varepsilon[\position(\ell)]\right)\mid \Signal[\position]=\signal\right]}{
+\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex}\beta \Signal[\position(\ell)]+\gamma \varepsilon[\position(\ell)]\right)\right]}\times
+\frac{P(\Sampleindex\cap\{1,\ldots,N\})=\sampleindex\mid \Signal[\position]=\signal)}{P(L\cap\{1,\ldots,N\}=\sampleindex)}\label{eq:oeigjeoijioej}
+\end{equation}
+with $\sampleindex=\mathrm{domain}(\position)$.
+
+A cruder approximation consists in neglecting the second factor in \eqref{eq:oeigjeoijioej}:
+
+$$\tilde{\tilde{\intensityratio}}_{\Sampleindex}(\position\mid\signal)=
+\frac{
+\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex}\beta \Signal[\position(\ell)]+\gamma \varepsilon[\position(\ell)]\right)\mid \Signal[\position]=\signal\right]}{
+\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex}\beta \Signal[\position(\ell)]+\gamma \varepsilon[\position(\ell)]\right)\right]}.$$
+
+We obtain a close form for 
+$\tilde{\tilde{\intensityratio}}$:
+
+\begin{equation}
+P^{(\Sample,\Signal[\Sample])}-\text{a.s.}(\position,\signal),
+\tilde{\tilde{\intensityratio}}_{\{1,\ldots,N\}}(\position\mid\signal)=
+\exp\left(\mathds{1}^T\beta(\signal-\mu\mathds{1})
+-\frac12\mathds{1}^T\left(
+\beta^2\provar_{\position,\position}
+\right)\mathds{1}\right)\label{eq:kjeojmcxzmxz}
+\end{equation}
+\begin{proof}
+See Appendix \ref{sec:ijojeorijgo}
+\end{proof}
+
+
+{\color{red}
+This approximation is not satisfying: it does not depend on $\gamma$.
+We need to work on that by investigating the distribution of the integral of a lognormal point process.
+Cressie has some approximations that we could use.
+}
+
+\subsection{Distribution of $\Signal[\Sample]$}
+The density of $\Signal[\Sample]$ with respect to $\dominantYbar$ is defined by
+\begin{equation}\density_{\Sample,\Signal[\Sample]}(\position,\signal)=\rho_{\{1,\ldots,N\}}(\position\mid\signal)~\times~ \density_{\Signal[\position]}(\signal)~\times~\density_{\Sample}(\position).\label{eq:iuhsdewripeowi}\end{equation}
+
+The "population distribution" is the distribution of $\Signal$, from which can be derived the distribution of $\Signal[\position]$ for any $n\in\mathbb{N}$, and any $\position\in \Pop^n$. The distribution of $\Signal$ is defined by all its finite dimensional distributions.
+The "sample distribution" is the distribution of an imaginary process $\Signal^\star$ such that its finite-dimensional distributions $\density_\Signal^\star[\position]$, for any $\position \in\toPop$ are given by
+$$\density_\Signal^\star[\position]=
+ \rho_{\{1,\ldots,N\}}(\position\mid\signal)~\times~ \density_{\Signal[\position]}.$$
+
+Generalising \cite{pfefferman_1992}, the selection is non informative when $P^{\Signal[\Sample],\Sample}-\text{a.s.}(\signal,\position)$, $\rho(\position,\signal)=1$. In this case, we consider that the sample distribution corresponds to the population distribution.
+
+
+
+This general definition of a sample process by opposition to the population process allows to define the sample counterpart of different characteristics of the population distribution as for example the intensity and the covariogram.
+
+Although we gave a theoretical definition of $\rho$, as in practice a close form may be difficult to obtain, one can also define the approximated finite dimensional densities of $\Signal^\star$ 
+$$\tilde{\tilde{\density}}_{\Signal^\star[\position]}(\signal)=\tilde{\tilde{\density}}_{\Signal[\Sample]\mid\Sample}(\signal\mid\position)=
+\tilde{\tilde{\densityratio}}_{\{1,\ldots,\Samplesize\}}(\position\mid\signal)\density_{\Signal[\position]}(\signal).$$
+
+\subsection{Sample Intensity}
+
+\subsection{Sample Variogram}
+Define the sample semi variogram for exchangeable designs as 
+
+$$\Semivariogram^\star(h)=\frac12~\E\left[\left(\Signal[\Sample[1]]-\Signal[\Sample[2]]\right)^2\mid \Sample[2]-\Sample[1]=h\right].$$
+
+\begin{property}[Relationship between $\Semivariogram$, $\Semivariogram^\star$ and $\rho$]
+$$\Semivariogram(h)^\star=\frac12\int_{\Pop^{\{1,2\}}} \left[\int_{\range{\Signal}^{\{1,2\}}} (\signal(2)-\signal(1))^2~ \density_{\Signal[\position]}(\signal)~
+\intensityratio_{\{1,2\}}(\position,\signal)~
+\derive\dominantY^{\otimes 2}(\signal)
+\right] \derive(\dominantU^{\otimes\{1, 2\}})^{X\mid X[2]-X[1]=h}(\position)$$
+
+
+\end{property}
+
+\begin{proof}
+
+\begin{eqnarray*}
+\lefteqn{\E\left[\left(\Signal[\position(2)]-\Signal[\position(1)]\right)^2\mid \Sample_{\{1,2\}}=\position\right]}\\
+&=&\int_{\range{\Signal}^2} (\signal(2)-\signal(1))^2~
+\density_{\Signal[\position]\mid S_{\{1,2\}}}(\signal\mid \position)~
+\derive\dominantY^{\otimes\{1, 2\}}(\signal) \\
+&=&\int_{\range{\Signal}^2} (\signal(2)-\signal(1))^2~
+\rho_{\{1,2\}}(\position,\signal)~ \density_{\Signal[\position]}(\signal)~
+\derive\dominantY^{\otimes\{1, 2\}}(\signal) \\
+\end{eqnarray*}
+
+
+\end{proof}
+
+%\subsubsection*{Example (continued)}
+%
+%Define the approximated sample variogram by replacing $\rho_{\{1,2\}}$ by $\tilde{\rho_{\{1,2\}}}$ in the expression of the sample variogram:
+%$$\tilde\Semivariogram(h)^\star=
+%\Semivariogram(h)
+%\int\left(\int
+%(\signal'(2)-\signal'(1))^2~ \frac{\mathrm{e}^{-\frac{(\signal')_1^2+(\signal')_2^2}{2}}}{2\pi}~
+%\derive\dominantY^{\otimes \{1,2\}}(\signal')\right). 
+%$$
+%
+%\begin{proof}
+%See Appendix \ref{labelnotdoneyet}
+%\end{proof}
+
+
+
+
