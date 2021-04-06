@@ -1,14 +1,15 @@
 \section{Statistical Framework} \label{sec:stat_fra}
-This section illustrates the concepts and notations defined in \cite{dbb1}.
-\subsection{General notations}
+This section introduces a statistical framework that describes the relationship between the design and sample on one side, and the variable of interest on the other sides. The following concepts borrow to  the general statistical framework by  \cite{dbb1}. The definitions and most properties we provide apply in this framework. We also provide a case study example throughout the paper to illustrate the general definitions and properties. Some results presented here only apply to the specific statistical framework used for the example.
 
-In this paper, all random variables are defined on a probability space $(\Omega,\mathscr{A},P)$. The expected value and variance/covariance operators are defined with respect to the probability measure $P$. 
+\subsection{General notation}
+
+In this paper, all random variables are defined on a probability space $(\Omega,\mathscr{A},P)$. The expected value and variance / covariance operators are defined with respect to the probability measure $P$. 
 For two sets $E$ and $F$, $(E\to F)$ or $F^E$ designate the set of the functions from $E$ to $F$.
-The notation "$g:E\to F,x\mapsto g(x)$" means: let $g$ be a mapping from set $E$ to set $F$ that to $x$ associates $g(x)$. For $f:E\to (F\to G)$, $g:E\to F$, $h:E\to (H\to F)$,  the notation $f[g]$ designates the function :  $f[g]:E\to G$, such that $f[g](x)=(f(x))(g(x))$, and the notation 
+The notation ``$g:E\to F,x\mapsto g(x)$" means: let $g$ be a mapping from set $E$ to set $F$ that associates $g(x)$ to $x$. For $f:E\to (F\to G)$, $g:E\to F$, $h:E\to (H\to F)$,  the notation $f[g]$ designates the function :  $f[g]:E\to G$, such that $f[g](x)=(f(x))(g(x))$, and the notation 
 $f[h]$ designates the function :  $f[h]:E\to (H\to G)$, such that $f[h](x)=(f(x)\circ h(x))$.
 
 
-For a set $E$, $\bar{E}$ designates the set $\{\mathbf{0}\}\cup\bigcup_{n\in\mathbb{N},n\geq 1} E^{\{1,\ldots,n\}}$, where $\mathbf{0}=E^\emptyset$ corresponds to the set containing an application with empty domain.
+For a set $E$, $\bar{E}$ designates the set $\{\mathbf{0}\}\cup\bigcup_{n\in\mathbb{N},n\geq 1} E^{\{1,\ldots,n\}}$, where $\{\mathbf{0}\}=E^\emptyset$ corresponds to the set containing the application $\mathbf{0}$ with empty domain. The application $\mathbf{0}$ can be interpreted as the empty sample that matches no draw to the population of interest. 
 Let denote by $\size $ the application that maps an application to the cardinality of its domain: $\bar{E}\to\mathbb{N}$, $\mathbf{e}\mapsto n$ if $\position\in E^{\{1,\ldots,n\}}$, $0$ if $\position=\mathbf{0}$. For an application $\position\in\bar{E}$, a set $\Sampleindex$, $\position_\Sampleindex$ is the application:
 $\position_\Sampleindex:\Sampleindex\cap\mathrm{domain}(\position)\to E:\ell\mapsto\position(\ell)$, in the case of a random application $\Sample:\Omega\to\toPop$ and a random set :$\Sampleindex\to(\mathscr{P}(\mathbb{N})$ ($\mathscr{P}(\mathbb{N})$ is the set of all subsets of $\mathbb{N}$), then $\Sample_\Sampleindex$ is the random application: $\Omega\to\toPop, 
 \omega\mapsto 
@@ -19,13 +20,15 @@ $\eta^{\otimes\Sampleindex}\left(\bigcap_{\ell\in\mathbb{L}}\{\position\in E^\Sa
 $\eta^{\otimes\emptyset}(\{\mathbf{0}\})=1$, 
 then define the measure $\bar{\eta}$ on $\bar{E}$: $\bar{\eta}=\eta^{\otimes\emptyset}+\sum_{\samplesize\in\mathbb{N},\samplesize\geq 0}\eta^{\otimes\{1,\ldots,\samplesize\}}$.
 
+
+We apply the following rule: Random variables are capital Roman letters, whereas Random variable realisations are bold corresponding lowercase roman letter. By convention, any sum over an empty set is 0 and any product over an empty set is 1. The notation $\density_{V\mid W}$ denotes the density of $V$ conditional on $W$ with respect to a dominating measure on the domain of $V$.
+
 \subsection{Spatial process}
-We consider a space $\Pop$, that is a compact (non necessarily convex) subset of a finite dimensional real vector space $\mathbb{R}^d$, with its associated Borel sigma-field, and a random process $\Signal$ defined on $\Pop$ with value in another finite dimension real vector space $\SignalSpace$, e.g. $Y:\Omega\to(\Pop\to\SignalSpace)$.
- For example for a random variable $\Sample:\Omega\to\Pop^{\{1,2\}}$, and a random variable
+We consider a space $\Pop$, that is a compact %(non necessarily convex) 
+subset of a finite dimensional real vector space $\mathbb{R}^d$, with its associated Borel sigma-field, and a random process $\Signal$ defined on $\Pop$ with value in another finite dimension real vector space $\SignalSpace$, e.g. $Y:\Omega\to(\Pop\to\SignalSpace)$. %{\color{red} Compacity is required  because blablabla.}
+  For example, for a random variable $\Sample:\Omega\to\Pop^{\{1,2\}}$ and a random variable
 $\Signal:\Omega\to(\Pop\to\SignalSpace)$, 
-$\Signal[\Sample]$ is the random variable: $\Signal[\Sample]:\Omega\to(\{1,2\}\to\SignalSpace)$, $\omega\mapsto(\Signal(\omega))(\Sample(\omega)):\ell\to(\Signal(\omega))(\Sample(\omega)(\ell)$.
-The set of all functions 
-All definitions will be given under the general statistical framework described above. Examples and illustrations will be given for the particular case where $\Pop=[0,1]^2$.
+$\Signal[\Sample]$ is the random variable: $\Signal[\Sample]:\Omega\to(\{1,2\}\to\SignalSpace)$, $\omega\mapsto(\Signal(\omega))(\Sample(\omega)):\ell\to(\Signal(\omega))(\Sample(\omega)(\ell)$. Examples and illustrations will be given for the particular case where $\Pop=[0,1]^2$.
 %Given data $(\position(1),\signal_{1}),...,(\position_{n},\signal_{n})$, in order to perform inference for some target, we postulate a model, which we assume holds for the entire population. In particular, we are interested in model parameters, in other words we focus on \emph{analytic inference}. The choice of the model is not an easy task. It should reflect the structure of the population and should capture the important features useful for inference purpose. An entire branch of literature is dedicated to this task, i.e. \emph{model selection}, but the focus of this paper does not lie in that. 
 %For our work we assume that the model describing the variable of interest is given by
 %\begin{equation} \label{eq:model}
@@ -33,22 +36,21 @@ All definitions will be given under the general statistical framework described 
 %\end{equation}
 %{\color{red} S is for $\Sample$ (sample)}
 %where $S\left(\position\right)$ is a zero mean stationary stochastic process in $\mathbb{R}^d$ and is independent from the $\epsilon\left(\position\right)$, which has normal distribution with mean 0 and variance $\sigma_{\epsilon}$. The model in \eqref{eq:model} is quite general and embraces many variations under its umbrella. It is wide known in the field of geostatistics, where the term \emph{kriging} is in vogue. In fact, according to different assumptions about $S(\position)$, we end up with different models, which are usually referred with terms as ordinary kriging, simple kriging, universal kriging and so on. In order to perform inference about the model parameters, we need to introduce some assumptions.
-Let $\dominantY$ (resp. $\dominantU$) denote a sigma-finite measure on the set $\SignalSpace$ (resp. $\Pop$).
-The notation $\density_{V\mid W}$ denotes the density of $V$ conditional on $W$ with respect to a dominating measure on the domain of $V$.
-The average theoretical semivariogram is defined as the function: 
+Let $\dominantY$ denote a sigma-finite measure on the set $\SignalSpace$  and let $\dominantU$ denote a probability measure on  $\Pop$.
+The {\em $\dominantU$-averaged theoretical semivariogram} is defined as the function: 
 \begin{equation}\Semivariogram:\mathbb{R}^d\to[0,+\infty),h\mapsto\frac12\int_{\Pop^{\{1,2\}}} \Var\left[\Signal[\position(2)]-\Signal[\position(1)]\right] \derive(\dominantU^{\otimes \{1,2\}})^{X\mid X[2]-X[1]=h}(\position),\label{eq:averagesemivariogram}\end{equation} 
-where $(X)$ is the identity of $\Pop^{\{1,2\}}$, and the average theoretical covariogram is the function  $\nu^{X_2-X_1}-a.s(h)$-defined:
+where $(X)$ is the identity of $\Pop^{\{1,2\}}$, and the {\em $\dominantU$-averaged theoretical covariogram} is the function  $\nu^{X_2-X_1}-a.s(h)$-defined:
 \begin{equation}\Covariogram:\mathbb{R}^d\to\mathbb{R}, h\mapsto\int_{\Pop^{\{1,2\}}} \Cov\left[\Signal[\position(1)],\Signal[\position(2)]\right] \derive(\dominantU^{\otimes \{1,2\}})^{X\mid X[2]-X[1]=h}(\position).\label{eq:averagecovariogram}\end{equation} The covariogram and semivariogram satisfy the relationship: $\forall h\in\mathbb{R}^d, \Semivariogram(h)=\Covariogram(0)-\Covariogram(h)$.
 
 %The functions $\Covariogram$ and $\Semivariogram$ satisfy the relationship:
 % $$\Covariogram(h)=\Covariogram(0)-\Semivariogram(h)$$.
 \begin{definition}[Intrinsic stationarity and Second order stationarity, \protect{\citep[p.~53]{cressie2015statistics}}]
-A process is intrinsic stationary when the following conditions are satisfied :  $\forall \position\in\Pop^{\{1,2\}}$,
+A process is {\em intrinsic stationary} when the following conditions are satisfied :  $\forall \position\in\Pop^{\{1,2\}}$,
 \begin{eqnarray}
     \mathrm{E}\left[\Signal\left[\position(2)\right]-\Signal\left[\position(1)\right]\right]&=&0\\
     \frac12~\Var\left[\Signal\left[\position(2)\right]-\Signal\left[\position(1)\right]\right]&=&\Semivariogram(\position(2)-\position(1))\label{eq:semivariogram}
 \end{eqnarray}
-A process is second order stationary when the following are satisfied:
+A process is {\em second order stationary} when the following are satisfied:
 \begin{equation}
 \exists\mu\in\mathbb{R},~    \forall\position\in \Pop,~~ E\left[\Signal\left[\position\right]\right]=\mu
 \end{equation}
@@ -57,19 +59,18 @@ A process is second order stationary when the following are satisfied:
 \end{equation}
 \end{definition}
 %The function $\Covariogram\left(\cdot\right)$ in \eqref{eq:covariogram} is called \emph{covariogram}, or \emph{stationary covariance function}. 
-In the case of a first order stationary process, the variance operator $\Var[.]$ can equivalently be replaced by the square expected value opeartor $\mathrm{E}[(.)^2]$ in equation \eqref{eq:averagesemivariogram}.
+In the case of a first order stationary process, the variance operator $\Var[.]$ can equivalently be replaced by the square expected value operator $\mathrm{E}[(.)^2]$ in equation \eqref{eq:averagesemivariogram}.
 In the case of a second order stationary process, equations \eqref{eq:averagecovariogram} and \eqref{eq:averagesemivariogram} correspond to the definition of the theoretical covariogram and semivariogram as found in \citet[p.~53 and p.~58]{cressie2015statistics}.
-The random process is isotropic if in addition on being second order stationary, the covariogram function $h\mapsto \Covariogram(h)$ only depends on $h$ via $h\mapsto\|h\|$.
+The random process is isotropic if in addition to being second order stationary, the covariogram function $h\mapsto \Covariogram(h)$ only depends on $h$ via $h\mapsto\|h\|$.
 
-%{\color{red} Let us call $\gamma$ the parameters for the Semivariogram or $c$ the parameters for the Covariance.
+%{\color{red} Let us call $\paramnuisance_2$ the parameters for the Semivariogram or $c$ the parameters for the Covariance.
 %A plot of the 4 variograms would be neat there. Throughout the paper, $c_0$ should be replaced by $\sigma$}
 
-Common model assumptions on the process $\Signal$ consist in assuming second order stationarity and isotropy. Covariance structure of the signal is then fully characterized by $\Covariogram(0)$ and $\Semivariogram(h), h\neq 0$. 
+Common model assumptions on the process $\Signal$ consist in assuming second order stationarity and isotropy. The covariance structure of the signal is then fully characterized by $\Covariogram(0)$ and $\Semivariogram(h), h\neq 0$. 
 %We give the  covariogram formal expression for a list of covariogram models. 
-A Gaussian covariogram is 
-a function of the form:
-$h\mapsto\Covariogram(h)=c_0+c_1\left(1-\exp\left(-\|h\|^2/(2c_2^2)\right)\right)$ where $c_0,~c_1,~ c_2\in[0,+\infty)$
-(see \cite[p.~80]{chiles1999geostatistics} for more models). 
+For the simulations and illustrations in this paper, a Gaussian covariogram of the form
+\begin{equation}\label{def:gaussiancovariogram}\Covariogram(h)=\parampop_1\exp\left(-\|h\|^2/\parampop_2^2\right)\end{equation} will be used, where the deviation parameter $\parampop_1$, and the scale parameter $\parampop_2$ are real positive numbers. See \citet[p.~80]{chiles1999geostatistics} for alternative models.
+
 %For $h\in\mathbb{R}^d$, $\|h\|>0$:
 
 %\begin{table}[H]
@@ -81,69 +82,68 @@ $h\mapsto\Covariogram(h)=c_0+c_1\left(1-\exp\left(-\|h\|^2/(2c_2^2)\right)\right
 %($\Semivariogram\left(h\right)$)&Parameters&Type\\
 %\hline
 %\hline
-%$c_{0}+c_1\|h\|$& $c_0,~c_1\in[0,+\infty)$&Linear\\
+%$c_{0}+\parampop_1\|h\|$& $c_0,~\parampop_1\in[0,+\infty)$&Linear\\
 %%\hline$\begin{array}{ll}c_{0}+c_{s}\lbrace\left(3/2\right)\left(h/a_{s}\right)-\left(1/2\right)\left(h/a_{s}\right)^{3}& \text{ if } 0<h\leq a_{s},\\
 %%    c_{0}+c_{s}&\text{ if } h\geq a_{s}\end{array}$&&
 %% Spherical\\
-%\hline    $c_0+c_1\left( 1-\exp\left(-\|h\|/c_2\right)\right)$&$c_0,~c_1,~ c_2\in[0,+\infty)$&Exponential\\
+%\hline    $c_0+\parampop_1\left( 1-\exp\left(-\|h\|/\parampop_2\right)\right)$&$c_0,~\parampop_1,~ \parampop_2\in[0,+\infty)$&Exponential\\
 %\hline
-%$c_0+c_1\left(1-\exp\left(-\frac{\|h\|^2}{2c_2^2}\right)\right)$&$c_0,~c_1,~ c_2\in[0,+\infty)$&Gaussian\\
+%$c_0+\parampop_1\left(1-\exp\left(-\frac{\|h\|^2}{2\parampop_2^2}\right)\right)$&$c_0,~\parampop_1,~ \parampop_2\in[0,+\infty)$&Gaussian\\
 %\hline
 %\end{tabular}
 %\end{table}
 
-%If $\gamma$ is continuous in $0$, $\gamma(0)=0$
-\subsubsection*{Example with simulations: isotropic Gaussian process $\Signal$.}
-In the case where $\Signal:\Omega\to(\Pop\to\SignalSpace)$ is a Gaussian random process, its distribution  can be derived from the distributions of $\Signal[\position]$, where $\position\in\toPop$. 
-For $\position$, $\position'\in\toPop$, denote the expected value of the signal by $\mu:\toPop\to\toSignalSpace,\position\mapsto\mathrm{E}\left[\Signal[\position]\right]$, and the covariance of the the random vectors $\Signal[\position]$, $\Signal[\position']$  by $\provar_{\position,\position'}=\Cov \left[\Signal[\position],\Signal[\position']\right]$.
+%If $\paramnuisance_2$ is continuous in $0$, $\paramnuisance_2(0)=0$
+
+
+\begin{definition}[Isotropic Gaussian Random Process]
+\label{def:isotropicgaussianprocess}
+A {\em Gaussian random process} $\Signal:\Omega\to(\Pop\to\SignalSpace)$ is such that its distribution  can be derived from the distributions of $\Signal[\position]$, where $\position\in\toPop$. 
+For $\position$, $\position'\in\toPop$, denote the expected value of the signal by $\mu:\toPop\to\toSignalSpace,\position\mapsto\mathrm{E}\left[\Signal[\position]\right]$, and the covariance of the random vectors $\Signal[\position]$, $\Signal[\position']$  by $\provar_{\Signal;\position,\position'}=\Cov \left[\Signal[\position],\Signal[\position']\right]$.
 The distribution of $\Signal$ is then fully characterized by $\mu$ and $\provar$: for $n\in\mathbb{N}$,   $\position\in\Pop^{\{1,\ldots,\samplesize\}}$, $\Signal[\position]$ has the following density with respect to $\dominantY^{\otimes \{1,\ldots,n\}}$: 
 %As first example, we present a spatial Gaussian process. A \emph{Gaussian process} is a stochastic process, such that every finite collection of those random variables has a multivariate normal distribution. Hence, given the model \eqref{eq:model}, we assume 
 %$\Signal\sim\mathcal{N}\left(0,\provar\right)$. In this scenario the probability density function is given by: for $n\in\mathbb{N}$, $\position\in\Pop^n$,  
 \begin{equation} \label{eq:pdf_norm_process}
-    \density_{\Signal[\position]}\left(\signal\right)=\left(2\pi^{n/2}|\provar_{\position,\position}|^{\frac12}\right)^{-1}\exp\left(-\frac12(\signal-\mu(\position))\provar_{\position,\position}^{-1}(\signal-\mu(\position))^{\!\mathrm{T}}\right).
+    \density_{\Signal[\position]}\left(\signal\right)=\left(2\pi^{n/2}|\provar_{\Signal;\position,\position}|^{\frac12}\right)^{-1}\exp\left(-\frac12(\signal-\mu(\position))\provar_{\Signal;\position,\position}^{-1}(\signal-\mu(\position))^{\!\mathrm{T}}\right).
 \end{equation}
-In the case of an isotropic Gaussian process, the 
-distribution of $\Signal$ is fully characterized by $\mu$ and $\Semivariogram$.
+The distribution of an  {\em isotropic Gaussian process} is such that $\forall \position, \position'\in\Pop$,  $\provar_{\Signal;\position,\position'}= \Covariogram\left(\|\position-\position'\|\right)$ and is fully characterized by $\mu$ and $\Covariogram$.
+\end{definition}
+
+\begin{example}[Isotropic Gaussian process $\Signal$ with Gaussian Covariogram]\label{example:main}
+
 %and the respective likelihood for a sample of dimension $n$ is
 %\begin{equation} \label{lik_norm_process}
-%   \mathcal{L}_{\Signal[\position]}\left(\parampop;\signal\right)=\density_{\left(\Signal\left[\position\right];\theta\right)}\left(\signal;\theta\right)
+%   \mathcal{L}_{\Signal[\position]}\left(\parampop;\signal\right)=\density_{\left(\Signal\left[\position\right];\parampop\right)}\left(\signal;\parampop\right)
 %\end{equation}
 %\input{prc_y.tex}
-We simulate three independant replications of an isotropic Gaussian process with $\Signal:\Omega\to(\Pop=[0,1]^2\to\mathbb{R})$, with $\forall \position\in\Pop$, $\mathrm{\mu}[\position]=0$ and with a Gaussian Covariogram with parameters
- $c_0=0$, $c_1=5$, $c_2=10$.
-Figure \ref{fig:oaijsfdoij} represents the independent realizations of $\Signal$.
+We simulate three independent replications of an isotropic Gaussian process with $\Signal:\Omega\to(\Pop=[0,1]^2\to\mathbb{R})$, with $\forall \position\in\Pop$, $\mathrm{\mu}[\position]=0$, with a Gaussian Covariogram \eqref{def:gaussiancovariogram} with deviation parameter
+ $\parampop_1=1$, and scale parameter $\parampop_2=\lbrace 0.01, 0.1, 1\rbrace$, respectively.
+Figure \ref{fig:oaijsfdoij} represents independent realizations of $\Signal$.
 \begin{figure}[H]
 %\begin{mdframed}
-
-    \caption{Heat maps of realisations of the random process $\Signal:\Omega\to(\Pop=[0,1]^2\to\mathbb{R})$}
+    \caption{Heat maps of realisations of the random process $\Signal:\Omega\to(\Pop=[0,1]^2\to\mathbb{R})$ for different values of $\parampop_2$. For each realisation $\signal$ of the random process $\Signal$, for each $\position$ in $\Pop$, the value of $\signal[\position]$ is color coded with a grayscale gradient.}
     \label{fig:oaijsfdoij}
-    
-\hspace{-.6cm}\includegraphics{fig/figure1.pdf}
-
-    \vspace{-.4cm}
-    {\footnotesize For each realisation $\signal$ of the random process $\Signal$, for each $\position$ in $\Pop$, the value of $\signal[\position]$ is color coded with a grayscale gradient.}
+\includegraphics{fig/figure1.png}
 %\end{mdframed}
 \end{figure}
 
-
+\end{example}
 
 
 \subsection{Sample, design and design variable} \label{sec:design}
-
-\subsubsection{Fixed designs and design variables}
-
-By definition a design $\design$ is a probability distribution on $\toPop$.
+\subsubsection{Fixed  design variables and fixed designs}
+By definition, a fixed design $\design$ is a probability distribution on $\toPop$.
 A sample $\Sample$ drawn from $\design$ is a random variable or point process of distribution $\design$, e.g. a random variable $\Sample$ such that $\mathrm{P}^\Sample=\design$. 
-Define the size $\Samplesize=\mathrm{size}\circ\Sample$ of the sample $\Sample$. The sample density with respect to $\dominantUbar$, is defined by:
+Define the size $\Samplesize=\mathrm{size}\circ\Sample$ of the sample $\Sample$. The sample density with respect to $\dominantUbar$ is defined by:
 $(\derive P^\Sample)/(\derive\dominantUbar)(\position)=P(N=n)\times(\derive P^{\Sample\mid N=n})/(\derive\dominantU^{\otimes\{1,\ldots,n\}})(\position)$, if $\position\in\Pop^{\{1,\ldots,n\}}$, $P(N=0)$ if $\position=\mathbf{0}$. 
 %For example, let $\intensity:(\Pop,\dominantU)\to(\mathbb{R}^+,\mathrm{Lebesgues}(\mathbb{R}^+))$ be a measurable function , then a Poisson point process \citep[p.~ 45]{CoxIshamPointProcesses}) with intensity $\pi$ follows a finite or discrete design if the support of $\dominantU$ is finite. The distribution of a Poisson process when the support of $\dominantU$ is finite is a design that corresponds to with replacement sampling. Confusingly, in the literature on survey sampling, Poisson sampling \citep[p.~85]{SarndalSwensonWretman1992} corresponds to a finite design where each unit $\position$ such that $\pi(\position)>0$ is drawn independently with a fixed probability $\pi(\position)$, and is thus a without replacement design.
 A fixed design variable is a function $\desvar:\Pop\mapsto \DesvarSpace$.
-A fixed size design $\design$ is usually defined as a function of a fixed design variable, and characterised by its density with respect to $\dominantUbar$. For example, 
-the Probability Proportional to Size $\desvar$ With Replacement and size $n$ ($\mathrm{PPSWR}(\desvar,n)$) design, with $\DesvarSpace=[0,+\infty)$ is characterized by:  
-\begin{equation}\label{eq:ppswr}\left(\derive P^{\Sample}/\derive\dominantUbar\right)(\position)=\left(\int_U \left(\desvar[\position']\right)\mathrm{d}\dominantU (\position')\right)^{-\samplesize}
-\left(\prod_{\ell=1}^\samplesize\left(\desvar[\position(\ell)]\right)\right)\text{ if }\position\in\Pop^{\{1,\ldots,n\}},~0\text{ otherwise.}
-\end{equation}
-The point process $\Sample$ characterized by Equation \eqref{eq:ppswr} is a binomial point process of $\samplesize$ points in $\Pop$ with intensity $\Pop\to\mathbb{R}, \position\to\left(\left(\desvar.\dominantU\right)\left(\Pop\right)\right)^{-1}\desvar[\position]$, which we abbreviate by $\Sample\sim\mathrm{bpp}\left(\desvar,10\right)$. Simple random sampling with replacement is a binomial point process with a constant intensity.  For simplicity, we only consider exchangeable sample designs, in the sense that $\forall \samplesize\in\mathbb{N}$, for all permutation $\permutation$ of $\{1,\ldots,n\}$. $P^{S\mid\Samplesize=\samplesize}=P^{S[\permutation]\mid \Samplesize=\samplesize}$. %Pdesigns such that: 
+A fixed  design $\design$ is usually defined as a function of a fixed design variable and characterized by its density with respect to $\dominantUbar$. For example, the Probability Proportional to Size $\desvar$ With Replacement and size $n$ design, with $\DesvarSpace=[0,+\infty)$, for $\position\in \toPop$, is characterized by:  
+\begin{equation}\label{eq:ppswr}\density_{\Sample}(\position)=\left(\derive P^{\Sample}/\derive\dominantUbar\right)(\position)=\left|\begin{array}{l}\left(\int_U \left(\desvar(\position')\right)\mathrm{d}\dominantU (\position')\right)^{-\samplesize}
+\left(\prod_{\ell=1}^\samplesize\left(\desvar(\position(\ell))\right)\right)\text{ if }\position\in\Pop^{\{1,\ldots,n\}},\\~0\text{ otherwise.}
+\end{array}\right.\end{equation}
+
+We remind that with our notation, $(\desvar.\dominantU)(\Pop)=\int_\Pop \desvar(\position)\derive \dominantU(\position)$. The point process $\Sample$ characterized by Equation \eqref{eq:ppswr} is a binomial point process of $\samplesize$ points in $\Pop$ with intensity $\Pop\to\mathbb{R}, \position\to\left(\left(\desvar.\dominantU\right)\left(\Pop\right)\right)^{-1}\desvar(\position)$, which we abbreviate by $\Sample\sim\mathrm{bpp}\left(\desvar,\samplesize\right)$. Simple random sampling with replacement is a binomial point process with a constant intensity,  and we refer to as $\Sample\sim\mathrm{bpp}\left(1,\samplesize\right)$.  %Pdesigns such that: 
 %This general definition includes design for with and without replacement sampling and fixed and random size sampling. 
 For example, given a measurable real function $\desvar :\Pop \to\mathbb{R}$, a spatial Poisson Process of intensity $\desvar$ is a point process 
 $S:\Omega\to\bigcup_{\samplesize\in\mathbb{N}}\Pop^{\samplesize}$, such that 
@@ -151,17 +151,14 @@ for all $\dominantU$-measurable subset $\subsetA$ of $\Pop$, \begin{equation}\la
 S\sim\mathrm{Ppp}(\desvar)\Leftrightarrow
 \mathrm{cardinality}(\Sample^{-1}[\subsetA])\sim \mathrm{Poisson}\left((\desvar.\dominantU)\left(\subsetA \right)\right),
 \end{equation}
-
-where $\Sample^{-1}[\subsetA]$  is the random variable with domain the finite subsets of $\Pop$ defined by: $\omega\mapsto\{\ell\in\{1,\ldots,\Samplesize(\omega)\};(\Sample(\omega))(\ell)\in \subsetA\}$ if $\Samplesize(\omega)>0$, $\emptyset$ otherwise.
-
-The density of such process with respected to $\bar\dominantU$ is defined, for $\samplesize\in\mathbb{N}$, $\position\in \toPop$, by:
+where $\Sample^{-1}[\subsetA]$ is the random variable with domain the finite subsets of $\Pop$ defined by: $\omega\mapsto\{\ell\in\{1,\ldots,\Samplesize(\omega)\};(\Sample(\omega))(\ell)\in \subsetA\}$ if $\Samplesize(\omega)>0$, $\emptyset$ otherwise. The density of such process with respect to $\bar\dominantU$ is defined, for $\position\in \toPop$, by:
 \begin{equation}
-\density_{\Sample}(\position)=\left(\size (\position)!\right)^{-1}\exp\left(-\left(\desvar.\dominantU\right)(\Pop)\right)
+\density_{\Sample}(\position)=\left(\derive P^{\Sample}/\derive\dominantUbar\right)(\position)=\left(\size (\position)!\right)^{-1}\exp\left(-\left(\desvar.\dominantU\right)(\Pop)\right)
 \prod_{\ell\in\mathrm{domain}(\position)}
-\desvar[\position(\ell)].
+\desvar(\position(\ell)).
 \end{equation}
 
-
+For a point process $\Sample$ with values in the measured space $(\Pop,\dominantU)$, for a random variable $W$, define $\Intensity_{S\mid W=w}$ as the intensity measure of $\Sample$ conditionally to $W=w$ with respect to the measure on $\Pop$, where for each measurable subset $\subsetA$ of $\Pop$, $\Intensity_S(A)=\mathrm{E[\mathrm{cardinality}(S^{-1}[A])\mid W=w]}$, and $\intensity_S$ as the density of $\Intensity_S$ with respect to $\dominantU$: $\intensity_S=\derive\Intensity_S/\derive\dominantU$.
 
 %
 %The Poisson Point process is such that for two measurable subsets $\subsetA_1$ and $\subsetA_1$  of $\Pop$, 
@@ -189,13 +186,13 @@ The density of such process with respected to $\bar\dominantU$ is defined, for $
 %\multicolumn{3}{p{\dimexpr\linewidth-\tabcolsep-\arrayrulewidth}}{Name}\\                 &$\DesvarSpace$ & $\mathrm{d} P^{\Sample[\{1,\ldots,n\}]}/\mathrm{d}\dominantU^{\otimes n}(\position)$\\
 %\hline
 %\hline
-%\multicolumn{3}{p{\dimexpr\linewidth-\tabcolsep-\arrayrulewidth}}{Probability Proportional to Size $\desvar$ With Replacement (PPSWR)}\\                 & $[0,+\infty)$ & $\left(\int_U \left(\desvar[\position']\right)\mathrm{d}\dominantU (\position')\right)^{-n}
-%\left(\prod_{\ell=1}^n\left(\desvar[\position(\ell)]\right)\right)$\\
+%\multicolumn{3}{p{\dimexpr\linewidth-\tabcolsep-\arrayrulewidth}}{Probability Proportional to Size $\desvar$ With Replacement (PPSWR)}\\                 & $[0,+\infty)$ & $\left(\int_U \left(\desvar(\position']\right)\mathrm{d}\dominantU (\position')\right)^{-n}
+%\left(\prod_{\ell=1}^n\left(\desvar(\position(\ell)]\right)\right)$\\
 %\hline 
 %\multicolumn{3}{p{\dimexpr\linewidth-\tabcolsep-\arrayrulewidth}}{Sytematic sampling, $\samplesize=(n')^2$ }\\&$\{1\}$                 &
-%$\left\{\begin{array}{ll}(n!)^{-1} n &\text{ if }\position\in\left\{(\position_0+(n')^{-1}\alpha)_{\alpha\in \{0,\ldots,n'-1\}^2}\mid\position_0\in [0,1/n']^2\right\}\\0& \text{ otherwise.}\end{array}\right.$\\
+%$\left\{\begin{array}{ll}(n!)^{-1} n &\text{ if }\position\in\left\{(\position_0+(n')^{-1}\paramnuisance_0)_{\paramnuisance_0\in \{0,\ldots,n'-1\}^2}\mid\position_0\in [0,1/n']^2\right\}\\0& \text{ otherwise.}\end{array}\right.$\\
 %\hline 
-%\multicolumn{3}{p{\dimexpr\linewidth-\tabcolsep-\arrayrulewidth}}{Simple Random Sampling}\\                 & ${1}$ & $\dominantU^{}\left(\int_\Delta \left(\desvar[\position']\right)\mathrm{d} (\position')\right)^{-n}
+%\multicolumn{3}{p{\dimexpr\linewidth-\tabcolsep-\arrayrulewidth}}{Simple Random Sampling}\\                 & ${1}$ & $\dominantU^{}\left(\int_\Delta \left(\desvar(\position']\right)\mathrm{d} (\position')\right)^{-n}
 %\mathds{1}_\Delta(\position)$\\
 %\hline 
 %\end{tabularx}
@@ -221,16 +218,21 @@ The density of such process with respected to $\bar\dominantU$ is defined, for $
 %\end{table}
 
 
-\subsubsection{Random design variables, sample and random design}
+\subsubsection{Random design variables and random designs}
 In practice, the design parameter $\desvar$ is modeled as the output of a random process $\Desvar:\Omega\to(\Pop\to \DesvarSpace)$ that we will refer to as the design variable.
-The selection process, when controlled, is in practice a function of an auxiliary variable, called design variable, that is a process defined on the same space $\Pop$. When the selection process is not chosen by the experimenter it can also be modelled as a function of such a process, that can be observed, partially observed or latent. In practice, it may not be reasonable to assume independence of the the design and study variables $\Desvar$ and $\Signal$.
+The selection process, when controlled, is in practice a function of an auxiliary variable, called design variable, that is a process defined on the same space $\Pop$. When the selection process is not chosen by the experimenter it can also be modelled as a function of such a process that can be observed, partially observed or latent. In practice, it may not be reasonable to assume independence of the design variable  $\Desvar$ and study variable $\Signal$.
 
 
-The design is by definition a random variable with domain the set of probability distributions on  $\toPop$. The sample is a random variable $\Sample$ with domain $\toPop$ such that the distribution of $\Sample$ conditionnaly to the design \emph{is} the design, e.g:
-$$P^\Design-a.s.(\design),~P^{\Sample\mid \Design=\design}=\design.$$
+The design $\Design$ is by definition a random variable with domain the set of probability distributions on  $\toPop$. The sample is a random variable $\Sample$ with domain $\toPop$ such that the distribution of $\Sample$ conditionally to the design \emph{is} the design, e.g:
+\begin{equation}P^\Design-a.s.(\design),~P^{\Sample\mid \Design=\design}=\design.\end{equation}
+
+We assume that the distribution of the sample conditionally on the design, the signal and the design variable is the design:
+\begin{equation}\label{eq:SconditionalonDindependentonYZ}
+P^{\Design,\Signal,\Desvar}-a.s.(\design,\signal,\desvar),~P^{\Sample\mid \Design=\design,\Signal=\signal,\Desvar=\desvar}=\design.\end{equation}
+This assumption is an independence of the sample $\Sample$ on the design variable and the signal conditionally on the design, which does not imply independence of the sample and the signal.
 
 %In the following, we assume that $P^\Desvar$ is such that $P^\Sample$ is the  uniform distribution on $\Pop^n$: unconditionally on $Z$, the selection is uniform <<< this is wrong.
-For a point process $\Sample$ with values in the measured space $(\Pop,\dominantU)$, for a random variable $W$, define $\Intensity_{S\mid W=w}$ as the intensity measure of $\Sample$ conditionally to $W=w$ with respect to the measure on $\Pop$, where for each measurable subset $\subsetA$ of $\Pop$, $\Intensity_S(A)=\mathrm{E[\mathrm{cardinality}(S^{-1}[A])\mid W=w]}$, and $\intensity_S$ as the density of $\Intensity_S$ with respect to $\dominantU$: $\intensity_S=\derive\Intensity_S/\derive\dominantU$.
+
 %We also assume that the design follows the following exchangeability condition: for all $\samplesize\in\mathbb{N}$, for any permutation $\sigma$ of $\{1,\ldots,n\}$, for all measurable subset A of $(\{1,\ldots,n\}\to \Pop)$, for all $\omega\in\Omega$,
 %$D(\omega)(A)=D(\omega)(\sigma.A)$, where $\sigma.A(k)=A(\sigma(k))$. 
 
@@ -238,53 +240,160 @@ For a point process $\Sample$ with values in the measured space $(\Pop,\dominant
 %
 %The sample indicator is the random variable $I$ defined by: for a subset $A$ of $\Pop$, $I[A]=1$ if $A\subset \Sample$, $0$ otherwise.
 
+ For simplicity, we only consider exchangeable index sample designs, in the sense that $\forall \samplesize\in\mathbb{N}$, for all permutation $\permutation$ of $\{1,\ldots,n\}$,
+ \begin{equation}P^\Desvar-\text{a.s.}(\desvar), P^{S\mid\Samplesize=\samplesize,\Desvar=\desvar}=P^{S[\permutation]\mid \Samplesize=\samplesize,\Desvar=\desvar}\label{assumption:designindexexchangeability}.\end{equation}
+which ensures that 
+ \begin{equation}P^{S\mid\Samplesize=\samplesize}=P^{S[\permutation]\mid \Samplesize=\samplesize}\label{assumption:designindexexchangeability}.\end{equation}
 
 
-
-\subsubsection*{Example with simulations (continued): distribution of $\Desvar$ conditionally on $\Signal$}
+\begin{example}[Example \ref{example:main} continued: distribution of $\Desvar$ conditionally on $\Signal$]
+\label{example:2.2}
 We assume that 
 $\Desvar$ satisfies:
-$$\Desvar=\mathrm{exp}\left(\alpha+\beta\Signal+\gamma \varepsilon\right),$$
-where $\alpha$,  $\beta$, $\gamma$ are real positive numbers, 
+$$\Desvar=\mathrm{exp}\left(\paramnuisance_0+\paramnuisance_1\Signal+\paramnuisance_2 \varepsilon\right),$$
+where $\paramnuisance_0$,  $\paramnuisance_1$, $\paramnuisance_2$ are real positive numbers, 
 $\varepsilon:\Omega\to\left(\Pop\to\mathbb{R}\right)$
-is a Gaussian process with mean:
-$\mu=0$ and Gaussian covariogram of parameters $c_0=0,c_1=5, c_2=10$. 
+is an isotropic Gaussian process with mean
+$\mu=0$ and Gaussian covariogram $\Covariogram(h)=\exp\left(-\|h\|^2/\paramnuisance_{\text{scale}}^2)\right)$ with scale parameter $\paramnuisance_{\text{scale}}=0.1$. The variable $\signal:\Pop\to\mathbb{R}$ (resp $e:\Pop\to\mathbb{R}$) is generated once by sampling from $\Signal$ (resp $\varepsilon$). The variable $\desvar=\exp\left(\paramnuisance_0+\paramnuisance_1\signal+\paramnuisance_2\mathbf{e}\right)$ is computed for 3 different values of the vector 
+$(\paramnuisance_0,\paramnuisance_1, \paramnuisance_2)$, chosen so that the expected value of the sampling intensity is the same for each simulation, more specifically so that $E[\log(\Desvar)]=exp(\paramnuisance_0+((\parampop_1\times\paramnuisance_1)^2+\paramnuisance_2^2)/2)=10$. Two samples are drawn. The first sample, conditionally on $\Desvar=\desvar$, follows $P^{\Sample\mid\Desvar=\desvar}=\mathrm{bpp}(\desvar,10)$. The unconditional distribution of $\Sample$  is denoted $P^\Sample=\mathrm{bpp}(\Desvar,10)$ in this case. The second sample, conditionally on $\Desvar=\desvar$, follows $P^{\Sample\mid\Desvar=\desvar}=\mathrm{Ppp}(\desvar)$. The unconditional distribution of $\Sample$  is denoted  $P^\Sample=\mathrm{Ppp}(\Desvar)$.
+The variable $\desvar$ generated with different parameters is mapped in Figure 2.a, 2.b, 2.c, and the variable $\signal$ is mapped in figure 2.d. In particular, Figures 2.a, 2.b, 2.c. show how sampled units tend to concentrate where the sampling intensity $\desvar$ is the highest.
+By comparing Figure 2.b and Figure 2.d, as $\paramnuisance_1$ is 0, the high sampling intensity in Figure 2.b and sampled points does not necessarily correspond to high values of the signal $\signal$ in Figure 2.d. 
+In the opposite, the high sampling intensity in Figure 2.c and sampled points often corresponds to high values of the signal $\signal$ in Figure 2.d. Figure \ref{fig:jointmarginaldensitiesYZ} represents the values of $\signal(\position)$ vs $\desvar(\position)$ for values of $\position$ on a regular grid of $\Pop$.
+The values of $\desvar$ in Figure \ref{fig:jointmarginaldensitiesYZ}.a (resp 
+\ref{fig:jointmarginaldensitiesYZ}.b, 
+\ref{fig:jointmarginaldensitiesYZ}.c) correspond to the values of Figure 2.a (resp 
+Figure 2.b, 
+Figure 2.c). Figure \ref{fig:jointmarginaldensitiesYZ} illustrates that high sampling intensity correspond to high values of $\signal$ when $\paramnuisance_2>0$, as in Figure  \ref{fig:jointmarginaldensitiesYZ}.c.
 
-The variable $\signal:\Pop\to\mathbb{R}$ (resp $e:\Pop\to\mathbb{R}$) is generated once by sampling from $\Signal$ (resp $\varepsilon$). The variable $\desvar=\exp\left(\alpha+\beta\signal+\gamma\mathbf{e}\right)$ is computed for 3 different values of the vector 
-$(\alpha,\beta, \gamma)$: $\left(\log(10),0,0\right)$, $\left(\log(10)-(0.5^2+0.3^2),0,\sqrt{0.5^2+0.3^2}\right)$, and $\left(\log(10)-(0.5^2+0.3^2),0.5,0.3\right)$. Two samples are drawn, one following $\design=\mathrm{bpp}(\desvar,10)$ and the other following $\design=\mathrm{Ppp}(\desvar)$. 
-The variables $\desvar$ and $\signal$ and the two samples are mapped in figures \ref{fig:oaijsfdwefweoij} and \ref{fig:jointmarginaldensitiesYZ}. Sampled units tend to concentrate where the sampling intensity is the highest.
 
-
-\begin{figure}[H]
+\begin{figure}[ht]
 %\begin{mdframed}
-    \caption{Heat maps of the design variable $\desvar$ and plot of realisations of $\Sample$ for three different design variables and designs.}
+    \caption{Heat maps of the design variable $\desvar$ and plot of realisations of $\Sample$ for three different design variables and designs. Sub-figures correspond to the  heatmap of a design variable $\desvar$ (Sub-figures 2.a, 2.b, 2.c) to the heatmap of $\signal$ (Sub-figure 2.d) and the plot of the samples (circle and triangle dots) drawn according to the two different designs. The values of $(\paramnuisance_0, \paramnuisance_1 ,\paramnuisance_2)$ for each sub-figure are: 2.a: $(\log(10),0,0)$, 2.b:$(\log(10)-0.125,0,0.5)$, 2.c: $(\log(10)-0.125,0.4,0.3)$.}
     \label{fig:oaijsfdwefweoij}
-    \hspace{-.6cm}\includegraphics{fig/figure2.pdf}
-    \vspace{-1cm}
-    
-    
-    \footnotesize{
-    
-%
-Sub-figures correspond to the  heatmap of a design variable $\desvar$ (Sub-figures 2.a, 2.b, 2.c) to the heatmap of $\signal$ (Sub-figure 2.d) and the plot of the samples (circle and triangle dots) drawn according to the two different designs. The values of $(\alpha, \beta ,\gamma)$ for each sub-figure are: 2.a: $(\log(10),0,0)$, 2.b:$(\log(10)-(0.5^2+0.3^2),0,\sqrt{0.5^2+0.3^2})$, 2.c: $(\log(10)-(0.5^2+0.3^2),0.5,0.3)$.}
+    \hspace{-.6cm}\includegraphics{fig/figure2.png}
+
 %\end{mdframed}
 
 \end{figure}
 
-\begin{figure}[H]
+
+
+\begin{figure}[ht]
 %\begin{mdframed}
-\caption{Joint and marginal densities of $\desvar$ and $\signal$}\label{fig:jointmarginaldensitiesYZ}
-\includegraphics{fig/figure3.pdf}
-\footnotesize{
- Each sub-figure contains the scatter plot of  $\left\{\left(\desvar[\position],\signal[\position]\right):\position\in\mathrm{Grid}\right\}$, where $\mathrm{Grid}$ is a regularly spaced grid of $\Pop$. The values of $(\alpha, \beta ,\gamma)$ for each Sub-figure are: 3.1: $(\log(10),0,0)$, 3.2:$(\log(10)-(0.5^2+0.3^2),0,\sqrt{0.5^2+0.3^2})$, 3.3: $(\log(10)-(0.5^2+0.3^2),0.5,0.3)$. The vertical axis corresponds to $\signal$, the vertical to $\desvar$. The marginal plots correspond to the density of $\desvar$ (right margin) and to the densities of $\signal$ (bottom margins).}
+\caption{Joint and marginal densities of $\desvar$ and $\signal$.  Each sub-figure contains the scatter plot of  $\left\{\left(\desvar(\position),\signal(\position)\right):\position\in\mathrm{Grid}\right\}$, where $\mathrm{Grid}$ is a regularly spaced grid of $\Pop$. The values of $(\paramnuisance_0, \paramnuisance_1 ,\paramnuisance_2)$ for each Sub-figure are: 3.a: $(\log(10),0,0)$, 3.b:$(\log(10)-0.125,0,0.5)$, 3.c: $(\log(10)-0.125,0.4,0.3)$. The vertical axis corresponds to $\signal$, the vertical to $\desvar$. The marginal plots correspond to the density of $\desvar$ (right margin) and to the densities of $\signal$ (bottom margins).}\label{fig:jointmarginaldensitiesYZ}
+\includegraphics{fig/figure3.png}
 %\end{mdframed}
 \end{figure}
+\end{example}
 
-
-
-
-\subsection{Observations}
-The observation consists of the realisations of the random variables $\Sample$ and $\Signal[\Sample]$. 
 %$(\Sample[\ell],\Signal[\Sample[\ell]])_{\ell\in\{1,\ldots,\Sampleindex}$
 %Observations $(\Sample,\Signal[\Sample])=(\Sample[\ell],\Signal[\Sample[\ell]])_{\ell=1,\ldots,n}$ can be seen as a point process in $\Pop\times\SignalSpace$ and its intensity is defined as the Radon Nikodym derivative of $\Intensity_S$ with respect to the measure $\dominantU\otimes\dominantY$.
 
+\subsection{Probability density function of the sample}
+
+The conditional distributions of the sample and of subsamples can be derived from  the conditional distribution of the design:
+
+\begin{eqnarray}
+\density_{\Sample\mid W}(\position\mid\mathbf{w})&=&
+\int \left(\derive P^{\Sample\mid \Design,W}/\derive\dominantUbar \right)(\position\mid \design,\mathbf{w})\derive P^{\Design\mid W}(\design\mid\mathbf{w})
+\end{eqnarray}
+
+In particular when $W$ is a function of $\Signal$ and $\Desvar$, assumption \eqref{eq:SconditionalonDindependentonYZ} implies that the probability to select the sample $\position$ conditionally on $W=\mathbf{w}$ is the 
+probability to select the sample $\position$ given the design, averaged on all possible designs conditionally on  $W=\mathbf{w}$:
+\begin{eqnarray}
+\density_{\Sample\mid W}(\position\mid\mathbf{w})&=&
+\int \left(\derive \design/\derive\dominantUbar \right)(\position)~\derive P^{\Design\mid W}(\design\mid\mathbf{w}).
+\end{eqnarray}
+
+\begin{example}[ Example \ref{example:2.2} continued: Sample density for $\Sample\sim \mathrm{Ppp}(\Desvar)$ and $\Sample\sim \mathrm{bpp}(\Desvar,n)$]
+\label{example:2.3}
+ For $\position\in\Pop^{\{1,\ldots,\samplesize\}}$, when $\Sample\sim \mathrm{Ppp}(\Desvar)$,
+\begin{equation}\density_{\Sample\mid W}(\position|\mathbf{w})=
+\int\exp\left(-(\desvar.\dominantU)(\Pop)\right)(\samplesize!)^{-1}\left(\prod_{\ell=1}^\samplesize \desvar(\position(\ell))\right)\derive
+P^{\Desvar\mid W}(\desvar\mid \mathbf{w}).\label{eq:oijoijejods}
+\end{equation}
+When $\Sample\sim \mathrm{bpp}(\Desvar,\samplesize)$,
+\begin{equation}
+\density_{\Sample\mid W}(\position|\mathbf{w})=
+\int\left((\desvar.\dominantU)(\Pop)\right)^{-\samplesize}\left(\prod_{\ell=1}^\samplesize \desvar(\position(\ell))\right)\derive
+P^{\Desvar\mid W}(\desvar\mid \mathbf{w}).\label{eq:oijerogiql}
+\end{equation}
+\end{example}
+
+
+
+
+\subsection{Probability density function of a subsample}
+
+Theoretical developments in Section \ref{sec:sampledistribution} require to express the density function of a random size or fixed size subsample of a random or fixed size sample.
+
+For a fixed set $\Sampleindex$, the density 
+$\density_{\Sample_\Sampleindex\mid W}(\position\mid\mathbf{w})$
+can be derived from $\density_{\Sample\mid W}$ via:
+\begin{eqnarray}
+\density_{\Sample_\Sampleindex\mid W}(\position\mid\mathbf{w})&=&
+\int \density_{\Sample\mid W}(\position'\mid \mathbf{w})~\mathds{1}(\position'_\Sampleindex==\position)~\derive\dominantUbar(\position'),
+\end{eqnarray}
+where $\mathds{1}(\position'_\Sampleindex==\position)=0$ when $\position'_\Sampleindex!=\position$, $1$ otherwise.  
+More generally, for a random set $\Sampleindex$ the density 
+$\density_{\Sample\mid W}(\position\mid\mathbf{w})$
+can be derived from $\density_{\Sample_\Sampleindex\mid W}$ via:
+\begin{eqnarray}
+\density_{\Sample_\Sampleindex\mid W}(\position\mid\mathbf{w})&=&
+\int\left(\int \density_{\Sample\mid W}(\position'\mid \mathbf{w})~\mathds{1}(\position'_\Sampleindex==\position)~\derive\dominantUbar(\position')\right)\derive P^{K\mid W=\mathbf{w}}.
+\end{eqnarray}
+
+\begin{remark}\label{remark:K1subsetK2}
+For  two fixed size sets  $\Sampleindex_1, \Sampleindex_2$ fixed such that 
+$\Sampleindex_1\subset \Sampleindex_2$, the equation 
+\begin{equation}\label{eq:iugheirguhei}\density_{\Sample_{\Sampleindex_1}}(\position\mid \mathbf{w})=\int \density_{\Sample_{\Sampleindex_2}}(\position'\mid \mathbf{w})\mathds{1}(\position'_{\Sampleindex_1}=\position)\derive \dominantU^{\otimes K_2}(\position')
+\end{equation}
+is not necessarily true. 
+For example, when $S\sim \mathrm{Ppp}(\Desvar)$, 
+$\Sampleindex_1=\{1\}$, $\Sampleindex_2=\{1,2\}$,
+for $\position \in \Pop^{\{1\}}$, 
+$\density_{\Sample_{\{1\}}}(\position)=\density_{\Sample}(\position)+\int \density_{\Sample_{\Sampleindex_2}}(\position'\mid \mathbf{w})\mathds{1}(\position'_{\Sampleindex_1}=\position)\derive \dominantU^{\otimes K_2}(\position')$.
+A sufficient condition for the equation \eqref{eq:iugheirguhei} would be that $\Samplesize$ is not random.
+\end{remark}
+
+Let $\Sampleindex$ be  a finite subset of $\mathbb{N}\setminus\{0\}$. Let   $\Sampleindex'$ be an element of $\{\{\ell\in \Sampleindex:\ell\leq\samplesize\}:\samplesize\in\mathbb{N}\}$, and let  $\position\in\Pop^{\Sampleindex'}$. Let $W$ be a function of $\Desvar$, $\Signal$.
+In the following we derive the density of $\Sample_\Sampleindex$ conditionally on $W=\mathbf{w}$.
+For $\position=\mathbf{0}$,
+\begin{equation}\density_{\Sample_K\mid W}(\mathbf{0}\mid\mathbf{w})=\left|\begin{array}{ll}1&\text{if }\Sampleindex=\emptyset,\\
+P(\Samplesize<\min(K)\mid W=\mathbf{w})&\text{ otherwise.}
+\end{array}\right.\end{equation}
+For $\position\neq\mathbf{0}$,
+\begin{equation}\label{eq:iduhifduewer}
+\density_{\Sample_K\mid W}(\position\mid\mathbf{w})=
+\int \density_{\Sample_K\mid \Desvar}(\position\mid\desvar) \derive P^{\Desvar\mid W}(\desvar\mid\mathbf{w}).
+\end{equation}
+\begin{example}[Example \ref{example:2.3} continued: Probability density function of a subsample for $\Sample\sim \mathrm{Ppp}(\Desvar)$ and $\Sample\sim \mathrm{bpp}(\Desvar,\samplesize)$ .]
+\label{example:2.4}
+
+Let $\Sampleindex$ be  a non random  finite subset of $\mathbb{N}\setminus\{0\}$
+
+When $\Sample\sim \mathrm{Ppp}(\Desvar)$,
+\begin{equation}\label{eq:sgiushdiuh}
+\density_{\Sample_K\mid \Desvar}(\position\mid\mathbf{\desvar})=
+\left(\sum_{\substack{\samplesize\in\mathbb{N}:\\\{\ell\in\Sampleindex:\ell\leq\samplesize\}=\Sampleindex'}}\!\!\!\!\!\!\!\! P(\Samplesize=\samplesize\mid\Desvar=\desvar)\right)\prod_{\ell\in\Sampleindex'}\frac{\desvar(\position(\ell))}{(\desvar.\dominantU)(\Pop)}.
+\end{equation}
+
+
+and when $\Sample\sim \mathrm{bpp}(\Desvar,\samplesize)$,
+\begin{equation}\label{eq:sgiushdiuh2}
+\density_{\Sample_{\Sampleindex}\mid \Desvar}(\position|\desvar)=\left|\begin{array}{ll}
+\prod_{\ell\in\Sampleindex'} \left(\left((\desvar.\dominantU)(\Pop)\right)^{-1}\left(\desvar(\position(\ell))\right)\right)&\text{if }\Sampleindex'=\{1,\ldots,\samplesize\}\cap\Sampleindex\\
+0&\text{otherwise.}
+\end{array}\right.\end{equation}
+
+
+
+
+
+
+\end{example}
+
+Note that the distribution of the sample unconditionally on the design or the design variable can be obtained via: 
+$\density_{\Sample}(\position)=\int \density_{\Sample\mid\Desvar}(\position)\derive P^\Desvar$.
+Contrary to the particular case of population index exchangeability and sample index exchangeability, the sample index exchangeability \eqref{assumption:designindexexchangeability} condition alone does not ensure that conditionally on the sample size, $\Samplesize=\samplesize$, the distribution of the sample  $P^{\Sample\mid\Samplesize=\samplesize}$ is the uniform distribution on $\Pop^{\{1,\ldots,\samplesize\}}$. 
+For example, $f_{\Sample_{\{1\}}}$ can be uniform, but $f_{\Sample_{\{1,2\}}}$ not.

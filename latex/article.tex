@@ -18,13 +18,15 @@
 \usepackage{float}
 \usepackage{subfigure}
 \newtheorem{theorem}{Theorem}[section]
+\newtheorem{example}{Example}[section]
 \newtheorem{property}[theorem]{Property}
+\newtheorem{properties}[theorem]{Properties}
 \newtheorem{corollary}[theorem]{Corollary}
 \newtheorem{lemma}[theorem]{Lemma}
 \theoremstyle{definition}
 \newtheorem{definition}{Definition}[section]
 \theoremstyle{remark}
-\newtheorem*{remark}{Remark}
+\newtheorem{remark}{Remark}
 
 
 \usepackage[inline]{enumitem}
@@ -60,6 +62,7 @@
 \newcommand{\acos}{acos}
 \newcommand{\subsetA}{A}
 \newcommand{\Covariogram}{C}
+\newcommand{\cardinality}{\mathrm{cardinality}}
 \newcommand{\Cov}{\mathrm{Cov}}
 \newcommand{\derive}{\mathrm{d}}
 \newcommand{\Design}{D}
@@ -68,10 +71,13 @@
 \newcommand{\density}{\mathrm{f}}
 \newcommand{\Semivariogram}{G}
 \newcommand{\indicator}{I}
+\newcommand{\nrep}{J}
+\newcommand{\repindex}{j}
 \newcommand{\Sampleindex}{K}
 \newcommand{\sampleindex}{\mathbf{k}}
 \newcommand{\likelihood}{\mathscr{L}}
 %\newcommand{\popsize}{N}
+\newcommand{\uple}{m}
 \newcommand{\Samplesize}{N}
 \newcommand{\samplesize}{\mathbf{n}}
 %\newcommand{\P}{P}
@@ -98,58 +104,107 @@
 \newcommand{\hh}[1]{\renewcommand{\hhh}{#1}}
 \newcommand{\yy}[1]{\renewcommand{\yyy}{#1}}
 
+
+\newlength{\defbaselineskip}
+\setlength{\defbaselineskip}{\baselineskip}
+\newcommand{\setlinespacing}[1]%
+           {\setlength{\baselineskip}{#1 \defbaselineskip}}
+\newcommand{\doublespacing}{\setlength{\baselineskip}%
+                           {2 \defbaselineskip}}
+ \newcommand{\singlespacing}{\setlength{\baselineskip}{1.3 \defbaselineskip}}
+
+
+
+
 \newcommand\smallplot{
 \begin{tikzpicture}
     \draw (0, 0) rectangle (1, 1);
     \draw[blue] (\xxx,\yyy+\hhh) arc(90:-90:\hhh);
   \end{tikzpicture}}
 
-\title{Informative Selection and Spatial Process}
+\title{The effect of Informative Selection on the estimation of parameters related to Spatial Processes}
 \date{}
-\author{Bonn\'ery,  Pantalone, Ranalli}
+\author{Daniel Bonn\'ery \thanks{Epidemiology and Modelling Group, Department of Plant Sciences, University of Cambridge, UK} \and Francesco Pantalone\thanks{Department of Economics, University of Perugia, Italy} \and M. Giovanna Ranalli\thanks{Department of Political Science, University of Perugia, Italy}}
+
+
 \begin{document}
 \normalem %delete this line when ulem packages is removed
 
 \maketitle
 
-\tableofcontents
+%\tableofcontents
 
-\begin{abstract}
-This paper extends the concept of informative selection, population distribution and sample distribution in a spatial process context.
-Those notions were defined by 
-\cite{pfefferman_1992} in a context where the output of the random process of interest consists of independent and identically distributed realisations for each individuals of a population. \cite{BonneryBreidtCoquet} showed that informative selection was inducing a stochastic dependence among realisations on the selected units. In the context of spatial process, the "population" is a continuous space and realisations for two different elements of the population are not independent. We show how informative selection may induce a different dependence among selected units, how the sample distribution differs from the "population" distribution, and how one can  account for this effect in an simulated study when doing statistical inference, including Semi-variogram parametric and semi parametric estimation, as well as prediction on the part of the space for which the random process was not observed.
-\end{abstract}
-
-{\color{red} The references in abstracts should be either written in full or not given}.
-
+\input{abstract.tex}
+\singlespacing
 
 \input{section1}
 \input{section2}
 \input{section3}
 \input{section4}
 \input{section5}
-
-
+\input{sectionC}
+\input{Acknowledgements}
 \appendix
 \input{sectionA.tex}
-\section{R code}
-
-
-We generate a spatial Gaussian random process by means of the package \texttt{RandomFields}.
 
 
 \bibliographystyle{apalike}
 \bibliography{refs}
 
-\url{https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/nichols/research/spatbayes/johnson_spatialpointproc.pdf}
+%\url{https://warwick.ac.uk/fac/sci/statistics/staff/academic-research/nichols/research/spatbayes/johnson_spatialpointproc.png}
 
-Kaar
-Matheron.
-Pfeffermann
+%Kaar
+%Matheron.
+%Pfeffermann
 
-\input{sectionB.tex}
+%\input{sectionB.tex}
 
 
 
 \end{document}
+
+
+
+And numerical approximation is numerically intensive.
+However, we propose to use a very crude approximation:
+$\intensityratio_{\Sampleindex}(\position\mid\signal)\approx\tilde{\intensityratio}_{\Sampleindex}(\position\mid\signal)$,
+with 
+$\tilde{\intensityratio}$  that is $P-a.s(\Sample_\Sampleindex,\Signal[\Sample_\Sampleindex])(\position,\signal)$- a.s. defined:
+
+\begin{equation}\tilde{\intensityratio}_{\Sampleindex}(\position\mid\signal)=
+\frac{
+\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex}\beta \Signal[\position(\ell)]+\gamma \varepsilon[\position(\ell)]\right)\mid \Signal[\position]=\signal\right]}{
+\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex}\beta \Signal[\position(\ell)]+\gamma \varepsilon[\position(\ell)]\right)\right]}\times
+\frac{P(\Sampleindex\cap\{1,\ldots,N\})=\sampleindex\mid \Signal[\position]=\signal)}{P(L\cap\{1,\ldots,N\}=\sampleindex)}\label{eq:oeigjeoijioej}
+\end{equation}
+with $\sampleindex=\mathrm{domain}(\position)$.
+
+A cruder approximation consists in neglecting the second factor in \eqref{eq:oeigjeoijioej}:
+
+$$\tilde{\tilde{\intensityratio}}_{\Sampleindex}(\position\mid\signal)=
+\frac{
+\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex}\beta \Signal[\position(\ell)]+\gamma \varepsilon[\position(\ell)]\right)\mid \Signal[\position]=\signal\right]}{
+\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex}\beta \Signal[\position(\ell)]+\gamma \varepsilon[\position(\ell)]\right)\right]}.$$
+
+We obtain a close form for 
+$\tilde{\tilde{\intensityratio}}$:
+
+\begin{equation}
+P^{(\Sample,\Signal[\Sample])}-\text{a.s.}(\position,\signal),
+\tilde{\tilde{\intensityratio}}_{\{1,\ldots,N\}}(\position\mid\signal)=
+\exp\left(\mathds{1}^T\beta(\signal-\mu\mathds{1})
+-\frac12\mathds{1}^T\left(
+\beta^2\provar_{\position,\position}
+\right)\mathds{1}\right)\label{eq:kjeojmcxzmxz}
+\end{equation}
+\begin{proof}
+See Appendix \ref{sec:ijojeorijgo}
+\end{proof}
+
+
+{\color{red}
+This approximation is not satisfying: it does not depend on $\gamma$.
+We need to work on that by investigating the distribution of the integral of a lognormal point process.
+Cressie has some approximations that we could use.
+}
 

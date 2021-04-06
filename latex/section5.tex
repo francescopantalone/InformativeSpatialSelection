@@ -1,16 +1,45 @@
-\section{Prediction}
-The variogram is a useful tool in order to quantify the spatial dependence in the data/process. Therefore, use of it in the inferential process has been investigated. We focus on the \emph{kriging} {\color{red} \citep{matheron1962traite}}, which is a minimum mean squared error method of spatial prediction that takes full advantage of the variogram. In fact, the kriging estimator incorporates the covariance structure of the $\Signal$ into the weights. In particular, the weights are based on the covariance among sample points and the covariance between sample points and predicted points. Note that this does not happen in distance-based method, where the weights depend only on the location of the points.
+\section{Prediction} \label{sec:prediction}
+%The variogram is a useful tool in order to quantify the spatial dependence in the data/process. Therefore, use of it in the inferential process has been investigated. We focus on the \emph{kriging} {\color{red} \citep{matheron1962traite}}, which is a minimum mean squared error method of spatial prediction that takes full advantage of the variogram. In fact, the kriging estimator incorporates the covariance structure of the $\Signal$ into the weights. In particular, the weights are based on the covariance among sample points and the covariance between sample points and predicted points. Note that this does not happen in distance-based method, where the weights depend only on the location of the points.
 
-{\color{red} In the follow just some notes about ordinary kriging, it needs to be completed/reviewed}
-\emph{Ordinary kriging} assumes following model
+%{\color{red} In the follow just some notes about ordinary kriging, it needs to be completed/reviewed}
+%\emph{Ordinary kriging} assumes following model
+%\begin{equation}
+%\Signal\left(\position\right)=\mu+\delta\left(\position\right)
+%\end{equation}
+%where $\position\in\mathbb{R}^{d}$, $\mu\in\mathbb{R}$, and $\mu$ unknown, and following predictor
+%\begin{equation}
+%P\left(\Signal,\Position\right)=\sum_{i=1}^{n}{\lambda_{i}\Signal\left(\position\right)}
+%\end{equation}
+%The weights $\lambda_{i}$s are computed such that the estimator is unbiased and the variance is minimized. {\color{red} Needs more here}
+
+
+%\subsection{Naive prediction and prediction that accounts for informative selection}
+
+The following property provides the formula for the predictive distribution of $\Signal[\position']$ when $\Sample,\Signal[\Sample]=\position,\signal$ is observed.
+
+\begin{property}
+The probability density function of $\Signal[\position']$ conditionally on $(\Sample,\Signal[\Sample] =(\position,\signal)$ is given, for $\position'\in\toPop,
+\signal'\in\SignalSpace^{\{1,\ldots,\size(\position')\}}$ by:
 \begin{equation}
-\Signal\left(\position\right)=\mu+\delta\left(\position\right)
+P^{\Sample,\Signal[\Sample]}-\text{a.s.}(\sample,\signal),~ \density_{\Signal[\position']\mid\Sample,\Signal[\Sample]}(\signal'\mid\position,\signal)
+=\frac{
+\density_{\Sample\mid\Signal[\position]=\signal,\Signal[\position']}(\position\mid\signal,\signal')
+}{
+\density_{\Sample\mid\Signal[\position]}(\position\mid\signal)
+}~\times~\density_{\Signal[\position']\mid\Signal[\position]}(\signal'\mid\signal)
 \end{equation}
-where $\position\in\mathbb{R}^{d}$, $\mu\in\mathbb{R}$, and $\mu$ unknown, and following predictor
-\begin{equation}
-P\left(\Signal,\Position\right)=\sum_{i=1}^{n}{\lambda_{i}\Signal\left(\position\right)}
-\end{equation}
-The weights $\lambda_{i}$s are computed such that the estimator is unbiased and the variance is minimized. {\color{red} Needs more here}
-
-
-\subsection{Accounting for informative selection}
+\end{property}
+\begin{equation*}
+\frac{
+\density_{\Sample\mid\Signal[\position]=\signal,\Signal[\position']}(\position\mid\signal,\signal')
+}{
+\density_{\Sample\mid\Signal[\position]}(\position\mid\signal)
+}=
+\frac{
+\int 
+\frac{\exp\left(-\paramnuisance_1(\sum_{\ell=1}^2\signal(\ell)-\paramnuisance_2(\sum_{\ell=1}^{\samplesize'}\varepsilon[\position(\ell)])\right)}{\left(\int \exp\left(-\paramnuisance_1\Signal[\position']-\paramnuisance_2\varepsilon[\position']\right)\derive\nu(\position')\right)^{\samplesize'}}\derive P^{\Signal,\varepsilon\mid \Signal[\position]=\signal,\Signal[\position']=\signal'} 
+}{
+\int 
+\frac{\exp\left(-\paramnuisance_1(\sum_{\ell=1}^{\samplesize'}\Signal[\position(\ell)]-\paramnuisance_2(\sum_{\ell=1}^{\samplesize'}\varepsilon[\position(\ell)])\right)}{\left(\int \exp\left(-\paramnuisance_1\Signal[\position']-\paramnuisance_2\varepsilon[\position']\right)\derive\nu(\position')\right)^{\samplesize'}}\derive P^{\Signal,\varepsilon\mid \Signal[\position]=\signal} \phantom{11111} 
+}.
+\end{equation*}

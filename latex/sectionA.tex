@@ -2,7 +2,6 @@
 
 \newpage
 \section{Algebra for the example}
-
 \subsection{Distribution of  $\Desvar$ conditionally on  $\Signal[\position]=\signal$}\label{sec:A.owifjoeij}
 Under the condition of the paper example, conditionally on $\Signal[\position]=\signal$, the process $(\alpha+\beta\Signal+\gamma\varepsilon)$ is a Gaussian Process characterised by
 $\mathrm{E}\left[(\alpha+\beta\Signal+\gamma\varepsilon)[\position']\right]=\alpha+\beta(\mu+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu))$ and  $\mathrm{Var}\left[(\alpha+\beta\Signal+\gamma\varepsilon)[\position']\right]=\gamma^2\provar^\varepsilon_{\position',\position'}+\beta^2(\provar_{\position',\position'}-\provar_{\position',\position}\provar_{\position,\position}^{-1}\provar_{\position,\position'})$, and consequently, conditionally on $\Signal[\position]=\signal$, $\Desvar=\exp(\alpha+\beta\Signal+\gamma\varepsilon)$ is a lognormal spatial process.
@@ -72,52 +71,8 @@ $$\mathrm{Var}\left[\alpha+\beta
 
 
 
-\subsection{Proof of Equation \eqref{eq:kjeojmcxzmxz}}
-\label{sec:ijojeorijgo}
 
-The first moment of a lognormal distribution of parameters $m$ and $s^2$ is $exp(m+s^2/2)$, so 
-\begin{eqnarray*}
-\lefteqn{
-\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex'}\beta \Signal[\position'(\ell)]+\gamma \varepsilon[\position'(\ell)]\right)\mid \Signal[\position]=\signal\right]}
-\\&=&
-\exp\left(\mathds{1}^T\beta(\mu\mathds{1}+\Sigma_{\position',\position}\Sigma_{\position,\position}^{-1} (\signal-\mu\mathds{1}))+
-\frac12\mathds{1}^T\left(
-\gamma^2\provar_{x'}+\beta^2\left(\provar_{\position',\position'}-\provar_{\position',\position}\provar_{\position,\position}^{-1}\provar_{\position,\position'})\right)
-\right)\mathds{1}\right)
-\end{eqnarray*}
-which simplifies when $\position'=\position$ to 
-
-\begin{eqnarray*}
-\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex}\beta \Signal[\position(\ell)]+\gamma \varepsilon[\position(\ell)]\right)\mid \Signal[\position]=\signal\right]&=&
-\exp\left(\mathds{1}^T\beta\signal+
-\frac12\mathds{1}^T\left(
-\gamma^2\provar_{\position,\position;\varepsilon}
-\right)\mathds{1}\right)
-\end{eqnarray*}
-
-and when $\position=\mathbf{0}$:
-\begin{eqnarray*}
-\mathrm{E}\left[\exp\left(\sum_{\ell\in\sampleindex'}\beta \Signal[\position'(\ell)]+\gamma \varepsilon[\position'(\ell)]\right)\right]
-&=&
-\exp\left(\mathds{1}^T\beta\mu\mathds{1}+
-\frac12\mathds{1}^T\left(
-\gamma^2\provar_{\position',\position',\varepsilon}+\beta^2\left(\provar_{\position',\position'})\right)
-\right)\mathds{1}\right)
-\end{eqnarray*}
-
-So:
-
-\begin{equation}
-\tilde{\tilde{\intensityratio}}_{\{1,\ldots,N\}}(\position\mid\signal)=
-\exp\left(\mathds{1}^T\beta(\signal-\mu\mathds{1})+
-\frac12\mathds{1}^T\left(
--\beta^2\left(\provar_{\position,\position})\right)
-\right)\mathds{1}\right)\label{eq:kjeojmcxzmxz}
-\end{equation}
-
-
-
-\subsection{Algebra for the denominator of $\rho$}
+\subsection{Algebra for $\provar$}
 
 The denominator of $\rho$ requires the computation of $\int_{U}\Sigma_{\position',\position}~d\dominantU$, which is itself a function of
 $\int_{U}\Covariogram(\position'-\position_j)d\dominantU\left(\position'\right)$
